@@ -45,4 +45,6 @@ public interface RepairService {
     public List<RepairListItem> queryTop20ByUser(User user);
     public RepairOrder queryById(long id);
     public List<RepairProject> queryProject(int repairType);
+    
+    public Long reassgin(long orderId, User user);
 }

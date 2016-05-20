@@ -205,4 +205,18 @@ public class RepairController extends BaseController{
         repairService.deleteByOperator(repairOrderId, user);
         return new BaseResult<String>().success("维修单已删除");
     }
+    
+    //重新指派维修单
+    @RequestMapping(value="repair/reassgin/{repairOrderId}", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseResult<Long> reassgin(@ModelAttribute(Constants.USER)User user,@PathVariable long repairOrderId){
+        
+    	Long oId = repairService.reassgin(repairOrderId, user);
+        if(oId!=null){
+            return new BaseResult<Long>().success(oId);
+        } else {
+            return new BaseResult<Long>().failMsg("重新派单失败");
+        }
+    }
+    
 }

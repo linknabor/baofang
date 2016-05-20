@@ -321,5 +321,13 @@ public class RepairServiceImpl implements RepairService {
         return r;
     }
 
+	@Override
+	public Long reassgin(long orderId, User user) {
+		
+		RepairOrder order = queryById(orderId);
+		repairAssignService.assignOrder(order);
+        return order.getId();
+	}
+
 
 }
