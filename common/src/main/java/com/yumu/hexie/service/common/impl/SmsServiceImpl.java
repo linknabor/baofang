@@ -104,7 +104,6 @@ public class SmsServiceImpl implements SmsService {
 		
 		String sign = getMsgSignature();
 		msg = sign.concat(msg);
-		
 		try{
 			if(testMode==null||!"true".equals(testMode)){
 			    if (systemConfigService.querySmsChannel()==0) {
@@ -134,14 +133,17 @@ public class SmsServiceImpl implements SmsService {
 	
 	private String getMsgSignature(){
 		
-		String use_default_sign = systemConfigService.queryValueByKey("USE_DEFAULT_MSG_SIGN"); 
+		//是否使用自定义签名
+		String use_default_sign = systemConfigService.queryValueByKey("USE_DEFINED_MSG_SIGN"); 
 		
 		//1：自定义签名。0或者空：供应商签合协社区
 		if (!"1".equals(use_default_sign)) {
 			return ""; 
 		}
 		
-		String sign = systemConfigService.queryValueByKey("SYS_NAME");
+		String sign = systemConfigService.queryValueByKey("DEFAULT_SIGN");	//默认签名值
+		sign = "【"+sign+"】";
+		
 		if (StringUtil.isEmpty(sign)) {
 			LOGGER.error("未配置系统参数SYS_NAME，默认值：合协社区");
 			sign = "【合协社区】";
