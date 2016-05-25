@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 
 import com.yumu.hexie.common.util.OrderNoUtil;
 import com.yumu.hexie.model.BaseModel;
+import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.user.Address;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.repair.req.RepairComment;
@@ -109,7 +110,7 @@ public class RepairOrder extends BaseModel {
         setOrderNo(OrderNoUtil.generateRepairOrderNo());
     }
 
-    public void accept(RepairOperator ro){
+    public void accept(ServiceOperator ro){
         operatorId = ro.getId();
         operatorUserId = ro.getUserId();
         operatorCompanyName = ro.getCompanyName();//维修队名称

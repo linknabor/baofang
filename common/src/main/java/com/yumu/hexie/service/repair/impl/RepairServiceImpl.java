@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yumu.hexie.integration.wechat.entity.common.JsSign;
+import com.yumu.hexie.model.localservice.ServiceOperator;
+import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairConstant;
 import com.yumu.hexie.model.localservice.repair.RepairOperator;
 import com.yumu.hexie.model.localservice.repair.RepairOperatorRepository;
@@ -60,7 +62,7 @@ public class RepairServiceImpl implements RepairService {
     @Inject
     private RepairSeedRepository repairSeedRepository;
     @Inject
-    private RepairOperatorRepository repairOperatorRepository;
+    private ServiceOperatorRepository serviceOperatorRepository;
     @Inject
     private UploadService uploadService;
     @Inject
@@ -200,11 +202,11 @@ public class RepairServiceImpl implements RepairService {
                 ){
             throw new BizValidateException("该订单还在处理中，无法删除！");
         }
-        List<RepairOperator>  os = repairOperatorRepository.findByUserId(user.getId());
+        List<ServiceOperator>  os = serviceOperatorRepository.findByUserId(user.getId());
         if(os.size()<=0){
             throw new BizValidateException("你不是系统的维修工！");
         } else {
-            for(RepairOperator o : os) {
+            for(ServiceOperator o : os) {
                 if(o.getId() == ro.getOperatorId()) {
                     ro.deleteByOperator();
                     repairOrderRepository.save(ro);
@@ -265,9 +267,9 @@ public class RepairServiceImpl implements RepairService {
     @Transactional
     public void accept(long repairOrderId, User user) {
         RepairOrder ro = repairOrderRepository.findOne(repairOrderId);
-        List<RepairOperator> ops = repairOperatorRepository.findByUserId(user.getId());
+        List<ServiceOperator> ops = serviceOperatorRepository.findByUserId(user.getId());
         if(ops != null && ops.size() >0) {
-            RepairOperator op = ops.get(0);
+            ServiceOperator op = ops.get(0);
             ro.accept(op);
             ro = repairOrderRepository.save(ro);
             gotongService.sendRepairAssignedMsg(ro);
