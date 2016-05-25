@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import com.yumu.hexie.common.util.DistanceUtil;
 import com.yumu.hexie.model.distribution.ServiceRegionRepository;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
+import com.yumu.hexie.model.localservice.ServiceOperator;
+import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairConstant;
 import com.yumu.hexie.model.localservice.repair.RepairOperator;
 import com.yumu.hexie.model.localservice.repair.RepairOperatorRepository;
@@ -44,8 +46,12 @@ public class RepairAssignServiceImpl implements RepairAssignService {
     private AddressRepository addressRepository;
     @Inject
     private RepairSeedRepository repairSeedRepository;
+//    @Inject
+//    private RepairOperatorRepository repairOperatorRepository;
+    
     @Inject
-    private RepairOperatorRepository repairOperatorRepository;
+    private ServiceOperatorRepository serviceOperatorRepository;
+    
     @Inject
     private GotongService gotongService;
     
@@ -59,7 +65,7 @@ public class RepairAssignServiceImpl implements RepairAssignService {
     @Override
     public void assignOrder(RepairOrder order) {
         Address address = addressRepository.findOne(order.getAddressId());
-        List<RepairOperator> ops = null;
+        List<ServiceOperator> ops = null;
         List<Long> regionIds = new ArrayList<Long>();
         regionIds.add(1l);
         regionIds.add(address.getProvinceId());
@@ -69,7 +75,7 @@ public class RepairAssignServiceImpl implements RepairAssignService {
         List<Long> operatorIds = serviceRegionRepository.findByOrderTypeAndRegionIds(HomeServiceConstant.SERVICE_TYPE_REPAIR,regionIds);
         log.error("维修单对应维修工数量" + operatorIds.size());
         if(operatorIds != null && operatorIds.size() > 0) {
-            ops = repairOperatorRepository.findOperators(operatorIds);
+            ops = serviceOperatorRepository.findOperators(operatorIds);
         }
         if(ops == null) {
 //            ops = repairOperatorRepository.findByLongitudeAndLatitude(address.getLongitude(), address.getLatitude(),
@@ -79,12 +85,12 @@ public class RepairAssignServiceImpl implements RepairAssignService {
         
         assign(address,order, ops);
     }
-    private void assign(Address address,RepairOrder ro, List<RepairOperator> ops) {
+    private void assign(Address address,RepairOrder ro, List<ServiceOperator> ops) {
         if(ro.getStatus() == RepairConstant.STATUS_CREATE && ro.getOperatorId() != null && ro.getOperatorId() != 0){
             return;
         }
         List<RepairSeed> seeds = new ArrayList<RepairSeed>();
-        for(RepairOperator op : ops) {
+        for(ServiceOperator op : ops) {
             RepairSeed rs = new RepairSeed(op,ro);
             repairSeedRepository.save(rs);
             //FIXME 发送消息

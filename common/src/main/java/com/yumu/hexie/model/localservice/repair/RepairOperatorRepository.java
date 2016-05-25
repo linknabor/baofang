@@ -20,12 +20,12 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface RepairOperatorRepository  extends JpaRepository<RepairOperator, Long> {
 
-    @Query("FROM RepairOperator ro where ro.id in ?1")
-    public List<RepairOperator> findOperators(List<Long> operatorIds);
-    
-    public List<RepairOperator> findByUserId(long userId);
-    
-    @Query("From RepairOperator r order by POWER(MOD(ABS(r.longitude - ?1),360),2) + POWER(ABS(r.latitude - ?2),2)")
-    public List<RepairOperator> findByLongitudeAndLatitude(Double longitude, Double latitude, Pageable pageable);
+//    @Query("FROM RepairOperator ro where ro.id in ?1")
+//    public List<RepairOperator> findOperators(List<Long> operatorIds);
+//    
+//    public List<RepairOperator> findByUserId(long userId);
+//    
+//    @Query("From RepairOperator r order by POWER(MOD(ABS(r.longitude - ?1),360),2) + POWER(ABS(r.latitude - ?2),2)")
+//    public List<RepairOperator> findByLongitudeAndLatitude(Double longitude, Double latitude, Pageable pageable);
 
 }

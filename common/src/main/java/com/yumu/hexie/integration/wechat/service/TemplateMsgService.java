@@ -158,6 +158,8 @@ public class TemplateMsgService {
 	 * @param ro
 	 */
     public static void sendRepairAssignMsg(RepairOrder ro, ServiceOperator op,String accessToken) {
+    	
+    	log.error("发送维修单分配模版消息#########" + ", order id: " + ro.getId() + "operator id : " + op.getId());
 
     	//更改为使用模版消息发送
     	RepairOrderVO vo = new RepairOrderVO();

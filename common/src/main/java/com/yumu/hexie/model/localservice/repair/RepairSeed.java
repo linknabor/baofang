@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.model.BaseModel;
+import com.yumu.hexie.model.localservice.ServiceOperator;
 
 /**
  * <pre>
@@ -36,7 +37,7 @@ public class RepairSeed  extends BaseModel {
     private long orderDate;
     
     public RepairSeed(){}
-    public RepairSeed(RepairOperator ro,RepairOrder order) {
+    public RepairSeed(ServiceOperator ro,RepairOrder order) {
         this.operatorId = ro.getId();
         this.operatorUserId = ro.getUserId();
         this.repairOrderId = order.getId();
