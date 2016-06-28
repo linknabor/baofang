@@ -59,7 +59,7 @@ public class SmsServiceImpl implements SmsService {
         sms.setUserId(userId);
         sms = smsHisRepository.save(sms);
         
-        String sendMsg = systemConfigService.queryValueByKey("sendMsg");
+        String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");
         
         boolean ret = false;
         if(!"0".equals(sendMsg)){
@@ -108,7 +108,7 @@ public class SmsServiceImpl implements SmsService {
 		msg = sign.concat(msg);
 		try{
 			
-			String sendMsg = systemConfigService.queryValueByKey("sendMsg");
+			String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");
 			
 			if(!"0".equals(sendMsg)){
 			    if (systemConfigService.querySmsChannel()==0) {
