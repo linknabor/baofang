@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.DistanceUtil;
+import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.distribution.ServiceRegionRepository;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
 import com.yumu.hexie.model.localservice.ServiceOperator;
@@ -21,6 +22,9 @@ import com.yumu.hexie.model.localservice.assign.AssignRecordRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.repair.RepairConstant;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
+import com.yumu.hexie.model.market.ServiceOrder;
+import com.yumu.hexie.model.market.SupermarketAssgin;
+import com.yumu.hexie.model.market.SupermarketAssginRepository;
 import com.yumu.hexie.model.user.Address;
 import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.o2o.BillAssignService;
@@ -49,6 +53,10 @@ public class BillAssignServiceImpl implements BillAssignService {
     
     @Inject
     private ServiceRegionRepository serviceRegionRepository;
+    
+    @Inject
+    private SupermarketAssginRepository supermarketAssignRepository;
+    
     /** 
      * @param order
      * @see com.yumu.hexie.service.repair.RepairAssignService#assignOrder(com.yumu.hexie.model.localservice.repair.RepairOrder)
@@ -137,5 +145,41 @@ public class BillAssignServiceImpl implements BillAssignService {
     public List<AssignRecord> queryByOperatorId(long operatorId) {
         return assignRecordRepository.findByOperatorId(operatorId);
     }
+
+	@Override
+	public void assginSupermarketOrder(ServiceOrder order) {
+		
+		Address address = addressService.queryAddressById(order.getServiceAddressId());
+		
+		List<ServiceOperator> ops = findOperators(HomeServiceConstant.SERVICE_TYPE_SUPERMARKET,address);
+		if(ops == null || ops.size() == 0) {
+		    return;
+		}
+		if(order.getStatus() != ModelConstant.ORDER_STATUS_PAYED ){
+		    return;
+		}
+		
+		List<SupermarketAssgin>list = supermarketAssignRepository.findByServiceOrderId(order.getId());
+		
+		if (list.size()>0) {
+			return;
+		}
+		
+		List<AssignRecord> seeds = new ArrayList<AssignRecord>();
+		for(ServiceOperator op : ops) {
+		    AssignRecord rs = new AssignRecord(op,order);
+		    assignRecordRepository.save(rs);
+		    seeds.add(rs);
+		    
+		    SupermarketAssgin sa = new SupermarketAssgin(order, op);
+		    supermarketAssignRepository.save(sa);
+		    
+		    gotongService.sendSupermarketAssignMsg(rs.getOperatorId(), order);
+		    
+		}
+		
+		
+	}
+    
 
 }

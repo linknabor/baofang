@@ -22,6 +22,7 @@ import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
+import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.common.SystemConfigService;
@@ -49,6 +50,8 @@ public class GotongServiceImple implements GotongService {
     
     public static String SUBSCRIBE_DETAIL = ConfigUtil.get("subscribeDetail");
     
+    public static String SUPERMARKET_DETAIL = ConfigUtil.get("supermarketDetail");
+    
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
     @Inject
@@ -73,9 +76,9 @@ public class GotongServiceImple implements GotongService {
         article.setUrl(WEIXIU_DETAIL+order.getId());
         news.getArticles().add(article);
         NewsMessage msg = new NewsMessage(news);
-        msg.setTouser(user.getOpenid());
+        msg.setTouser(user.getBindOpenId());
         msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-//        CustomService.sendCustomerMessage(msg);
+        CustomService.sendCustomerMessage(msg, systemConfigService.queryWXAToken());
     }
     
     @Async
@@ -115,4 +118,28 @@ public class GotongServiceImple implements GotongService {
         msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
         CustomService.sendCustomerMessage(msg,systemConfigService.queryWXAToken());
     }
+    
+	@Override
+	public void sendSupermarketAssignMsg(long opId, ServiceOrder order) {
+		
+		ServiceOperator op = serviceOperatorRepository.findOne(opId);
+		User user = userService.getById(op.getUserId());
+        News news = new News(new ArrayList<Article>());
+        Article article = new Article();
+        article.setTitle(op.getName()+":您有新的订单！");
+        article.setDescription("有新的订单，快来接单吧！");
+        //article.setPicurl(so.getProductPic());
+        article.setUrl(SUPERMARKET_DETAIL+order.getId());
+        news.getArticles().add(article);
+        NewsMessage msg = new NewsMessage(news);
+        msg.setTouser(user.getBindOpenId());
+        msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
+        CustomService.sendCustomerMessage(msg,systemConfigService.queryWXAToken());
+		
+	}
+    
+    
+    
+    
+    
 }

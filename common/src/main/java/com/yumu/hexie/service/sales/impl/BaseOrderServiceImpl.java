@@ -75,7 +75,7 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 	
 	@Inject
 	private SalePlanService salePlanService;
-
+	
     @Value(value = "${testMode}")
     private boolean testMode;
 	private void preOrderCreate(ServiceOrder order, Address address){
@@ -371,4 +371,21 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 	public ServiceOrder findOne(long orderId){
 	    return serviceOrderRepository.findOne(orderId);
 	}
+
+	@Override
+	public List<OrderItem> findOrderItemsByOrderId(long orderId) {
+		
+		
+		return orderItemRepository.findByServiceOrder(serviceOrderRepository.findOne(orderId));
+	}
+
+	@Override
+	public void sendGoods(long orderId) {
+		
+		
+		
+	}
+	
+	
+	
 }

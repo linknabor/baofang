@@ -19,12 +19,16 @@ import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.comment.Comment;
 import com.yumu.hexie.model.commonsupport.info.Product;
 import com.yumu.hexie.model.market.Cart;
+import com.yumu.hexie.model.market.OrderItem;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.market.ServiceOrderRepository;
+import com.yumu.hexie.model.market.SupermarketAssgin;
+import com.yumu.hexie.model.market.SupermarketAssginRepository;
 import com.yumu.hexie.model.market.saleplan.SalePlan;
 import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.redis.RedisRepository;
 import com.yumu.hexie.model.user.User;
+import com.yumu.hexie.service.o2o.SendGoodsService;
 import com.yumu.hexie.service.sales.BaseOrderService;
 import com.yumu.hexie.service.sales.ProductService;
 import com.yumu.hexie.service.sales.RgroupService;
@@ -53,6 +57,10 @@ public class OrderController extends BaseController{
     private RgroupService rgroupService;
 	@Inject
 	private AddressService addressService;
+	@Inject
+	private SupermarketAssginRepository supermarketAssginRepository;
+	@Inject
+	private SendGoodsService sendGoodsService;
 	
 
 	@RequestMapping(value = "/getProduct/{productId}", method = RequestMethod.GET)
@@ -267,6 +275,59 @@ public class OrderController extends BaseController{
 		comment.setUserHeadImg(user.getHeadimgurl());
 		baseOrderService.comment(order, comment);
 		return new BaseResult<String>().success("评价成功");
+	}
+	
+	@RequestMapping(value = "/getSupermarketOrder/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<ServiceOrder> getOrderItem(@ModelAttribute(Constants.USER)User user,@PathVariable long orderId) throws Exception {
+		
+		ServiceOrder order = baseOrderService.findOne(orderId);
+		List<SupermarketAssgin>list = supermarketAssginRepository.findByServiceOrderId(orderId);
+		
+		List<Long>assginedOp = new ArrayList<Long>();
+		for (SupermarketAssgin supermarketAssgin : list) {
+			assginedOp.add(supermarketAssgin.getUserId());
+		}
+		
+		if (order.getUserId() != user.getId()||!assginedOp.contains(user.getId())) {
+			return new BaseResult<ServiceOrder>().failMsg("你没有权限查看该订单！");
+		}
+		
+		return new BaseResult<ServiceOrder>().success(order);
+    }
+	
+	@RequestMapping(value = "/getSupermarketOrderItems/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<List<OrderItem>> getSupermarketOrderItems(@ModelAttribute(Constants.USER)User user,@PathVariable long orderId) throws Exception {
+		
+		List<OrderItem>oiList = baseOrderService.findOrderItemsByOrderId(orderId);
+		return new BaseResult<List<OrderItem>>().success(oiList);
+    }
+	
+	
+	@RequestMapping(value = "/supermarket/sendGoods/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<String> sendGoods(@PathVariable long orderId, @ModelAttribute(Constants.USER)User user) throws Exception{
+
+		ServiceOrder order = baseOrderService.findOne(orderId);
+		List<SupermarketAssgin>list = supermarketAssginRepository.findByServiceOrderId(orderId);
+		
+		List<Long>assginedOp = new ArrayList<Long>();
+		for (SupermarketAssgin supermarketAssgin : list) {
+			assginedOp.add(supermarketAssgin.getUserId());
+		}
+		
+		if (order.getUserId() != user.getId()||!assginedOp.contains(user.getId())) {
+			return new BaseResult<String>().failMsg("你没有权限查看该订单！");
+		}
+		
+		int ret = sendGoodsService.sendGoods(orderId);
+		
+		if (ret==0) {
+			return new BaseResult<String>().failMsg("发货失败。");
+		}
+		
+		return new BaseResult<String>().success("success");
 	}
 	
 }

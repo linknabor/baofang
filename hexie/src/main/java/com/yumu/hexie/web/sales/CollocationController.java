@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.market.Collocation;
+import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.redis.RedisRepository;
 import com.yumu.hexie.model.user.User;
+import com.yumu.hexie.service.sales.BaseOrderService;
 import com.yumu.hexie.service.sales.CollocationService;
 import com.yumu.hexie.service.user.AddressService;
 import com.yumu.hexie.web.BaseController;
@@ -31,6 +33,9 @@ public class CollocationController extends BaseController{
 	private AddressService addressService;
     @Inject
     private RedisRepository redisRepository;
+    @Inject
+    private BaseOrderService baseOrderService;
+   
     
 	@RequestMapping(value = "/collocation/{salePlanType}/{ruleId}", method = RequestMethod.GET)
 	@ResponseBody
@@ -84,5 +89,15 @@ public class CollocationController extends BaseController{
 		i.setCollocation(collocationService.findOne(cart.getItems().get(0).getCollocationId()));
 		return new BaseResult<MultiBuyInfo>().success(i);
 	}
+	
+	@RequestMapping(value = "/collocation/notifyPayed/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<String> notifyPayed(@PathVariable long orderId, @ModelAttribute(Constants.USER)User user) throws Exception{
+
+		baseOrderService.notifyPayed(orderId);
+		collocationService.AssginSupermarketOrder(orderId, user);
+		return new BaseResult<String>().success("success");
+	}
+	
 	
 }
