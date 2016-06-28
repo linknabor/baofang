@@ -168,7 +168,7 @@ public class BillAssignServiceImpl implements BillAssignService {
 			log.error("ops size is : " + ops.size());
 		    return;
 		}
-		if(order.getStatus() != ModelConstant.ORDER_STATUS_PAYED ){
+		if(order.getStatus() != ModelConstant.ORDER_STATUS_CONFIRM ){
 			log.error("order status is : " + order.getStatus());
 			return;
 		}
