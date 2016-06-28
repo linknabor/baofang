@@ -9,10 +9,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.DistanceUtil;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.distribution.ServiceRegionRepository;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
@@ -42,6 +46,8 @@ import com.yumu.hexie.service.user.AddressService;
 @Service("billAssignService")
 public class BillAssignServiceImpl implements BillAssignService {
 
+	private static final Logger log = LoggerFactory.getLogger(BillAssignServiceImpl.class);
+	
     @Inject
     private AddressService addressService;
     @Inject
@@ -151,17 +157,26 @@ public class BillAssignServiceImpl implements BillAssignService {
 		
 		Address address = addressService.queryAddressById(order.getServiceAddressId());
 		
+		try {
+			log.error("address is :" + JacksonJsonUtil.beanToJson(address));
+		} catch (JSONException e) {
+
+		}
+		
 		List<ServiceOperator> ops = findOperators(HomeServiceConstant.SERVICE_TYPE_SUPERMARKET,address);
 		if(ops == null || ops.size() == 0) {
+			log.error("ops size is : " + ops.size());
 		    return;
 		}
 		if(order.getStatus() != ModelConstant.ORDER_STATUS_PAYED ){
-		    return;
+			log.error("order status is : " + order.getStatus());
+			return;
 		}
 		
 		List<SupermarketAssgin>list = supermarketAssignRepository.findByServiceOrderId(order.getId());
 		
 		if (list.size()>0) {
+			log.error("already assigned ...");
 			return;
 		}
 		
