@@ -29,7 +29,7 @@ public class BackendUtil {
 			e.printStackTrace();
 		}
 		
-		REQUEST_ADDRESS = props.getProperty("send_goods_url");
+		REQUEST_ADDRESS = props.getProperty("sendGoodsUrl");
 		
 	}
 	
