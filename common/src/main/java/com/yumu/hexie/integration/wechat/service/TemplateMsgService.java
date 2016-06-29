@@ -36,6 +36,7 @@ public class TemplateMsgService {
 	public static String REG_SUCCESS_MSG_TEMPLATE = ConfigUtil.get("registerSuccessTemplate");
 	public static String WUYE_PAY_SUCCESS_MSG_TEMPLATE = ConfigUtil.get("wuyePaySuccessTemplate");
 	public static String REPAIR_ASSIGN_TEMPLATE = ConfigUtil.get("reapirAssginTemplate");
+	public static String SM_ORDER_ASSGIN_TEMPLATE = ConfigUtil.get("smOrderAssginTemplate");
 	
 	/**
 	 * 模板消息发送
@@ -175,6 +176,34 @@ public class TemplateMsgService {
     	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
     	msg.setUrl(GotongServiceImple.WEIXIU_NOTICE+ro.getId());
     	msg.setTouser(op.getOpenId());
+    	TemplateMsgService.sendMsg(msg,accessToken);
+    	
+    }
+	
+    /**
+	 * 发送订单消息给商户
+	 * @param seed
+	 * @param ro
+	 */
+    public static void sendSMOrderMsg(ServiceOrder so, ServiceOperator op,String accessToken) {
+    	
+    	log.error("发送超市快购订单分配模版消息#########" + ", order id: " + so.getId() + "operator id : " + op.getId());
+    	
+    	
+    	//更改为使用模版消息发送
+    	RepairOrderVO vo = new RepairOrderVO();
+    	vo.setTitle(new TemplateItem(op.getName()+"，您有新的维修单！"));
+    	vo.setOrderNum(new TemplateItem(so.getOrderNo()));
+    	vo.setCustName(new TemplateItem(so.getReceiverName()));
+    	vo.setCustMobile(new TemplateItem(so.getTel()));
+    	vo.setCustAddr(new TemplateItem(so.getAddress()));
+    	vo.setRemark(new TemplateItem("您有新的维修单，"+"快来抢单吧！"));
+  
+    	TemplateMsg<RepairOrderVO>msg = new TemplateMsg<RepairOrderVO>();
+    	msg.setData(vo);
+    	msg.setTemplate_id(SM_ORDER_ASSGIN_TEMPLATE);
+    	msg.setUrl(GotongServiceImple.SUPERMARKET_DETAIL+so.getId());
+    	msg.setTouser(op.getBindOpenId());
     	TemplateMsgService.sendMsg(msg,accessToken);
     	
     }

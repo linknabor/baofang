@@ -18,6 +18,9 @@ import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.comment.Comment;
 import com.yumu.hexie.model.commonsupport.info.Product;
+import com.yumu.hexie.model.localservice.HomeServiceConstant;
+import com.yumu.hexie.model.localservice.ServiceOperator;
+import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.market.OrderItem;
 import com.yumu.hexie.model.market.ServiceOrder;
@@ -61,6 +64,8 @@ public class OrderController extends BaseController{
 	private SupermarketAssginRepository supermarketAssginRepository;
 	@Inject
 	private SendGoodsService sendGoodsService;
+	@Inject
+	private ServiceOperatorRepository serviceOperatorRepository;
 	
 
 	@RequestMapping(value = "/getProduct/{productId}", method = RequestMethod.GET)
@@ -329,5 +334,26 @@ public class OrderController extends BaseController{
 		
 		return new BaseResult<String>().success("success");
 	}
+	
+	@RequestMapping(value = "/orders/status/supermarket/{statusType}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<List<ServiceOrder>> getSupermarketOrders(@ModelAttribute(Constants.USER)User user,@PathVariable String statusType) throws Exception {
+		
+		List<Integer> status = new ArrayList<Integer>();
+		if("NEEDSEND".equalsIgnoreCase(statusType)){
+			status.add(ModelConstant.ORDER_STATUS_PAYED);
+			status.add(ModelConstant.ORDER_STATUS_CONFIRM);
+		}else if ("FINISHED".equalsIgnoreCase(statusType)) {
+			status.add(ModelConstant.ORDER_STATUS_SENDED);
+			status.add(ModelConstant.ORDER_STATUS_RECEIVED);
+		}
+		
+		List<ServiceOperator> list = serviceOperatorRepository.findByTypeAndUserId(HomeServiceConstant.SERVICE_TYPE_SUPERMARKET, user.getId());
+		ServiceOperator so = list.get(0);
+		
+		return new BaseResult<List<ServiceOrder>>().success(serviceOrderRepository.
+					findByStatusAndMerchatIdAndOrderType(status, so.getMerchantId(), ModelConstant.ORDER_TYPE_ONSALE));
+    }
+	
 	
 }

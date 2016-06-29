@@ -19,6 +19,6 @@ import com.yumu.hexie.model.localservice.ServiceOperator;
 public interface OperatorService {
     
     public ServiceOperator findByTypeAndUserId(int type,long userId);
-    public boolean isOperator(int type,long userId);
+    public int isOperator(int type,long userId);
     public List<ServiceOperator> findByIds(List<Long> ids);
 }

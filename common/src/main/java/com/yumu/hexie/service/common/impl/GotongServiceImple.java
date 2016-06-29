@@ -107,7 +107,6 @@ public class GotongServiceImple implements GotongService {
     @Override
     public void sendXiyiAssignMsg(long opId, YunXiyiBill bill) {
         ServiceOperator op = serviceOperatorRepository.findOne(opId);
-        User user = userService.getById(op.getUserId());
         News news = new News(new ArrayList<Article>());
         Article article = new Article();
         article.setTitle(op.getName()+":您有新的洗衣订单！");
@@ -118,7 +117,7 @@ public class GotongServiceImple implements GotongService {
         NewsMessage msg = new NewsMessage(news);
         msg.setTouser(op.getOpenId());
         msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-        String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+        String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
         CustomService.sendCustomerMessage(msg,token);
     }
     
@@ -126,19 +125,8 @@ public class GotongServiceImple implements GotongService {
 	public void sendSupermarketAssignMsg(long opId, ServiceOrder order) {
 		
 		ServiceOperator op = serviceOperatorRepository.findOne(opId);
-		User user = userService.getById(op.getUserId());
-        News news = new News(new ArrayList<Article>());
-        Article article = new Article();
-        article.setTitle(op.getName()+":您有新的订单！");
-        article.setDescription("有新的订单，快来接单吧！");
-        //article.setPicurl(so.getProductPic());
-        article.setUrl(SUPERMARKET_DETAIL+order.getId());
-        news.getArticles().add(article);
-        NewsMessage msg = new NewsMessage(news);
-        msg.setTouser(user.getBindOpenId());
-        msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-        String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
-        CustomService.sendCustomerMessage(msg, token);
+		String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
+        TemplateMsgService.sendSMOrderMsg(order, op, token);
 		
 	}
     
