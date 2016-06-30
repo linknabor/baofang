@@ -325,7 +325,7 @@ public class OrderController extends BaseController{
 			assginedOp.add(supermarketAssgin.getUserId());
 		}
 		
-		if (order.getUserId() != user.getId()||!assginedOp.contains(user.getId())) {
+		if (order.getUserId() != user.getId()&&!assginedOp.contains(user.getId())) {
 			return new BaseResult<String>().failMsg("你没有权限查看该订单！");
 		}
 		
