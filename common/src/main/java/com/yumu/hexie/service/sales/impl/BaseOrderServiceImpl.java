@@ -185,7 +185,8 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 				user = userService.getById(order.getUserId());//短信发送号码修改为用户注册号码 20160120
 				userNoticeService.orderSuccess(order.getUserId(), user.getTel(),order.getId(), order.getOrderNo(), order.getProductName(), order.getPrice());
 			}
-			TemplateMsgService.sendPaySuccessMsg(user, order,systemConfigService.queryWXAToken());
+			String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+			TemplateMsgService.sendPaySuccessMsg(user, order, token);
 		} else if(orderOp == ModelConstant.ORDER_OP_SEND){
 			userNoticeService.orderSend(order.getUserId(), order.getTel(),order.getId(), order.getOrderNo(), order.getLogisticName(), order.getLogisticNo());
 		}
