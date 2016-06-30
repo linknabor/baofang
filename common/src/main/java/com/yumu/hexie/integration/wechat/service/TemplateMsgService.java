@@ -196,7 +196,7 @@ public class TemplateMsgService {
     	vo.setTitle(new TemplateItem(op.getName()+"，您有1条新的订单消息。"));
     	vo.setOrderTime(new TemplateItem(so.getCreateDateStr()));
     	vo.setOrderContent(new TemplateItem(so.getProductName()));
-    	vo.setRemark(new TemplateItem(so.getMemo()));
+    	vo.setRemark(new TemplateItem("请尽快处理！"));
   
     	TemplateMsg<SupermarketOrderVO>msg = new TemplateMsg<SupermarketOrderVO>();
     	msg.setData(vo);
