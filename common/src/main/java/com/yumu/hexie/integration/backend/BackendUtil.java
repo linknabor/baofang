@@ -2,12 +2,14 @@ package com.yumu.hexie.integration.backend;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.common.util.MyHttpClient;
 
 public class BackendUtil {
@@ -41,16 +43,21 @@ public class BackendUtil {
 		String url = String.format(REQUEST_ADDRESS, orderId, DB_CODE);
 		Object object = httpGet(url, String.class);
 		
-		log.warn("object :" + object);
-		
 		if (object != null) {
 			value = (String)object;
 		}
+		
 		try {
-			ret = Integer.parseInt(value);
-		} catch (NumberFormatException e) {
+			Map<String, Object> map = JacksonJsonUtil.json2map(value);
+			Object code = map.get("code");
+			ret = (Integer)code;
+			System.out.println(ret);
+			
+		} catch (Exception e) {
+
 			log.error(e.getMessage());
 		}
+		
 		return ret;
 		
 	}
