@@ -57,7 +57,7 @@ public class TemplateMsgService {
 		return false;
 	}
 	
-	public static void sendPaySuccessMsg(ServiceOrder order,String accessToken) {
+	public static void sendPaySuccessMsg(User user, ServiceOrder order,String accessToken) {
 		log.error("发送模板消息！！！！！！！！！！！！！！！" + order.getOrderNo());
 		PaySuccessVO vo = new PaySuccessVO();
 		vo.setFirst(new TemplateItem("您的订单：("+order.getOrderNo()+")已支付成功"));
@@ -82,7 +82,8 @@ public class TemplateMsgService {
 			marketBuy = "1";
 		}
 		msg.setUrl(SUCCESS_URL.replace("ORDER_ID", ""+order.getId()).replace("ORDER_TYPE", ""+order.getOrderType()).replace("MARKET_BUY", marketBuy));
-		msg.setTouser(order.getOpenId());
+		
+		msg.setTouser(user.getBindOpenId());
 		sendMsg(msg,accessToken);
 	}
 	
@@ -132,7 +133,7 @@ public class TemplateMsgService {
 	}
 	
 	/**
-	 * 发送注册成功后的模版消息
+	 * 发送物业支付后的模版消息
 	 * @param user
 	 */
 	public static void sendWuYePaySuccessMsg(User user, String tradeWaterId, String feePrice,String accessToken){
@@ -155,7 +156,7 @@ public class TemplateMsgService {
 		msg.setData(vo);
 		msg.setTemplate_id(WUYE_PAY_SUCCESS_MSG_TEMPLATE);
 		msg.setUrl(REG_SUCCESS_URL);
-		msg.setTouser(user.getOpenid());
+		msg.setTouser(user.getBindOpenId());
 		sendMsg(msg,accessToken);
 	
 	}
