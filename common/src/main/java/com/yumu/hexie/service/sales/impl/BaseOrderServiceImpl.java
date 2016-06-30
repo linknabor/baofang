@@ -75,7 +75,7 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 	
 	@Inject
 	private SalePlanService salePlanService;
-
+	
     @Value(value = "${testMode}")
     private boolean testMode;
 	private void preOrderCreate(ServiceOrder order, Address address){
@@ -179,11 +179,14 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 			//userNoticeService.noticeUser(order.getUserId(), ModelConstant.NOTICE_TYPE_NOTICE, "订单"+order.getOrderNo()+"已取消！", "");
 		} else if(orderOp == ModelConstant.ORDER_OP_UPDATE_PAYSTATUS
 				&&(order.getStatus()==ModelConstant.ORDER_STATUS_PAYED||order.getStatus()==ModelConstant.ORDER_STATUS_CONFIRM)){
+			
+			User user = userService.getById(order.getUserId());//短信发送号码修改为用户注册号码 20160120
 			if(order.getOrderType() != ModelConstant.ORDER_TYPE_YUYUE){
-				User user = userService.getById(order.getUserId());//短信发送号码修改为用户注册号码 20160120
+				user = userService.getById(order.getUserId());//短信发送号码修改为用户注册号码 20160120
 				userNoticeService.orderSuccess(order.getUserId(), user.getTel(),order.getId(), order.getOrderNo(), order.getProductName(), order.getPrice());
 			}
-			TemplateMsgService.sendPaySuccessMsg(order,systemConfigService.queryWXAToken());
+			String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+			TemplateMsgService.sendPaySuccessMsg(user, order, token);
 		} else if(orderOp == ModelConstant.ORDER_OP_SEND){
 			userNoticeService.orderSend(order.getUserId(), order.getTel(),order.getId(), order.getOrderNo(), order.getLogisticName(), order.getLogisticNo());
 		}
@@ -371,4 +374,21 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 	public ServiceOrder findOne(long orderId){
 	    return serviceOrderRepository.findOne(orderId);
 	}
+
+	@Override
+	public List<OrderItem> findOrderItemsByOrderId(long orderId) {
+		
+		
+		return orderItemRepository.findByServiceOrder(serviceOrderRepository.findOne(orderId));
+	}
+
+	@Override
+	public void sendGoods(long orderId) {
+		
+		
+		
+	}
+	
+	
+	
 }

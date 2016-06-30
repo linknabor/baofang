@@ -428,7 +428,8 @@ public class WuyeController extends BaseController {
 	@Async
 	private void sendPayTemplateMsg(User user, String tradeWaterId, String feePrice){
 		
-		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice,systemConfigService.queryWXAToken());
+		String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice, token);
 	}
 	
 	

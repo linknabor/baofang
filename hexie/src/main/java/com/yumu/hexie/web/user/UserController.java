@@ -51,7 +51,7 @@ public class UserController extends BaseController{
 	
 	private static Map<Long, String> userSession = new HashMap<Long, String>();
 	
-	private static final Logger Log = LoggerFactory.getLogger(UserController.class);
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@Inject
 	private AddressService addressService;

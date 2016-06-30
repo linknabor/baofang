@@ -22,6 +22,7 @@ import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
+import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.common.SystemConfigService;
@@ -49,6 +50,8 @@ public class GotongServiceImple implements GotongService {
     
     public static String SUBSCRIBE_DETAIL = ConfigUtil.get("subscribeDetail");
     
+    public static String SUPERMARKET_DETAIL = ConfigUtil.get("supermarketDetail");
+    
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
     @Inject
@@ -73,9 +76,10 @@ public class GotongServiceImple implements GotongService {
         article.setUrl(WEIXIU_DETAIL+order.getId());
         news.getArticles().add(article);
         NewsMessage msg = new NewsMessage(news);
-        msg.setTouser(user.getOpenid());
+        msg.setTouser(user.getBindOpenId());
         msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-//        CustomService.sendCustomerMessage(msg);
+        String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+        CustomService.sendCustomerMessage(msg, token);
     }
     
     @Async
@@ -113,6 +117,21 @@ public class GotongServiceImple implements GotongService {
         NewsMessage msg = new NewsMessage(news);
         msg.setTouser(op.getOpenId());
         msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-        CustomService.sendCustomerMessage(msg,systemConfigService.queryWXAToken());
+        String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
+        CustomService.sendCustomerMessage(msg,token);
     }
+    
+	@Override
+	public void sendSupermarketAssignMsg(long opId, ServiceOrder order) {
+		
+		ServiceOperator op = serviceOperatorRepository.findOne(opId);
+		String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
+        TemplateMsgService.sendSMOrderMsg(order, op, token);
+		
+	}
+    
+    
+    
+    
+    
 }

@@ -16,6 +16,7 @@ import com.yumu.hexie.integration.wechat.entity.common.WechatResponse;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.PaySuccessVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.RegisterSuccessVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.RepairOrderVO;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.SupermarketOrderVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateItem;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateMsg;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.WuyePaySuccessVO;
@@ -36,6 +37,7 @@ public class TemplateMsgService {
 	public static String REG_SUCCESS_MSG_TEMPLATE = ConfigUtil.get("registerSuccessTemplate");
 	public static String WUYE_PAY_SUCCESS_MSG_TEMPLATE = ConfigUtil.get("wuyePaySuccessTemplate");
 	public static String REPAIR_ASSIGN_TEMPLATE = ConfigUtil.get("reapirAssginTemplate");
+	public static String SM_ORDER_ASSGIN_TEMPLATE = ConfigUtil.get("smOrderAssginTemplate");
 	
 	/**
 	 * 模板消息发送
@@ -55,7 +57,7 @@ public class TemplateMsgService {
 		return false;
 	}
 	
-	public static void sendPaySuccessMsg(ServiceOrder order,String accessToken) {
+	public static void sendPaySuccessMsg(User user, ServiceOrder order,String accessToken) {
 		log.error("发送模板消息！！！！！！！！！！！！！！！" + order.getOrderNo());
 		PaySuccessVO vo = new PaySuccessVO();
 		vo.setFirst(new TemplateItem("您的订单：("+order.getOrderNo()+")已支付成功"));
@@ -73,8 +75,15 @@ public class TemplateMsgService {
 		msg.setData(vo);
 		
 		msg.setTemplate_id(SUCCESS_MSG_TEMPLATE);
-		msg.setUrl(SUCCESS_URL.replace("ORDER_ID", ""+order.getId()).replace("ORDER_TYPE", ""+order.getOrderType()));
-		msg.setTouser(order.getOpenId());
+		
+		String marketBuy = "";
+		long collocationId = order.getCollocationId();
+		if (collocationId>0) {
+			marketBuy = "1";
+		}
+		msg.setUrl(SUCCESS_URL.replace("ORDER_ID", ""+order.getId()).replace("ORDER_TYPE", ""+order.getOrderType()).replace("MARKET_BUY", marketBuy));
+		
+		msg.setTouser(user.getBindOpenId());
 		sendMsg(msg,accessToken);
 	}
 	
@@ -124,7 +133,7 @@ public class TemplateMsgService {
 	}
 	
 	/**
-	 * 发送注册成功后的模版消息
+	 * 发送物业支付后的模版消息
 	 * @param user
 	 */
 	public static void sendWuYePaySuccessMsg(User user, String tradeWaterId, String feePrice,String accessToken){
@@ -147,7 +156,7 @@ public class TemplateMsgService {
 		msg.setData(vo);
 		msg.setTemplate_id(WUYE_PAY_SUCCESS_MSG_TEMPLATE);
 		msg.setUrl(REG_SUCCESS_URL);
-		msg.setTouser(user.getOpenid());
+		msg.setTouser(user.getBindOpenId());
 		sendMsg(msg,accessToken);
 	
 	}
@@ -175,6 +184,32 @@ public class TemplateMsgService {
     	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
     	msg.setUrl(GotongServiceImple.WEIXIU_NOTICE+ro.getId());
     	msg.setTouser(op.getOpenId());
+    	TemplateMsgService.sendMsg(msg,accessToken);
+    	
+    }
+	
+    /**
+	 * 发送订单消息给商户
+	 * @param seed
+	 * @param ro
+	 */
+    public static void sendSMOrderMsg(ServiceOrder so, ServiceOperator op,String accessToken) {
+    	
+    	log.error("发送超市快购订单分配模版消息#########" + ", order id: " + so.getId() + "operator id : " + op.getId());
+    	
+    	
+    	//更改为使用模版消息发送
+    	SupermarketOrderVO vo = new SupermarketOrderVO();
+    	vo.setTitle(new TemplateItem(op.getName()+"，您有1条新的订单消息。"));
+    	vo.setOrderTime(new TemplateItem(so.getCreateDateStr()));
+    	vo.setOrderContent(new TemplateItem(so.getProductName()));
+    	vo.setRemark(new TemplateItem("请尽快处理！"));
+  
+    	TemplateMsg<SupermarketOrderVO>msg = new TemplateMsg<SupermarketOrderVO>();
+    	msg.setData(vo);
+    	msg.setTemplate_id(SM_ORDER_ASSGIN_TEMPLATE);
+    	msg.setUrl(GotongServiceImple.SUPERMARKET_DETAIL+so.getId());
+    	msg.setTouser(op.getBindOpenId());
     	TemplateMsgService.sendMsg(msg,accessToken);
     	
     }

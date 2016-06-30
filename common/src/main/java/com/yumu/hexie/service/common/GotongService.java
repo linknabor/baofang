@@ -6,6 +6,7 @@ package com.yumu.hexie.service.common;
 
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
+import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.user.User;
 
 /**
@@ -25,4 +26,6 @@ public interface GotongService {
     public void sendRepairAssignedMsg(RepairOrder order);
     
     public void sendSubscribeMsg(User user);
+    
+    public void sendSupermarketAssignMsg(long opId, ServiceOrder order);
 }

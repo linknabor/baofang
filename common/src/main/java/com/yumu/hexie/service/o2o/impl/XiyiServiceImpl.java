@@ -34,7 +34,7 @@ import com.yumu.hexie.model.payment.PaymentOrder;
 import com.yumu.hexie.model.promotion.PromotionConstant;
 import com.yumu.hexie.model.promotion.coupon.Coupon;
 import com.yumu.hexie.model.settle.SettleBill;
-import com.yumu.hexie.model.settle.SettleConstant;
+
 import com.yumu.hexie.model.user.Address;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.exception.BizValidateException;
