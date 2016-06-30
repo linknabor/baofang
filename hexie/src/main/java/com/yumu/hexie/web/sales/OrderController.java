@@ -332,7 +332,7 @@ public class OrderController extends BaseController{
 		int ret = sendGoodsService.sendGoods(orderId);
 		
 		if (ret==0) {
-			return new BaseResult<String>().failMsg("发货失败。");
+			return new BaseResult<String>().failMsg("CODE："+ret+"，发货失败。");
 		}
 		
 		return new BaseResult<String>().success("success");

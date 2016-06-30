@@ -16,6 +16,7 @@ import com.yumu.hexie.integration.wechat.entity.common.WechatResponse;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.PaySuccessVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.RegisterSuccessVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.RepairOrderVO;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.SupermarketOrderVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateItem;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateMsg;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.WuyePaySuccessVO;
@@ -191,15 +192,13 @@ public class TemplateMsgService {
     	
     	
     	//更改为使用模版消息发送
-    	RepairOrderVO vo = new RepairOrderVO();
-    	vo.setTitle(new TemplateItem(op.getName()+"，您有新的维修单！"));
-    	vo.setOrderNum(new TemplateItem(so.getOrderNo()));
-    	vo.setCustName(new TemplateItem(so.getReceiverName()));
-    	vo.setCustMobile(new TemplateItem(so.getTel()));
-    	vo.setCustAddr(new TemplateItem(so.getAddress()));
-    	vo.setRemark(new TemplateItem("您有新的维修单，"+"快来抢单吧！"));
+    	SupermarketOrderVO vo = new SupermarketOrderVO();
+    	vo.setTitle(new TemplateItem(op.getName()+"，您有1条新的订单消息。"));
+    	vo.setOrderTime(new TemplateItem(so.getCreateDateStr()));
+    	vo.setOrderContent(new TemplateItem(so.getProductName()));
+    	vo.setRemark(new TemplateItem("请尽快处理！"));
   
-    	TemplateMsg<RepairOrderVO>msg = new TemplateMsg<RepairOrderVO>();
+    	TemplateMsg<SupermarketOrderVO>msg = new TemplateMsg<SupermarketOrderVO>();
     	msg.setData(vo);
     	msg.setTemplate_id(SM_ORDER_ASSGIN_TEMPLATE);
     	msg.setUrl(GotongServiceImple.SUPERMARKET_DETAIL+so.getId());
