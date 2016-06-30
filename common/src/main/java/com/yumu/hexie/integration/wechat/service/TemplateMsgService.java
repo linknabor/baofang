@@ -75,7 +75,13 @@ public class TemplateMsgService {
 		msg.setData(vo);
 		
 		msg.setTemplate_id(SUCCESS_MSG_TEMPLATE);
-		msg.setUrl(SUCCESS_URL.replace("ORDER_ID", ""+order.getId()).replace("ORDER_TYPE", ""+order.getOrderType()));
+		
+		String marketBuy = "";
+		long collocationId = order.getCollocationId();
+		if (collocationId>0) {
+			marketBuy = "1";
+		}
+		msg.setUrl(SUCCESS_URL.replace("ORDER_ID", ""+order.getId()).replace("ORDER_TYPE", ""+order.getOrderType()).replace("MAKET_BUY", marketBuy));
 		msg.setTouser(order.getOpenId());
 		sendMsg(msg,accessToken);
 	}
