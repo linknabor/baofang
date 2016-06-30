@@ -42,7 +42,7 @@ public class SupermarketAssgin extends BaseModel{
 		this.serviceOrderId = serviceOrder.getId();
 		this.operatorId = serviceOperator.getId();
 		this.operatorName = serviceOperator.getName();
-		this.operatorOpenid = serviceOperator.getOpenId();
+		this.operatorOpenid = serviceOperator.getBindOpenId();
 		this.operatorMoble = serviceOperator.getTel();
 		this.merchantId = serviceOrder.getMerchantId();
 		this.userId = serviceOperator.getUserId();

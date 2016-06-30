@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.comment.Comment;
@@ -294,7 +297,7 @@ public class OrderController extends BaseController{
 			assginedOp.add(supermarketAssgin.getUserId());
 		}
 		
-		if (order.getUserId() != user.getId()||!assginedOp.contains(user.getId())) {
+		if (order.getUserId() != user.getId() && !assginedOp.contains(user.getId())) {
 			return new BaseResult<ServiceOrder>().failMsg("你没有权限查看该订单！");
 		}
 		
@@ -354,6 +357,7 @@ public class OrderController extends BaseController{
 		return new BaseResult<List<ServiceOrder>>().success(serviceOrderRepository.
 					findByStatusAndMerchatIdAndOrderType(status, so.getMerchantId(), ModelConstant.ORDER_TYPE_ONSALE));
     }
+	
 	
 	
 }
