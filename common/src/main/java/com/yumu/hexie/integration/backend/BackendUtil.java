@@ -40,18 +40,20 @@ public class BackendUtil {
 		String value = "";
 		String url = String.format(REQUEST_ADDRESS, orderId, DB_CODE);
 		Object object = httpGet(url, String.class);
+		
+		log.warn("object :" + object);
+		
 		if (object != null) {
 			value = (String)object;
 		}
 		try {
 			ret = Integer.parseInt(value);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return ret;
 		
 	}
-	
 	
 	@SuppressWarnings("rawtypes")
 	private static Object httpGet(String reqUrl, Class c) {

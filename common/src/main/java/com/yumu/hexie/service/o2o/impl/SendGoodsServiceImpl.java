@@ -3,8 +3,6 @@
  */
 package com.yumu.hexie.service.o2o.impl;
 
-import javax.inject.Inject;
-
 import com.yumu.hexie.integration.backend.BackendUtil;
 import com.yumu.hexie.service.o2o.SendGoodsService;
 
