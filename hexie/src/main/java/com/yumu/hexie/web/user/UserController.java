@@ -83,7 +83,7 @@ public class UserController extends BaseController{
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
         user = userService.getById(user.getId());
         
-        if(user != null){
+        if(user != null && user.getBindAppId()!=null && user.getBindOpenId()!= null){
         	
         	if (user.isNewRegiste()) {
              	UserWeiXin baofangUser = userService.getOtherUserByOpenId(user.getBindAppId(), user.getBindOpenId());
@@ -247,7 +247,7 @@ public class UserController extends BaseController{
 			if (!StringUtil.isEmpty(couponStr)) {
 				couponArr = couponStr.split(",");
 			}
-			if (couponArr.length>0) {
+			if (couponArr!=null) {
 				for (int i = 0; i < couponArr.length; i++) {
 					Coupon coupon = couponService.addCouponFromSeed(couponArr[i], user);
 					
@@ -256,7 +256,6 @@ public class UserController extends BaseController{
 					list.add(coupon);
 				}
 			}
-//			Coupon coupon = couponService.addCoupon4Subscribe(user);
 			
 			if (list.size()>0) {
 				goTongService.sendSubscribeMsg(user);
