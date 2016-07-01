@@ -249,11 +249,12 @@ public class UserController extends BaseController{
 			}
 			if (couponArr!=null) {
 				for (int i = 0; i < couponArr.length; i++) {
-					Coupon coupon = couponService.addCouponFromSeed(couponArr[i], user);
-					
-					log.error("coupon : " + coupon.getId() + ", amount :" + coupon.getAmount() + ", title:" 
-							+ coupon.getTitle() + ", desc: " + coupon.getCouponDesc() + ", createDate: " + coupon.getCreateDateStr());
-					list.add(coupon);
+					try {
+						Coupon coupon = couponService.addCouponFromSeed(couponArr[i], user);
+						list.add(coupon);
+					} catch (Exception e) {
+						log.error(e.getMessage());
+					}
 				}
 			}
 			
