@@ -13,11 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.jsoup.helper.StringUtil;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.yumu.hexie.common.util.StringUtil;
 
 /**
  * <pre>
@@ -74,7 +73,7 @@ public class AmapAddress implements Serializable  {
         return lon;
     }
     private void initLocation() {
-        if(!StringUtil.isBlank(location)) {
+        if(!StringUtil.isEmpty(location)) {
             String str[] = location.split(",");
             try{
                 lon = Double.parseDouble(str[0]); 

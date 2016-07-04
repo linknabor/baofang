@@ -20,8 +20,6 @@ import com.yumu.hexie.model.localservice.HomeServiceConstant;
 import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairConstant;
-import com.yumu.hexie.model.localservice.repair.RepairOperator;
-import com.yumu.hexie.model.localservice.repair.RepairOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
 import com.yumu.hexie.model.localservice.repair.RepairSeed;
 import com.yumu.hexie.model.localservice.repair.RepairSeedRepository;
@@ -46,12 +44,8 @@ public class RepairAssignServiceImpl implements RepairAssignService {
     private AddressRepository addressRepository;
     @Inject
     private RepairSeedRepository repairSeedRepository;
-//    @Inject
-//    private RepairOperatorRepository repairOperatorRepository;
-    
     @Inject
     private ServiceOperatorRepository serviceOperatorRepository;
-    
     @Inject
     private GotongService gotongService;
     

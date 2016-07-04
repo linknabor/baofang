@@ -1,7 +1,6 @@
 package com.yumu.hexie.service.o2o.req;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class CommonBillReq implements Serializable{
 	private static final long serialVersionUID = -2090643413772467559L;

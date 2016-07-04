@@ -53,11 +53,11 @@ public class YunxiyiController extends BaseController{
     @ResponseBody
 	public BaseResult<XiyiItemsVO> queryItems(@PathVariable long region,@PathVariable long type){
         XiyiItemsVO v = new XiyiItemsVO();
-        v.setItems(homeItemService.queryServiceItemByRegion(type,
-            region));
+        v.setItems(homeItemService.queryServiceItemByRegion(type, region));
         v.setType(homeItemService.queryTypeById(type));
         return new BaseResult<XiyiItemsVO>().success(v);
 	}
+    
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<YunXiyiBill> createOrder(@RequestBody CommonBillReq req,@ModelAttribute(Constants.USER)User user){

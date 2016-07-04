@@ -22,6 +22,7 @@ public class CartWithAddressVO implements Serializable {
     private static final long serialVersionUID = -7812593077115232849L;
     private Address address;
     private HomeCart cart;
+    private ShipFeeTplVO shipFee;
     public Address getAddress() {
         return address;
     }
@@ -33,6 +34,12 @@ public class CartWithAddressVO implements Serializable {
     }
     public void setCart(HomeCart cart) {
         this.cart = cart;
+    }
+    public ShipFeeTplVO getShipFee() {
+        return shipFee;
+    }
+    public void setShipFee(ShipFeeTplVO shipFee) {
+        this.shipFee = shipFee;
     }
     
 }

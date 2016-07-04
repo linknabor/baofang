@@ -117,4 +117,9 @@ public class HomeItemServiceImpl implements HomeItemService {
         return t;
     }
 
+    @Override
+    public List<ServiceItem> queryServiceItemByType(long typeId) {
+        return serviceItemRepository.findByType(typeId);
+    }
+
 }

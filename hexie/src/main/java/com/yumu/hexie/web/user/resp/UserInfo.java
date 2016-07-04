@@ -55,13 +55,16 @@ public class UserInfo implements Serializable {
     private Integer couponCount;
     
     private String shareCode;
+    
+    private String xiaoquName;
+    private long id;
 
     public UserInfo(){}
     public UserInfo(User user){
         BeanUtils.copyProperties(user, this);
     }
 
-    public UserInfo(User user, int operatorType){
+   public UserInfo(User user, int operatorType){
         BeanUtils.copyProperties(user, this);
         switch (operatorType) {
 		case HomeServiceConstant.SERVICE_TYPE_REPAIR:
@@ -236,12 +239,26 @@ public class UserInfo implements Serializable {
     public void setRepairOperator(boolean isRepairOperator) {
         this.isRepairOperator = isRepairOperator;
     }
+
 	public boolean isMerchantOperator() {
 		return isMerchantOperator;
 	}
 	public void setMechantOperator(boolean isMerchantOperator) {
 		this.isMerchantOperator = isMerchantOperator;
 	}
+
+    public String getXiaoquName() {
+        return xiaoquName;
+    }
+    public void setXiaoquName(String xiaoquName) {
+        this.xiaoquName = xiaoquName;
+    }
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
     
     
 }

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yumu.hexie.model.BaseModel;
 
@@ -24,11 +25,12 @@ public class HomeBillItem extends BaseModel {
 
     private static final long serialVersionUID = 1517529651954781883L;
     private long billId;//订单编号
-    private long billType;
+    private long billType;//大类型
     
     //服务项ID
+    private long parentType;//小类型
     private long serviceId;
-    private int count;
+    private float count;
     private BigDecimal price;
     private String title;
     private String logo;
@@ -39,10 +41,10 @@ public class HomeBillItem extends BaseModel {
         }
         return price.multiply(BigDecimal.valueOf(count));
     }
-    public int getCount() {
+    public float getCount() {
         return count;
     }
-    public void setCount(int count) {
+    public void setCount(float count) {
         this.count = count;
     }
     public BigDecimal getPrice() {
@@ -72,7 +74,7 @@ public class HomeBillItem extends BaseModel {
     public long getBillType() {
         return billType;
     }
-    public void setBillType(int billType) {
+    public void setBillType(long billType) {
         this.billType = billType;
     }
     public long getServiceId() {
@@ -80,5 +82,11 @@ public class HomeBillItem extends BaseModel {
     }
     public void setServiceId(long serviceId) {
         this.serviceId = serviceId;
+    }
+    public long getParentType() {
+        return parentType;
+    }
+    public void setParentType(long parentType) {
+        this.parentType = parentType;
     }
 }

@@ -29,12 +29,10 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private PointService pointService;
 
-    @Inject
-    private WechatCoreService wechatCoreService;
-    @Inject
+	@Inject
+	private WechatCoreService wechatCoreService;
+	@Inject
     private BindedWechatService bindedWechatService;
-	
-	
     @Override
     public User getById(long uId){
         return userRepository.findOne(uId);
@@ -42,28 +40,18 @@ public class UserServiceImpl implements UserService {
     public User getByOpenId(String openId){
         return userRepository.findByOpenid(openId);
     }
-    public UserWeiXin getUserByCode(String code) {
-        return wechatCoreService.getByOAuthAccessToken(code);
-    }
 	@Override
 	public User getOrSubscibeUserByCode(String code) {
-		
-		UserWeiXin user = null;
-		try {
-			user = wechatCoreService.getByOAuthAccessToken(code);
-		} catch (Exception e) {
-			//defend the null point exception here.
-		}
-		
+		UserWeiXin user = wechatCoreService.getByOAuthAccessToken(code);
 		if(user == null) {
             throw new BizValidateException("微信信息不正确");
         }
 		String openId = user.getOpenid();
 		User userAccount = userRepository.findByOpenid(openId);
 		if(userAccount == null) {
-			userAccount = createUser(user);
+            userAccount = createUser(user);
             userAccount.setNewRegiste(true);
-		}
+        }
         if(StringUtil.isEmpty(userAccount.getNickname())){
             userAccount = updateUserByWechat(user, userAccount);
         }else if(user.getSubscribe()!=null&&user.getSubscribe() != userAccount.getSubscribe()) {
@@ -97,43 +85,23 @@ public class UserServiceImpl implements UserService {
         userAccount.setSubscribe_time(user.getSubscribe_time());
         return userRepository.save(userAccount);
     }
-	@Override
-	public User getOrSubscibeUserByWechatuser(UserWeiXin user){
-	    User userAccount = userRepository.findByOpenid(user.getOpenid());
-	    if(userAccount == null) {
-            userAccount = createUser(user);
-            userAccount.setNewRegiste(true);
-            
-            if(StringUtil.isEmpty(userAccount.getWuyeId()) ){
-                bindWithWuye(userAccount);
-            }
-            
-            return userRepository.save(userAccount);
-        }
-	    
-	    if(StringUtil.isEmpty(userAccount.getWuyeId()) ){
-            bindWithWuye(userAccount);
-        }
-	    return userAccount;
-	}
-		
     private User updateUserByWechat(UserWeiXin user, User userAccount) {
-		userAccount.setName(user.getNickname());
-		userAccount.setHeadimgurl(user.getHeadimgurl());
-		userAccount.setNickname(user.getNickname());
-		userAccount.setSex(user.getSex());
-		if(StringUtil.isEmpty(userAccount.getCountry())
-				||StringUtil.isEmpty(userAccount.getProvince())){
-			userAccount.setCountry(user.getCountry());
-			userAccount.setProvince(user.getProvince());
-			userAccount.setCity(user.getCity());
-		}
-		userAccount.setLanguage(user.getLanguage());
-		//从网页进入时下面两个值为空
-		userAccount.setSubscribe_time(user.getSubscribe_time());
-		userAccount.setSubscribe(user.getSubscribe());
-		return userRepository.save(userAccount);
-	}
+        userAccount.setName(user.getNickname());
+        userAccount.setHeadimgurl(user.getHeadimgurl());
+        userAccount.setNickname(user.getNickname());
+        userAccount.setSex(user.getSex());
+        if(StringUtil.isEmpty(userAccount.getCountry())
+        		||StringUtil.isEmpty(userAccount.getProvince())){
+        	userAccount.setCountry(user.getCountry());
+        	userAccount.setProvince(user.getProvince());
+        	userAccount.setCity(user.getCity());
+        }
+        userAccount.setLanguage(user.getLanguage());
+        //从网页进入时下面两个值为空
+        userAccount.setSubscribe_time(user.getSubscribe_time());
+        userAccount.setSubscribe(user.getSubscribe());
+        return userRepository.save(userAccount);
+    }
 	
 	private void bindWithWuye(User userAccount) {
 		BaseResult<HexieUser> r = WuyeUtil.userLogin(userAccount.getOpenid());
@@ -193,7 +161,7 @@ public class UserServiceImpl implements UserService {
         return users.size() > 0 ? users.get(0) : null;
     }
 
-    @Override
+	@Override
     public UserWeiXin getOtherWechatUser(String appId, String code) {
         return bindedWechatService.getUserByCode(appId, code);
     }
@@ -202,4 +170,14 @@ public class UserServiceImpl implements UserService {
     public UserWeiXin getOtherUserByOpenId(String appId, String openId) {
         return bindedWechatService.getUserByOpenId(appId, openId);
     }
+	@Override
+	public UserWeiXin getUserByCode(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public User getOrSubscibeUserByWechatuser(UserWeiXin user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

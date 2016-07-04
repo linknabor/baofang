@@ -38,6 +38,10 @@ public class SettleBill extends BaseModel {
     
     private Date confirmDate;
     private Date serviceFinishDate;
+
+    private BigDecimal shipFee;
+    private BigDecimal shipSettleFee;
+    
     public long getPaymentId() {
         return paymentId;
     }
@@ -98,6 +102,17 @@ public class SettleBill extends BaseModel {
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
     }
-    
+    public BigDecimal getShipFee() {
+        return shipFee;
+    }
+    public void setShipFee(BigDecimal shipFee) {
+        this.shipFee = shipFee;
+    }
+    public BigDecimal getShipSettleFee() {
+        return shipSettleFee;
+    }
+    public void setShipSettleFee(BigDecimal shipSettleFee) {
+        this.shipSettleFee = shipSettleFee;
+    }
     
 }

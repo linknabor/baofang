@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.model.localservice.HomeBillItem;
@@ -28,15 +28,14 @@ public class XiyiDetail implements Serializable {
     public XiyiDetail(){}
     public XiyiDetail(YunXiyiBill bill) {
         try {
-            BeanUtils.copyProperties(this, bill);
+            BeanUtils.copyProperties(bill,this);
             Date sd = bill.getRequireDate();
             if(bill.getServiceDate()!= null) {
                 sd = bill.getServiceDate();
             }
             setServiceDateStr(DateUtil.dtFormat(sd,"yyyy.MM.dd HH:mm"));
             setCreateDateStr(DateUtil.dtFormat(new Date(bill.getCreateDate()),"yyyy.MM.dd HH:mm"));
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
         }
     }
     private static final long serialVersionUID = -2853311912311861239L;

@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.OrderNoUtil;
 import com.yumu.hexie.model.localservice.HomeBillItem;
-import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
+import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
+import com.yumu.hexie.model.localservice.basemodel.NeedShipFee;
 import com.yumu.hexie.model.payment.PaymentOrder;
 import com.yumu.hexie.model.settle.SettleBill;
 import com.yumu.hexie.model.settle.SettleBillItem;
@@ -41,8 +42,8 @@ public class SettleServiceImpl implements SettleService {
     private SettleBillItemRepository settleBillItemRepository;
 
     @Override
-    public SettleBill createSettle(YunXiyiBill xiyi,List<HomeBillItem> items, PaymentOrder pay) {
-        SettleBill sb = initSettleBill(xiyi, pay);
+    public SettleBill createSettle(BaseO2OService bill, long merchantId,List<HomeBillItem> items, PaymentOrder pay) {
+        SettleBill sb = initSettleBill(bill, merchantId, pay);
         sb = settleBillRepository.save(sb);
         for(HomeBillItem item : items) {
             SettleBillItem i = new SettleBillItem();
@@ -53,15 +54,19 @@ public class SettleServiceImpl implements SettleService {
         return sb;
     }
 
-    private SettleBill initSettleBill(YunXiyiBill xiyi, PaymentOrder pay) {
+    private SettleBill initSettleBill(BaseO2OService bill, long merchantId, PaymentOrder pay) {
         SettleBill sb = new SettleBill();
         sb.setAmount(BigDecimal.valueOf(pay.getPrice()));
         sb.setConfirmDate(new Date(pay.getCreateDate()));
-        sb.setCouponId(xiyi.getCouponId());
-        sb.setMerchantId(xiyi.getMerchantId());
-        sb.setOrderId(xiyi.getId());
+        sb.setCouponId(bill.getCouponId());
+        sb.setMerchantId(merchantId);
+        sb.setOrderId(bill.getId());
+        if(bill instanceof NeedShipFee) {
+            sb.setShipFee(((NeedShipFee)bill).getShipFee());
+            sb.setShipSettleFee(((NeedShipFee)bill).getShipSettleFee());
+        }
         sb.setOrderNo(OrderNoUtil.generateSettleOrderNo());
-        sb.setOrderType(SettleConstant.ORDER_TYPE_XIYI);
+        sb.setOrderType(bill.getSettleType());
         sb.setPaymentId(pay.getId());
         sb.setStatus(SettleConstant.STATUS_PAYED);
         return sb;

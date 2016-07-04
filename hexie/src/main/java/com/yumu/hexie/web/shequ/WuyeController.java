@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.common.util.DateUtil;
+import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.service.TemplateMsgService;
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BillListVO;
@@ -70,7 +70,7 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult<List<HexieHouse>> hexiehouses(@ModelAttribute(Constants.USER)User user)
 			throws Exception {
-		if(StringUtil.isBlank(user.getWuyeId())){
+		if(StringUtil.isEmpty(user.getWuyeId())){
 			//FIXME 后续可调转绑定房子页面
 			return BaseResult.successResult(new ArrayList<HexieHouse>());
 		}
@@ -87,7 +87,7 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult<List<HexieHouse>> deleteHouse(@ModelAttribute(Constants.USER)User user,@PathVariable String houseId)
 			throws Exception {
-		if(StringUtil.isBlank(user.getWuyeId())){
+		if(StringUtil.isEmpty(user.getWuyeId())){
 			return BaseResult.fail("删除房子失败！请重新访问页面并操作！");
 		}
 		boolean r = wuyeService.deleteHouse(user.getWuyeId(), houseId);
@@ -103,7 +103,7 @@ public class WuyeController extends BaseController {
 	public BaseResult<HexieHouse> hexiehouses(@ModelAttribute(Constants.USER)User user,
 			@PathVariable String stmtId) throws Exception {
 
-		if(StringUtil.isBlank(user.getWuyeId())){
+		if(StringUtil.isEmpty(user.getWuyeId())){
 			//FIXME 后续可调转绑定房子页面
 			return BaseResult.successResult(null);
 		}
@@ -303,7 +303,7 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendRegTemplateMsg(User user){
-		TemplateMsgService.sendRegisterSuccessMsg(user,systemConfigService.queryWXAToken());
+		TemplateMsgService.sendRegisterSuccessMsg(user, systemConfigService.queryWXAToken());
 	}
 	
 	/**
@@ -315,33 +315,12 @@ public class WuyeController extends BaseController {
 	@RequestMapping(value = "/getCouponsPayWuYe", method = RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<List<Coupon>> getCoupons(HttpSession session){
-		
 		User user = (User)session.getAttribute(Constants.USER);
-		List<Coupon>list = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_REGIST);
+		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list==null) {
 			list = new ArrayList<Coupon>();
 		}
-		
-		/*关注、注册红包只能用一个。*/
-		if (list.size()==0) {
-			
-			List<Coupon>subsCouponList = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_SUBSCRIB);
-			
-			for (int i = 0; i < subsCouponList.size(); i++) {
-				
-				Coupon c = subsCouponList.get(i);
-				
-				if (c.getRuleId()!=1) {	//由于关注红包发放了2次，而第一次发放的并不能用于缴纳物业费。写死规则为1 TODO 活动结束后要删除
-					subsCouponList.remove(i);
-					i = i-1;
-				}
-			}
-
-			
-			list.addAll(subsCouponList);
-		}
-		
 		return BaseResult.successResult(list);
 		
 	}
@@ -383,7 +362,7 @@ public class WuyeController extends BaseController {
 				Coupon coupon = list.get(i);
 				if ((coupon.getStatus() == ModelConstant.COUPON_STATUS_AVAILABLE)) {
 					
-					if ("新用户注册红包".equals(coupon.getTitle())|| (coupon.getRuleId()==1)) {	//写死规则为111 TODO 活动结束后要删除
+					if ("新用户注册红包".equals(coupon.getTitle())|| (coupon.getRuleId()==111)) {	//写死规则为111 TODO 活动结束后要删除
 						
 						if (!"".equals(result)&&null!=result) {
 							if ("01".equals(result)) {	//"00"表示未使用，"01"表示已使用, "99"表示异常
@@ -448,7 +427,7 @@ public class WuyeController extends BaseController {
 				user.setCityId(20);
 				user.setProvince("上海");
 				user.setProvinceId(19);
-				if (!StringUtil.isBlank(userId)) {
+				if (!StringUtil.isEmpty(userId)) {
 					user.setId(Long.valueOf(userId));
 				}else {
 					user.setId(10);
@@ -462,7 +441,7 @@ public class WuyeController extends BaseController {
 				user.setWuyeId("CM150821400000009761");
 				user.setHeadimgurl("http://wx.qlogo.cn/mmopen/ajNVdqHZLLBIY2Jial97RCIIyq0P4L8dhGicoYDlbNXqW5GJytxmkRDFdFlX9GScrsvo7vBuJuaEoMZeiaBPnb6AA/0");
 			}else {
-				if (!StringUtil.isBlank(userId)) {
+				if (!StringUtil.isEmpty(userId)) {
 					
 					user = userRepository.findOne(Long.valueOf(userId));
 				}
@@ -475,26 +454,4 @@ public class WuyeController extends BaseController {
 	    return BaseResult.successResult("succeeded");
 		
 	}
-	
-	public static void main(String[] args) {
-		
-		List list = new ArrayList<>();
-		list.add("1");
-		list.add("2");
-		
-		for (int i = 0; i < list.size(); i++) {
-			
-			String s = (String)list.get(i);
-			System.out.println(s);
-			if ("1".equals(s)) {
-				list.remove(i);
-			}
-			System.out.println(list.get(i));
-		}
-		
-		
-	}
-	
-	
-	
 }
