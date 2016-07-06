@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.common.util.DateUtil;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.entity.user.UserWeiXin;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
@@ -52,8 +53,6 @@ public class UserController extends BaseController{
 	private static final Integer lock = 0;
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
-	
-	
 
 	@Inject
 	private AddressService addressService;
@@ -81,8 +80,8 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	@ResponseBody
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
-        user = userService.getById(user.getId());
-        
+      
+		user = userService.getById(user.getId());
         if(user != null && user.getBindAppId()!=null && user.getBindOpenId()!= null){
         	
         	if (user.isNewRegiste()) {
@@ -236,7 +235,7 @@ public class UserController extends BaseController{
         }
     }
 	
-	private void sendSubscribeCoupon(User user){
+    private void sendSubscribeCoupon(User user){
 
 		synchronized (lock) {
 			
