@@ -409,7 +409,7 @@ public class CouponServiceImpl implements CouponService {
         }
 
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
-		    Long merchantId = getMerchatId(new Long(itemType), subItemType, productId);
+		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
 		    log.error("merchantId:" + merchantId);
 		    if(merchantId == null || merchantId != coupon.getMerchantId()) {
                 log.warn("不可用（商户验证）");
@@ -425,18 +425,11 @@ public class CouponServiceImpl implements CouponService {
 	public Long getMerchatId(Long mainType, Long subType, Long itemId) {
 		
 		log.error("mainType:"+mainType+",subType:"+subType+",itemId:"+itemId);
-        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET) == mainType && itemId != null && itemId != 0){
+        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET).equals(mainType) && itemId != null && !itemId.equals(0)){
             Product product = productRepository.findOne(itemId);
-            if (product!=null) {
-				try {
-					log.error(JacksonJsonUtil.beanToJson(product));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
             return product == null ? 0 : product.getMerchantId();
         }
-        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_SERVICE) == mainType && subType != null && subType != 0) {
+        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_SERVICE).equals(mainType) && subType != null && !subType.equals(0)) {
             ServiceType type = homeItemService.queryTypeById(subType);
             return type == null ? 0 : type.getMerchantId();
         }
@@ -725,7 +718,7 @@ public class CouponServiceImpl implements CouponService {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET) == 1 && new Long(10) != null && 10 != 0);
+		System.out.println(new Long(0) == 0);
 		
 	}
 	
