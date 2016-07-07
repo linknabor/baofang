@@ -42,7 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 	@Override
 	public User getOrSubscibeUserByCode(String code) {
-		UserWeiXin user = wechatCoreService.getByOAuthAccessToken(code);
+		
+		UserWeiXin user = null;
+		try {
+			user = wechatCoreService.getByOAuthAccessToken(code);
+		} catch (Exception e) {
+			//defend the null point exception here.
+		}
 		if(user == null) {
             throw new BizValidateException("微信信息不正确");
         }
@@ -171,13 +177,28 @@ public class UserServiceImpl implements UserService {
         return bindedWechatService.getUserByOpenId(appId, openId);
     }
 	@Override
+	public User getOrSubscibeUserByWechatuser(UserWeiXin user){
+	    User userAccount = userRepository.findByOpenid(user.getOpenid());
+	    if(userAccount == null) {
+            userAccount = createUser(user);
+            userAccount.setNewRegiste(true);
+            
+            if(StringUtil.isEmpty(userAccount.getWuyeId()) ){
+                bindWithWuye(userAccount);
+            }
+            
+            return userRepository.save(userAccount);
+        }
+	    
+	    if(StringUtil.isEmpty(userAccount.getWuyeId()) ){
+            bindWithWuye(userAccount);
+        }
+	    return userAccount;
+	}
+
+
 	public UserWeiXin getUserByCode(String code) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public User getOrSubscibeUserByWechatuser(UserWeiXin user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        return wechatCoreService.getByOAuthAccessToken(code);
+    }
+
 }
