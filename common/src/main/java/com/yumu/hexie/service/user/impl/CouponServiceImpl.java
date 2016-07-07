@@ -716,9 +716,4 @@ public class CouponServiceImpl implements CouponService {
 	
 	}
 	
-	public static void main(String[] args) {
-		SalePlan sp = new SalePlan();
-		
-		System.out.println(OnSaleRule instanceof sp);
-	}
 }
