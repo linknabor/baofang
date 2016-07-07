@@ -339,8 +339,15 @@ public class CouponServiceImpl implements CouponService {
 		List<Integer> status = new ArrayList<Integer>();
 		status.add(ModelConstant.COUPON_STATUS_AVAILABLE);
 		List<Coupon> coupons = couponRepository.findByUserIdAndStatusIn(userId,status, new PageRequest(0,200));
+		
+		if (coupons!=null) {
+			log.warn(String.valueOf(coupons.size()));
+		}
+		
 		Integer onsaleType = !(salePlan instanceof OnSaleRule) ? null : ((OnSaleRule)salePlan).getProductType();
 		for(Coupon coupon : coupons) {
+			log.warn("onsaleType:"+ onsaleType);
+			log.warn("salePlan.getProductId():" + salePlan.getProductId());
 			if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, 
 			    new Long(ModelConstant.ORDER_TYPE_ONSALE), new Long(onsaleType), salePlan.getProductId(), null, coupon,false)){
 				result.add(coupon);
