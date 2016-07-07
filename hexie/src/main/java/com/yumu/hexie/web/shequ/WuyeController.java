@@ -352,6 +352,9 @@ public class WuyeController extends BaseController {
 	public BaseResult updateCouponStatus(HttpSession session){
 		
 		User user = (User)session.getAttribute(Constants.USER);
+		if (user==null) {
+			return BaseResult.fail("no user .");
+		}
 		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
