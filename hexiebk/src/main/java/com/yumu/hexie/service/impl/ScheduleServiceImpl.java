@@ -327,7 +327,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Scheduled(cron = "0 0 18 * * ? ")
 	public void executeCoupinTimeoutHintJob() {
 		
-		String msg = "亲爱的邻居，您有amount元的优惠券即将过期，赶紧去“合协社区”看看吧！";
+		String msg = "亲爱的邻居，您有amount元的优惠券即将过期，赶紧去“我家大楼”看看吧！";
 
 		SCHEDULE_LOG.debug("--------------------start executeCouponHintJob-------------------");
 		
