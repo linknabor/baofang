@@ -410,6 +410,7 @@ public class CouponServiceImpl implements CouponService {
 
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
 		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
+		    log.error("merchantId:" + merchantId);
 		    if(merchantId == null || merchantId != coupon.getMerchantId()) {
                 log.warn("不可用（商户验证）");
                 return false;
