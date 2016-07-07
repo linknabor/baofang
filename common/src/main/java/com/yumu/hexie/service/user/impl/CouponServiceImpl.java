@@ -409,7 +409,7 @@ public class CouponServiceImpl implements CouponService {
         }
 
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
-		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
+		    Long merchantId = getMerchatId(new Long(itemType), subItemType, productId);
 		    log.error("merchantId:" + merchantId);
 		    if(merchantId == null || merchantId != coupon.getMerchantId()) {
                 log.warn("不可用（商户验证）");
@@ -420,10 +420,20 @@ public class CouponServiceImpl implements CouponService {
         log.warn("可以用（全部通过）");
 		return true;
 	}
-	
+
+	//itemType:1, serviceType:-0, productId:10
 	public Long getMerchatId(Long mainType, Long subType, Long itemId) {
+		
+		log.error("mainType:"+mainType+",subType:"+subType+",itemId:"+itemId);
         if(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET) == mainType && itemId != null && itemId != 0){
             Product product = productRepository.findOne(itemId);
+            if (product!=null) {
+				try {
+					log.error(JacksonJsonUtil.beanToJson(product));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
             return product == null ? 0 : product.getMerchantId();
         }
         if(new Long(PromotionConstant.COUPON_ITEM_TYPE_SERVICE) == mainType && subType != null && subType != 0) {
@@ -710,6 +720,13 @@ public class CouponServiceImpl implements CouponService {
 
 		return couponRepository.findTimeoutCouponByDate(fromDate, toDate, new PageRequest(0, 10000));
 	
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		System.out.println(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET) == 1 && new Long(10) != null && 10 != 0);
+		
 	}
 	
 }
