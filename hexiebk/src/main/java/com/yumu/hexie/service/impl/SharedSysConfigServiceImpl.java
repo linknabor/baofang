@@ -17,7 +17,6 @@ import com.yumu.hexie.model.MultipleRepository;
 import com.yumu.hexie.model.system.SystemConfig;
 import com.yumu.hexie.model.system.SystemConfigRepository;
 import com.yumu.hexie.service.SharedSysConfigService;
-import com.yumu.hexie.service.common.impl.SystemConfigServiceImpl;
 
 /**
  * <pre>
@@ -29,6 +28,10 @@ import com.yumu.hexie.service.common.impl.SystemConfigServiceImpl;
  */
 @Service("sharedSysConfigService")
 public class SharedSysConfigServiceImpl implements SharedSysConfigService {
+	
+	private static final String JS_TOKEN = "JS_TOKEN";
+	private static final String ACC_TOKEN = "ACCESS_TOKEN";
+    public static final String APP_ACC_TOKEN = "APP_TOKEN_%s";
 
     @Inject
     private SystemConfigRepository systemConfigRepository;
@@ -39,15 +42,14 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
         try {
             SystemConfig config = null;
             List<SystemConfig> configs = systemConfigRepository
-                    .findAllBySysKey(SystemConfigServiceImpl.ACC_TOKEN);
+                    .findAllBySysKey(ACC_TOKEN);
             if (configs.size() > 0) {
                 config = configs.get(0);
                 config.setSysValue(JacksonJsonUtil.beanToJson(at));
             } else {
-                config = new SystemConfig(SystemConfigServiceImpl.ACC_TOKEN,
-                    JacksonJsonUtil.beanToJson(at));
+                config = new SystemConfig(ACC_TOKEN, JacksonJsonUtil.beanToJson(at));
             }
-            multipleRepository.setSystemConfig(SystemConfigServiceImpl.ACC_TOKEN,config);
+            multipleRepository.setSystemConfig(ACC_TOKEN,config);
             systemConfigRepository.save(config);
         } catch (JSONException e) {
         }
@@ -56,14 +58,14 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
     public void saveJsToken(String jsToken) {
         SystemConfig config = null;
         List<SystemConfig> configs = systemConfigRepository
-                .findAllBySysKey(SystemConfigServiceImpl.JS_TOKEN);
+                .findAllBySysKey(JS_TOKEN);
         if (configs.size() > 0) {
             config = configs.get(0);
             config.setSysValue(jsToken);
         } else {
-            config = new SystemConfig(SystemConfigServiceImpl.JS_TOKEN, jsToken);
+            config = new SystemConfig(JS_TOKEN, jsToken);
         }
-        multipleRepository.setSystemConfig(SystemConfigServiceImpl.JS_TOKEN,config);
+        multipleRepository.setSystemConfig(JS_TOKEN,config);
         systemConfigRepository.save(config);
     }
 
@@ -72,16 +74,16 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		if (at!=null) {
 			try {
 				SystemConfig config = null;
-				List<SystemConfig> configs = systemConfigRepository.findAllBySysKey(String.format(SystemConfigServiceImpl.APP_ACC_TOKEN, appId));
+				List<SystemConfig> configs = systemConfigRepository.findAllBySysKey(String.format(APP_ACC_TOKEN, appId));
 				    if (configs.size() > 0) {
 				        config = configs.get(0);
 				        config.setSysValue(JacksonJsonUtil.beanToJson(at));
 				    } else {
-				        config = new SystemConfig(String.format(SystemConfigServiceImpl.APP_ACC_TOKEN, appId),
+				        config = new SystemConfig(String.format(APP_ACC_TOKEN, appId),
 				            JacksonJsonUtil.beanToJson(at));
 				    }
 				
-				multipleRepository.setOtherAccessToken(String.format(SystemConfigServiceImpl.APP_ACC_TOKEN, appId), config);
+				multipleRepository.setOtherAccessToken(String.format(APP_ACC_TOKEN, appId), config);
 				
 				
 			} catch (JSONException e) {

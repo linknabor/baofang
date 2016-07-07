@@ -31,8 +31,8 @@ import com.yumu.hexie.service.exception.BizValidateException;
 @Service("systemConfigService")
 public class SystemConfigServiceImpl implements SystemConfigService {
 
-    private static final String JS_TOKEN = "JS_TOKEN";
-    private static final String ACC_TOKEN = "ACCESS_TOKEN";
+	private static final String JS_TOKEN = "JS_TOKEN";
+	private static final String ACC_TOKEN = "ACCESS_TOKEN";
     private static final String APP_SECRET_KEY = "APPSEC_%s";
     public static final String APP_ACC_TOKEN = "APP_TOKEN_%s";
     private static final String APPIDS = "APPIDS";
