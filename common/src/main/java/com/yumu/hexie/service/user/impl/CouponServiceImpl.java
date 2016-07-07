@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.common.util.StringUtil;
@@ -341,13 +339,17 @@ public class CouponServiceImpl implements CouponService {
 		List<Coupon> coupons = couponRepository.findByUserIdAndStatusIn(userId,status, new PageRequest(0,200));
 		
 		if (coupons!=null) {
-			log.warn(String.valueOf(coupons.size()));
+			log.error(String.valueOf(coupons.size()));
 		}
 		
 		Integer onsaleType = !(salePlan instanceof OnSaleRule) ? null : ((OnSaleRule)salePlan).getProductType();
+		log.error(!(salePlan instanceof OnSaleRule)+"" );
+		log.error("onsaleType:"+ onsaleType);
 		for(Coupon coupon : coupons) {
-			log.warn("onsaleType:"+ onsaleType);
-			log.warn("salePlan.getProductId():" + salePlan.getProductId());
+			int i = 0;
+			log.error(String.valueOf(i++));
+			
+			log.error("salePlan.getProductId():" + salePlan.getProductId());
 			if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, 
 			    new Long(ModelConstant.ORDER_TYPE_ONSALE), new Long(onsaleType), salePlan.getProductId(), null, coupon,false)){
 				result.add(coupon);
@@ -712,5 +714,11 @@ public class CouponServiceImpl implements CouponService {
 
 		return couponRepository.findTimeoutCouponByDate(fromDate, toDate, new PageRequest(0, 10000));
 	
+	}
+	
+	public static void main(String[] args) {
+		SalePlan sp = new SalePlan();
+		
+		System.out.println(OnSaleRule instanceof sp);
 	}
 }
