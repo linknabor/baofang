@@ -188,8 +188,12 @@ public class UserController extends BaseController{
 		    }
 		    
 			pointService.addZhima(userAccount, 5, "zm-login-"+DateUtil.dtFormat(new Date(),"yyyy-MM-dd")+userAccount.getId());
-			wuyeService.userLogin(userAccount.getOpenid());
 			
+			try {
+				wuyeService.userLogin(userAccount.getOpenid());
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			}
 
             if(StringUtil.isEmpty(userAccount.getShareCode())) {
                 userAccount.generateShareCode();
