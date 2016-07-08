@@ -83,23 +83,17 @@ public class UserController extends BaseController{
         
         if(user != null && user.getBindAppId()!=null && user.getBindOpenId()!= null){
         	
-        	UserInfo userInfo = null;
-			try {
-				if (user.isNewRegiste()) {
-				 	UserWeiXin baofangUser = userService.getOtherUserByOpenId(user.getBindAppId(), user.getBindOpenId());
-				 	updateWeUserInfo(user, baofangUser);
-				}
-				CouponsSummary summary = couponService.findCouponSummary(user.getId());
-				List<Coupon>couponList = summary.getValidCoupons();
-				user.setCouponCount(couponList.size());
-				session.setAttribute(Constants.USER, user);
-				userInfo = new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId()));
-			} catch (Exception e) {
-				e.getMessage();
-			}
-            return new BaseResult<UserInfo>().success(userInfo);
+        	if (user.isNewRegiste()) {
+             	UserWeiXin baofangUser = userService.getOtherUserByOpenId(user.getBindAppId(), user.getBindOpenId());
+             	updateWeUserInfo(user, baofangUser);
+     		}
+        	CouponsSummary summary = couponService.findCouponSummary(user.getId());
+        	List<Coupon>couponList = summary.getValidCoupons();
+            user.setCouponCount(couponList.size());
+            session.setAttribute(Constants.USER, user);
+            return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
         } else {
-            return new BaseResult<UserInfo>().success(null);
+        	 return new BaseResult<UserInfo>().failMsg("用户未绑定！");
         }
     }
 
