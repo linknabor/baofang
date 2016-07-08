@@ -83,15 +83,21 @@ public class UserController extends BaseController{
         
         if(user != null && user.getBindAppId()!=null && user.getBindOpenId()!= null){
         	
-        	if (user.isNewRegiste()) {
-             	UserWeiXin baofangUser = userService.getOtherUserByOpenId(user.getBindAppId(), user.getBindOpenId());
-             	updateWeUserInfo(user, baofangUser);
-     		}
-        	CouponsSummary summary = couponService.findCouponSummary(user.getId());
-        	List<Coupon>couponList = summary.getValidCoupons();
-            user.setCouponCount(couponList.size());
-            session.setAttribute(Constants.USER, user);
-            return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
+        	UserInfo userInfo = null;
+			try {
+				if (user.isNewRegiste()) {
+				 	UserWeiXin baofangUser = userService.getOtherUserByOpenId(user.getBindAppId(), user.getBindOpenId());
+				 	updateWeUserInfo(user, baofangUser);
+				}
+				CouponsSummary summary = couponService.findCouponSummary(user.getId());
+				List<Coupon>couponList = summary.getValidCoupons();
+				user.setCouponCount(couponList.size());
+				session.setAttribute(Constants.USER, user);
+				userInfo = new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId()));
+			} catch (Exception e) {
+				e.getMessage();
+			}
+            return new BaseResult<UserInfo>().success(userInfo);
         } else {
             return new BaseResult<UserInfo>().success(null);
         }
@@ -188,12 +194,8 @@ public class UserController extends BaseController{
 		    }
 		    
 			pointService.addZhima(userAccount, 5, "zm-login-"+DateUtil.dtFormat(new Date(),"yyyy-MM-dd")+userAccount.getId());
+			wuyeService.userLogin(userAccount.getOpenid());
 			
-			try {
-				wuyeService.userLogin(userAccount.getOpenid());
-			} catch (Exception e) {
-				log.error(e.getMessage());
-			}
 
             if(StringUtil.isEmpty(userAccount.getShareCode())) {
                 userAccount.generateShareCode();
