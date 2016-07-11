@@ -84,15 +84,9 @@ public class Coupon extends BaseModel {
             return "";
         } else {
             String couponPrefix = getItemType() + "-";
-            if(notZero(getSubItemType())) {
-                couponPrefix += getSubItemType() + "-";
-                if(notZero(getServiceType())) {
-                    couponPrefix += getServiceType() + "-";
-                    if(notZero(getProductId())) {
-                        couponPrefix += getProductId() + "-";
-                    }
-                }
-            }
+            couponPrefix += getSubItemType() + "-";
+            couponPrefix += getServiceType() + "-";
+            couponPrefix += getProductId() + "-";
             return couponPrefix;
         }
     }
@@ -103,15 +97,9 @@ public class Coupon extends BaseModel {
             return "";
         } else {
             String couponPrefix = getuItemType() + "-";
-            if(notZero(getuSubItemType())) {
-                couponPrefix += getuSubItemType() + "-";
-                if(notZero(getuServiceType())) {
-                    couponPrefix += getuServiceType() + "-";
-                    if(notZero(getuProductId())) {
-                        couponPrefix += getuProductId() + "-";
-                    }
-                }
-            }
+            couponPrefix += getuSubItemType() + "-";
+            couponPrefix += getuServiceType() + "-";
+            couponPrefix += getuProductId() + "-";
             return couponPrefix;
         }
     }

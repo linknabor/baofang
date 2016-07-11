@@ -340,7 +340,7 @@ public class CouponServiceImpl implements CouponService {
 		
 		Integer onsaleType = !(salePlan instanceof OnSaleRule) ? null : ((OnSaleRule)salePlan).getProductType();
 		if (onsaleType==null) {
-			onsaleType = Integer.MAX_VALUE;
+			onsaleType = 0;
 		}
 		
 		for(Coupon coupon : coupons) {
