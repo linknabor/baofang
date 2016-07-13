@@ -343,10 +343,15 @@ public class CouponServiceImpl implements CouponService {
 			onsaleType = 0;
 		}
 		
+		Long orderType = 3l;
+		if (ModelConstant.ORDER_TYPE_RGROUP==salePlan.getSalePlanType()) {
+			orderType = Long.valueOf(ModelConstant.ORDER_TYPE_RGROUP);
+		}
+		
 		for(Coupon coupon : coupons) {
 			
 			if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, 
-			    new Long(ModelConstant.ORDER_TYPE_ONSALE), new Long(onsaleType), salePlan.getProductId(), null, coupon,false)){
+					orderType, new Long(onsaleType), salePlan.getProductId(), null, coupon,false)){
 				result.add(coupon);
 			}
 		}

@@ -117,6 +117,7 @@ public class XiyiServiceImpl implements XiyiService {
         m.setId(baseType.getMerchantId());
         ob.merchant(m);
         
+        ob.getBill().setItemType(cart.getItemType());
         YunXiyiBill bill = yunXiyiBillRepository.save(ob.getBill());
         for(HomeBillItem item : ob.getBill().getItems()) {
             ServiceType type = homeItemService.findTypeByItem(item.getServiceId());
