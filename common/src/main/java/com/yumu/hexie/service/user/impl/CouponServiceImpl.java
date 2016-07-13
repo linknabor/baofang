@@ -389,23 +389,93 @@ public class CouponServiceImpl implements CouponService {
                 return false;
             }
         }
-	   
 
-	    String typeStr = itemType + "-" + subItemType + "-" + serviceType + "-" + productId;
+//	    String typeStr = itemType + "-" + subItemType + "-" + serviceType + "-" + productId;
         if(StringUtil.isNotEmpty(coupon.getPassTypePrefix())) {
-            if(!typeStr.startsWith(coupon.getPassTypePrefix())) {
-                //正向验证
-                log.warn("不可用（正向验证）");
-                return false;
-            }
+            
+        	int cItemType = coupon.getItemType();
+        	long cSubItemType = coupon.getSubItemType();
+        	long cServiceType = coupon.getServiceType();
+        	long cProductId = coupon.getProductId();
+        	
+        	if (cItemType!=itemType) {
+        		log.warn("itemType 不可用");
+        		return false;
+			}
+        	
+        	if (cSubItemType!=0 && cSubItemType!=subItemType) {
+        		log.warn("subItemType 不可用");
+        		return false;
+			}
+        	
+        	if (cServiceType!=0 && cServiceType!=serviceType) {
+        		log.warn("serviceType 不可用");
+        		return false;
+			}
+        	
+        	if (cProductId!=0 && cProductId!=productId) {
+        		log.warn("productId 不可用");
+        		return false;
+			}
+        	
         }
 	    
         if(StringUtil.isNotEmpty(coupon.getUnPassTypePrefix())) {
-            if(typeStr.startsWith(coupon.getUnPassTypePrefix())) {
-                //反向验证
-                log.warn("不可用（反向验证）");
-                return false;
-            }
+        	
+            //反向验证
+        	int uItemType = coupon.getuItemType();
+        	long uSubItemType = coupon.getuSubItemType();
+        	long uServiceType = coupon.getuServiceType();
+        	long uProductId = coupon.getuProductId();
+        	
+        	if (uItemType == itemType) {
+        		
+        		if (uSubItemType == 0) {
+        			
+        			if (uProductId==productId) {
+        				log.warn("productId:"+uProductId+"不可用");
+                		return false;
+					}else if(uProductId==0) {
+						log.warn("subItemType:"+uSubItemType+"不可用");
+	            		return false;
+					}
+        			
+				}
+        		
+        		if (uSubItemType == subItemType) {
+        			
+        			if (uServiceType == 0) {
+        				
+        				if (uProductId==productId) {
+            				log.warn("productId:"+uProductId+"不可用");
+                    		return false;
+    					}else if(uProductId==0) {
+    						log.warn("serviceType:"+uServiceType+"不可用");
+    	            		return false;
+    					}
+        				
+    				}
+        			
+        			if (uServiceType == serviceType) {
+						
+        				if (uProductId==productId) {
+            				log.warn("productId:"+uProductId+"不可用");
+                    		return false;
+    					}else if(uProductId==0) {
+    						log.warn("serviceType:"+uServiceType+"不可用");
+    	            		return false;
+    					}
+        				
+					}
+        			
+        			
+				}
+        		
+        		
+			}
+        	
+        	log.warn("itemType:"+itemType+"不可用（反向验证）");
+            return false;
         }
 
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
