@@ -433,11 +433,11 @@ public class CouponServiceImpl implements CouponService {
         	long uServiceType = coupon.getuServiceType();
         	long uProductId = coupon.getuProductId();
         	
-        	if (uItemType == itemType) {
+        	if (uItemType == itemType||PromotionConstant.COUPON_ITEM_TYPE_ALL == itemType) {
         		
         		if (uSubItemType == 0) {
         			
-        			if (uProductId==productId) {
+        			if (uProductId==productId || 0==productId) {
         				log.warn("productId:"+uProductId+"不可用");
                 		return false;
 					}else if(uProductId==0) {
@@ -447,11 +447,11 @@ public class CouponServiceImpl implements CouponService {
         			
 				}
         		
-        		if (uSubItemType == subItemType) {
+        		if (uSubItemType == subItemType || 0 == subItemType) {
         			
         			if (uServiceType == 0) {
         				
-        				if (uProductId==productId) {
+        				if (uProductId==productId || 0 == productId) {
             				log.warn("productId:"+uProductId+"不可用");
                     		return false;
     					}else if(uProductId==0) {
@@ -461,9 +461,9 @@ public class CouponServiceImpl implements CouponService {
         				
     				}
         			
-        			if (uServiceType == serviceType) {
+        			if (uServiceType == serviceType || 0 == serviceType) {
 						
-        				if (uProductId==productId) {
+        				if (uProductId==productId || 0 == productId) {
             				log.warn("productId:"+uProductId+"不可用");
                     		return false;
     					}else if(uProductId==0) {
