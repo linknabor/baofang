@@ -289,10 +289,5 @@ public class BaojieServiceImpl implements BaojieService {
         return baojieBillRepository.save(bill);
     }
 
-	@Override
-	public BaojieBill createDeep(BaojieReq req, User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

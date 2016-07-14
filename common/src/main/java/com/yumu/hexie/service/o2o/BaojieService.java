@@ -32,8 +32,6 @@ public interface BaojieService {
     
     //查询
     public BaojieBill get(long billId,User user);
-    //创建订单
-    public BaojieBill createDeep(BaojieReq req,User user);
     //深度保洁确认
     public BaojieBill confirm(long billId,User user);
     //深度保洁确认
