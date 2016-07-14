@@ -16,11 +16,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.StringUtil;
-import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
-import com.yumu.hexie.integration.wechat.entity.AccessToken;
-import com.yumu.hexie.integration.wechat.util.WeixinUtil;
-import com.yumu.hexie.integration.wechat.util.WeixinUtilV2;
 import com.yumu.hexie.model.ModelConstant;
+import com.yumu.hexie.model.localservice.bill.BaojieBill;
+import com.yumu.hexie.model.localservice.bill.BaojieBillRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBillRepository;
 import com.yumu.hexie.model.market.ServiceOrder;
@@ -40,9 +38,9 @@ import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.model.user.UserRepository;
 import com.yumu.hexie.service.ScheduleService;
 import com.yumu.hexie.service.common.SmsService;
-import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.common.WechatCoreService;
 import com.yumu.hexie.service.exception.BizValidateException;
+import com.yumu.hexie.service.o2o.BaojieService;
 import com.yumu.hexie.service.o2o.XiyiService;
 import com.yumu.hexie.service.sales.BaseOrderService;
 import com.yumu.hexie.service.sales.RgroupService;
@@ -71,6 +69,10 @@ public class ScheduleServiceImpl implements ScheduleService{
     private YunXiyiBillRepository yunXiyiBillRepository;
     @Inject
     private XiyiService xiyiService;
+    @Inject
+    private BaojieBillRepository baojieBillRepository;
+    @Inject
+    private BaojieService baojieService;
 
     @Inject
     private BizErrorRepository bizErrorRepository;
@@ -86,7 +88,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     
     @Inject
     private SmsService smsService;
-
+	
 	//1. 订单超时
     @Scheduled(cron = "50 1/3 * * * ?")
     public void executeOrderTimeoutJob() {
@@ -133,8 +135,38 @@ public class ScheduleServiceImpl implements ScheduleService{
     	scheduleRecordRepository.save(sr);
     	SCHEDULE_LOG.debug("--------------------executeGroupTimeoutJob[E][R]-------------------");
     }
+  //4. 保洁超时  YunXiyiBillRepository
+    @Scheduled(cron = "50 1/2 * * * ?")
+    public void executeBaojieTimeoutJob() {
+        SCHEDULE_LOG.debug("--------------------executeBaojieTimeoutJob[B][R]-------------------");
+        List<BaojieBill> bills = baojieBillRepository.findTimeoutBill(System.currentTimeMillis() - 30000);
+        if(bills.size() == 0) {
+            SCHEDULE_LOG.error("**************executeBaojieTimeoutJob没有记录");
+            return;
+        }
+        String ids = "";
+        for(BaojieBill rule : bills) {
+            ids += rule.getId()+",";
+        }
+        ScheduleRecord sr = new ScheduleRecord(ModelConstant.SCHEDULE_TYPE_BAOJIE_TIMEOUT,ids);
+        sr = scheduleRecordRepository.save(sr);
+        
+        for(BaojieBill rule : bills) {
+            try{
+                SCHEDULE_LOG.debug("XIYIBILL TimeOUt:" + rule.getId());
+                baojieService.timeout(rule.getId());
+            } catch(Exception e){
+                SCHEDULE_LOG.error("超时保洁订单更新失败"+ rule.getId(),e);
+                recordError(e);
+                sr.addErrorCount(""+rule.getId());
+            }
+        }
+        sr.setFinishDate(new Date());
+        scheduleRecordRepository.save(sr);
+        SCHEDULE_LOG.debug("--------------------executeBaojieTimeoutJob[E][R]-------------------");
+    }
     
-  //4. 团购团超时  YunXiyiBillRepository
+    //4. 洗衣超时  YunXiyiBillRepository
     @Scheduled(cron = "20 1/2 * * * ?")
     public void executeXiyiTimeoutJob() {
         SCHEDULE_LOG.debug("--------------------executeXiyiTimeoutJob[B][R]-------------------");
@@ -369,11 +401,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 				
 				userIdList.add(userId);
 			}
-			
 		}
-		
 		SCHEDULE_LOG.debug("--------------------end executeCouponHintJob-------------------");
 	}
 	
-    
+	
 }

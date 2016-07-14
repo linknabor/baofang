@@ -8,33 +8,27 @@ import java.io.Serializable;
 
 /**
  * <pre>
- * 地址请求
+ * 
  * </pre>
  *
  * @author tongqian.ni
- * @version $Id: AddressReq.java, v 0.1 2016年4月28日 下午3:06:58  Exp $
+ * @version $Id: AddressReq.java, v 0.1 2016年5月23日 下午2:56:00  Exp $
  */
 public class AddressReq implements Serializable {
-
-    private static final long serialVersionUID = -9139450274091213994L;
-    private Long addrId;
+    
+	private static final long serialVersionUID = -3522389483000401026L;
+	
+	private Long addrId;
     private long xiaoquId;
     private String tel;
     private String name;
     private String detailAddr;
-    public long getXiaoquId() {
-        return xiaoquId;
-    }
-    public void setXiaoquId(long xiaoquId) {
-        this.xiaoquId = xiaoquId;
-    }
-    public String getTel() {
-        return tel;
-    }
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-    public String getName() {
+	private boolean main;//是否是默认地址
+    
+
+
+
+	public String getName() {
         return name;
     }
     public void setName(String name) {
@@ -52,6 +46,24 @@ public class AddressReq implements Serializable {
     public void setAddrId(Long addrId) {
         this.addrId = addrId;
     }
-    
+    public String getTel() {
+        return tel;
+    }
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+   
+    public long getXiaoquId() {
+		return xiaoquId;
+	}
+	public void setXiaoquId(long xiaoquId) {
+		this.xiaoquId = xiaoquId;
+	}
+	public boolean isMain() {
+        return main;
+    }
+    public void setMain(boolean main) {
+        this.main = main;
+    }
     
 }

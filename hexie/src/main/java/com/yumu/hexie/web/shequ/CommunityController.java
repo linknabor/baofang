@@ -60,11 +60,12 @@ public class CommunityController extends BaseController{
     @Value(value = "${qiniu.domain}")
     private String domain;
 
-
-    @Inject
-    private CommunityService communityService;
-    @Inject
-    private SystemConfigService systemConfigService;
+	@Inject
+	private CommunityService communityService;
+	
+	@Inject
+	private SystemConfigService systemConfigService;
+	
 	@Inject
 	private UserService userService;
 	
@@ -410,7 +411,7 @@ public class CommunityController extends BaseController{
 					int imgcounter = 0;
 					inputStream = null;
 					while(inputStream==null&&imgcounter<3) {
-						inputStream = FileService.downloadFile(uploadId,systemConfigService.queryWXAToken());		//下载图片
+						inputStream = FileService.downloadFile(uploadId ,systemConfigService.queryWXAToken());		//下载图片
 						if (inputStream==null) {
 							log.error("获取图片附件失败。");
 						}
@@ -903,23 +904,4 @@ public class CommunityController extends BaseController{
 		return BaseResult.successResult("succeeded");
 		
 	}
-	
-	public static void main(String[] args) {
-		
-//		String uptoken = QiniuUtil.getInstance().getUpToken();
-//		PutExtra extra = new PutExtra();
-//		String key = "20151013_121058_52_0";
-//		PutRet ret = IoApi.putFile(uptoken, key, "d:/tmp/images/20151013/121058_52_0", extra);
-//		System.out.println(ret.getException());
-
-//		String str = "str,1";
-//		String str2 = "str,";
-//		
-//		String[]strArr = str.split(",");
-//		System.out.println(strArr.length);
-//		String[]str2Arr = str2.split(",");
-//		System.out.println(str2Arr.length);
-		
-	}
-	
 }

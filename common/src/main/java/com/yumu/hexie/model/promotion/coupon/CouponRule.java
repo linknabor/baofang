@@ -47,11 +47,19 @@ public class CouponRule extends BaseModel {
     private float usageCondition;//最小金额
     private boolean availableForAll = true;//与以下三条互斥
     
+    //支持项目，不支持的优先过滤
     private int itemType = PromotionConstant.COUPON_ITEM_TYPE_ALL;//全部，商品项，服务项，服务类型
-    private Long productId;
-    private Long merchantId;
-    private Integer onSaleType;//特卖商品类型
-    private Integer unsupportSaleType;
+    private Long subItemType;//子类型，默认为空  对服务是base的serviceType，对集市是销售方案
+    private Long serviceType;//低于subItemType,如对洗衣是按件洗、按袋洗。对保洁是日常保洁，深度保洁。对特卖是频道
+    private Long productId;//对集市是商品ID，对服务是服务项
+    private Long merchantId;//商户类型
+    
+    //不支持项目
+    private Integer uItemType;
+    private Long uSubItemType;
+    private Long uServiceType;
+    private Long uProductId;
+    private Long uMerchantId;
     /**************现金券适用范围**************/
 
     /**************使用时间**************/
@@ -237,12 +245,6 @@ public class CouponRule extends BaseModel {
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
     }
-    public Integer getOnSaleType() {
-        return onSaleType;
-    }
-    public void setOnSaleType(Integer onSaleType) {
-        this.onSaleType = onSaleType;
-    }
     public void setReceivedCount(Integer receivedCount) {
         this.receivedCount = receivedCount;
     }
@@ -255,11 +257,47 @@ public class CouponRule extends BaseModel {
     public void setItemType(int itemType) {
         this.itemType = itemType;
     }
-    public Integer getUnsupportSaleType() {
-        return unsupportSaleType;
+    public Long getSubItemType() {
+        return subItemType;
     }
-    public void setUnsupportSaleType(Integer unsupportSaleType) {
-        this.unsupportSaleType = unsupportSaleType;
+    public void setSubItemType(Long subItemType) {
+        this.subItemType = subItemType;
+    }
+    public Long getServiceType() {
+        return serviceType;
+    }
+    public void setServiceType(Long serviceType) {
+        this.serviceType = serviceType;
+    }
+    public Integer getuItemType() {
+        return uItemType;
+    }
+    public void setuItemType(Integer uItemType) {
+        this.uItemType = uItemType;
+    }
+    public Long getuSubItemType() {
+        return uSubItemType;
+    }
+    public void setuSubItemType(Long uSubItemType) {
+        this.uSubItemType = uSubItemType;
+    }
+    public Long getuServiceType() {
+        return uServiceType;
+    }
+    public void setuServiceType(Long uServiceType) {
+        this.uServiceType = uServiceType;
+    }
+    public Long getuProductId() {
+        return uProductId;
+    }
+    public void setuProductId(Long uProductId) {
+        this.uProductId = uProductId;
+    }
+    public Long getuMerchantId() {
+        return uMerchantId;
+    }
+    public void setuMerchantId(Long uMerchantId) {
+        this.uMerchantId = uMerchantId;
     }
 	
 }

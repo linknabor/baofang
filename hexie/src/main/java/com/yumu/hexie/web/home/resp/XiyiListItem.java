@@ -5,11 +5,10 @@
 package com.yumu.hexie.web.home.resp;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
@@ -28,7 +27,7 @@ public class XiyiListItem implements Serializable {
     public XiyiListItem(){}
     public XiyiListItem(YunXiyiBill bill) {
         try {
-            BeanUtils.copyProperties(this, bill);
+            BeanUtils.copyProperties(bill, this);
             Date sd = bill.getRequireDate();
             if(bill.getServiceDate()!= null) {
                 sd = bill.getServiceDate();
@@ -68,8 +67,7 @@ public class XiyiListItem implements Serializable {
                     statusStr = "状态异常";
                     break;
             }
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
         }
     }
 

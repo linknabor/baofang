@@ -14,8 +14,8 @@ package com.yumu.hexie.model.promotion;
  */
 public class PromotionConstant {
 
-    public static final int COUPON_ITEM_TYPE_ALL = 0;
-    public static final int COUPON_ITEM_TYPE_MARKET = 1;
-    public static final int COUPON_ITEM_TYPE_SERVICETYPE = 3;
-    public static final int COUPON_ITEM_TYPE_WUYE = 4;
+    public static final Integer COUPON_ITEM_TYPE_ALL = 0;
+    public static final Integer COUPON_ITEM_TYPE_MARKET = 1;
+    public static final Integer COUPON_ITEM_TYPE_SERVICE = 3;
+    public static final Integer COUPON_ITEM_TYPE_WUYE = 4;
 }

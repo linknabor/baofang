@@ -29,4 +29,6 @@ public interface HomeItemService {
     public ServiceType findTypeByItem(long itemId);
     public ServiceType findBaseTypeByItem(long itemId);
     
+    public List<ServiceItem> queryServiceItemByType(long typeId);
+    
 }

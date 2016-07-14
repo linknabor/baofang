@@ -21,8 +21,9 @@ import com.yumu.hexie.model.BaseModel;
 public class HomeCart extends BaseModel {
 
     private static final long serialVersionUID = 234022228327280674L;
-    
+
     private long baseType;
+    private long itemType;
 
     private List<HomeBillItem> items;
     
@@ -51,6 +52,14 @@ public class HomeCart extends BaseModel {
 
     public void setBaseType(long baseType) {
         this.baseType = baseType;
+    }
+
+    public long getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(long itemType) {
+        this.itemType = itemType;
     }
     
 }

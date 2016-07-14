@@ -21,4 +21,6 @@ public interface OperatorService {
     public ServiceOperator findByTypeAndUserId(int type,long userId);
     public int isOperator(int type,long userId);
     public List<ServiceOperator> findByIds(List<Long> ids);
+
+    public List<ServiceOperator> findByType(int type);
 }

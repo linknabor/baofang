@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -33,8 +36,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -43,7 +44,8 @@ import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.promotion.share.ShareAccessRecord;
 import com.yumu.hexie.model.system.SystemConfig;
 
-@SpringBootApplication
+
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 @Configuration
 @ComponentScan(basePackages = {"com.yumu.hexie"}, includeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"com.yumu.hexie.backend.web.*"}))
 @EnableJpaRepositories({"com.yumu.hexie.model.*"})
@@ -62,13 +64,13 @@ public class AppConfig {
     private String password;
     @Value(value = "${jdbc.driverClassName}")
     private String driverClassName;
-
+    
     @Value(value = "${redis.host}")
     private String redisHost;
     @Value(value = "${redis.port}")
     private String redisPort;
 
-    @Value(value = "${mainRedis.host}")
+	@Value(value = "${mainRedis.host}")
     private String mainRedisHost;
     @Value(value = "${mainRedis.port}")
     private String mainRedisPort;
@@ -81,11 +83,18 @@ public class AppConfig {
     @Value(value = "${chunhuiRedis.host}")
     private String chunhuiRedisHost;
     @Value(value = "${chunhuiRedis.port}")
-    private String chunhuiRedisPort;
-    
+    private String chunhuiRedisPort;    
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
     }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer(){
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+        factory.setPort(8888);
+        return factory;
+    }
+    
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -129,7 +138,7 @@ public class AppConfig {
     }
     
     
-    @Bean(name="redisConnectionFactory")
+     @Bean(name="redisConnectionFactory")
     public RedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(redisHost);
@@ -192,7 +201,7 @@ public class AppConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
-    
+
     @Bean(name = "stringRedisTemplate")
     public StringRedisTemplate getStringRedisTemplate() {
         return new StringRedisTemplate(redisConnectionFactory());
@@ -200,14 +209,14 @@ public class AppConfig {
 
     @Bean(name = "redisTemplate")
     public <V> RedisTemplate<String, V> getRedisTemplate() {
-        RedisTemplate<String, V> redisTemplate = new RedisTemplate<String, V>();
+        RedisTemplate<String, V> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
     
-    @Bean(name = "cartRedisTemplate")
+	@Bean(name = "cartRedisTemplate")
     public RedisTemplate<String, Cart> cartRedisTemplate() {
         RedisTemplate<String, Cart> redisTemplate = new RedisTemplate<String, Cart>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
@@ -242,7 +251,6 @@ public class AppConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     };
-    
     public KeyGenerator keyGenerator() {
         return new KeyGenerator(){
 
@@ -270,11 +278,6 @@ public class AppConfig {
         	}
 
         };
-    }
-    
-    @Bean(name = "passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
     @Bean
     public CacheManager getCacheManager() {

@@ -28,11 +28,11 @@ public interface XiyiService {
     public JsSign pay(YunXiyiBill bill,String openId);
     public void update4Payment(PaymentOrder payment);
     public void notifyPayed(long billId);
-    public void accept(long billId,long userId);
+    //public void accept(long billId,long userId);
     public void cancel(long billId, long userId);
-    public void received(long billId);
-    public void serviced(long billId);
-    public void sended(long billId);
+    //public void received(long billId);
+    //public void serviced(long billId);
+    //public void sended(long billId);
     public void signed(long billId,long userId);
     
     public void timeout(long billId);

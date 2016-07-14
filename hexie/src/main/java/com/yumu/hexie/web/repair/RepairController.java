@@ -218,5 +218,4 @@ public class RepairController extends BaseController{
             return new BaseResult<Long>().failMsg("重新派单失败");
         }
     }
-    
 }

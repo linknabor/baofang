@@ -61,4 +61,13 @@ public class OperatorServiceImpl implements OperatorService {
     public List<ServiceOperator> findByIds(List<Long> ids) {
         return serviceOperatorRepository.findOperators(ids);
     }
+    /** 
+     * @param type
+     * @return
+     * @see com.yumu.hexie.service.o2o.OperatorService#findByType(int)
+     */
+    @Override
+    public List<ServiceOperator> findByType(int type) {
+        return serviceOperatorRepository.findByType(type);
+    }
 }
