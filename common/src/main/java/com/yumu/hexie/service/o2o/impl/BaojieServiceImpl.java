@@ -106,7 +106,7 @@ public class BaojieServiceImpl implements BaojieService {
             
         Coupon coupon = req.getCouponId() != null && req.getCouponId() > 0 ? couponService.findOne(req.getCouponId()) : null;
         if(couponService.isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE,
-            new Long(HomeServiceConstant.SERVICE_TYPE_BAOJIE), item.getParentType(),item.getServiceId(), ob.getBill().getAmount().floatValue(), coupon, false)){
+            new Long(HomeServiceConstant.SERVICE_TYPE_BAOJIE), item.getBillType(),item.getServiceId(), ob.getBill().getAmount().floatValue(), coupon, false)){
             ob.coupon(coupon);
         }
         ob.getBill().setTotalAmount(ob.getBill().getRealAmount());
@@ -115,8 +115,7 @@ public class BaojieServiceImpl implements BaojieService {
         BaojieBill bill =  baojieBillRepository.save(ob.getBill());
         for(HomeBillItem i : ob.getBill().getItems()) {
             ServiceType t = homeItemService.findTypeByItem(item.getServiceId());
-            i.setBillType(HomeServiceConstant.SERVICE_TYPE_BAOJIE);
-            i.setParentType(t.getId());
+            i.setBillType(t.getId());
             i.setBillId(bill.getId());
         }
         homeBillItemRepository.save(ob.getBill().getItems());
@@ -289,5 +288,6 @@ public class BaojieServiceImpl implements BaojieService {
         O2OServiceBuilder.init(bill).cancelByUser("手动操作");
         return baojieBillRepository.save(bill);
     }
+
 
 }
