@@ -4,13 +4,6 @@
  */
 package com.yumu.hexie.service;
 
-import org.springframework.scheduling.annotation.Scheduled;
-
-import com.yumu.hexie.common.util.StringUtil;
-import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
-import com.yumu.hexie.integration.wechat.entity.AccessToken;
-import com.yumu.hexie.integration.wechat.util.WeixinUtil;
-import com.yumu.hexie.integration.wechat.util.WeixinUtilV2;
 
 /**
  * <pre>

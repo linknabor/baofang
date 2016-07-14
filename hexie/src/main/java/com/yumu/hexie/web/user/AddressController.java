@@ -68,8 +68,8 @@ public class AddressController extends BaseController{
 	@RequestMapping(value = "/address/default/{addressId}", method = RequestMethod.POST)
 	@ResponseBody
     public BaseResult<String> defaultAddress(HttpSession session,@ModelAttribute(Constants.USER)User user,@PathVariable long addressId) throws Exception {
-		Address r = addressService.configDefaultAddress(user, addressId);
-        if(r==null) {
+		boolean r = addressService.configDefaultAddress(user, addressId);
+        if(!r) {
         	BaseResult.fail("设置默认地址失败！");
         }
         session.setAttribute(Constants.USER, user);

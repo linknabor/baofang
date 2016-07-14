@@ -93,7 +93,7 @@ public class GotongServiceImpl implements GotongService {
 	public void sendSubscribeMsg(User user) {
 
          Article article = new Article();
-         article.setTitle("欢迎加入合协社区！");
+         article.setTitle("欢迎加入我家大楼！");
          article.setDescription("您已获得关注红包，点击查看。");
          article.setPicurl(SUBSCRIBE_IMG);
          article.setUrl(SUBSCRIBE_DETAIL);

@@ -111,6 +111,7 @@ public class BaojieServiceImpl implements BaojieService {
         }
         ob.getBill().setTotalAmount(ob.getBill().getRealAmount());
         ob.getBill().setTypeName(type.getTypeName());
+        ob.getBill().setItemType(type.getId());
         BaojieBill bill =  baojieBillRepository.save(ob.getBill());
         for(HomeBillItem i : ob.getBill().getItems()) {
             ServiceType t = homeItemService.findTypeByItem(item.getServiceId());

@@ -93,7 +93,7 @@ public class UserController extends BaseController{
             session.setAttribute(Constants.USER, user);
             return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
         } else {
-            return new BaseResult<UserInfo>().success(null);
+        	return new BaseResult<UserInfo>().failCode(BaseResult.NEED_BAOFANG_LOGIN);
         }
     }
 

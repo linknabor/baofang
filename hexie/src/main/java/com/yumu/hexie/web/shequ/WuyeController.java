@@ -42,7 +42,6 @@ import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.shequ.WuyeService;
 import com.yumu.hexie.service.user.CouponService;
 import com.yumu.hexie.service.user.PointService;
-import com.yumu.hexie.vo.CouponsSummary;
 import com.yumu.hexie.web.BaseController;
 import com.yumu.hexie.web.BaseResult;
 
@@ -195,11 +194,12 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult<WechatPayInfo> getPrePayInfo(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId,
-			@RequestParam(required=false) String couponUnit, @RequestParam(required=false) String couponNum)
+			@RequestParam(required=false) String couponUnit, @RequestParam(required=false) String couponNum,
+			@RequestParam(required=false) String couponId)
 			throws Exception {
 		WechatPayInfo result;
 		try {
-			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), couponUnit, couponNum);
+			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), couponUnit, couponNum, couponId);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -297,7 +297,7 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入合协社区。您已获得价值10元红包一份。感谢您对合协社区的支持。";
+		String msg = "您好，欢迎加入我家大楼。您已获得价值10元红包一份。感谢您对我家大楼的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
@@ -352,9 +352,10 @@ public class WuyeController extends BaseController {
 	public BaseResult updateCouponStatus(HttpSession session){
 		
 		User user = (User)session.getAttribute(Constants.USER);
-		
-		CouponsSummary cs = couponService.findCouponSummary(user.getId());
-		List<Coupon>list = cs.getValidCoupons();
+		if (user==null) {
+			return BaseResult.fail("no user .");
+		}
+		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
 			String result = wuyeService.queryCouponIsUsed(user.getWuyeId());
@@ -362,25 +363,24 @@ public class WuyeController extends BaseController {
 				Coupon coupon = list.get(i);
 				if ((coupon.getStatus() == ModelConstant.COUPON_STATUS_AVAILABLE)) {
 					
-					if ("新用户注册红包".equals(coupon.getTitle())|| (coupon.getRuleId()==111)) {	//写死规则为111 TODO 活动结束后要删除
+					if (!StringUtil.isEmpty(result)) {
 						
-						if (!"".equals(result)&&null!=result) {
-							if ("01".equals(result)) {	//"00"表示未使用，"01"表示已使用, "99"表示异常
-								couponService.comsume("20", coupon.getId());	//这里写死20
-								break;
-							}
-							
-							if ("99".equals(result)) {
-								return BaseResult.fail("网络异常，请刷新后重试");
-							}
-							
+						if ("99".equals(result)) {
+							return BaseResult.fail("网络异常，请刷新后重试");
 						}
+						
+						String[]couponArr = result.split(",");
+						
+						for (int j = 0; j < couponArr.length; j++) {
+							String coupon_id = couponArr[j];
+							couponService.comsume("20", Integer.parseInt(coupon_id));	//这里写死20
+						}
+						
 						
 					}
 					
-				}else {
-					continue;
 				}
+				
 			}
 		}
 		
