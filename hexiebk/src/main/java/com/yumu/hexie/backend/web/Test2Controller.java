@@ -9,7 +9,7 @@ import com.yumu.hexie.backend.web.dto.BaseResult;
 
 @Controller(value = "abcController")
 public class Test2Controller extends BaseController{
-	@RequestMapping(value = "/test2", method = RequestMethod.POST)
+	@RequestMapping(value = "/test2", method = RequestMethod.GET)
 	@ResponseBody
     public BaseResult<String> test2() throws Exception {
         return BaseResult.successResult("测试成功");
