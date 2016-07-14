@@ -7,8 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.common.util.DateUtil;
-import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.entity.user.UserWeiXin;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
@@ -53,6 +50,8 @@ public class UserController extends BaseController{
 	private static final Integer lock = 0;
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+	
+	
 
 	@Inject
 	private AddressService addressService;
@@ -80,8 +79,8 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	@ResponseBody
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
-      
-		user = userService.getById(user.getId());
+        user = userService.getById(user.getId());
+        
         if(user != null && user.getBindAppId()!=null && user.getBindOpenId()!= null){
         	
         	if (user.isNewRegiste()) {
@@ -94,7 +93,7 @@ public class UserController extends BaseController{
             session.setAttribute(Constants.USER, user);
             return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
         } else {
-			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_BAOFANG_LOGIN);
+        	return new BaseResult<UserInfo>().failCode(BaseResult.NEED_BAOFANG_LOGIN);
         }
     }
 
@@ -139,7 +138,7 @@ public class UserController extends BaseController{
         
         User userAccount = null;
         if (StringUtil.isNotEmpty(code)) {
-            if("true".equals(testMode)&&NumberUtils.isDigits(code)) {
+            if("true".equals(testMode)) {
                 userAccount = userService.getById(Long.valueOf(code));
             } else {
                 UserWeiXin user = userService.getUserByCode(code);
@@ -178,7 +177,7 @@ public class UserController extends BaseController{
 		
 		User userAccount = null;
 		if (StringUtil.isNotEmpty(code)) {
-		    if("true".equals(testMode)&&NumberUtils.isDigits(code)) {
+		    if("true".equals(testMode)) {
 		    	userAccount = userService.getById(Long.valueOf(code));
 		    } else {
 				UserWeiXin user = userService.getUserByCode(code);
@@ -235,7 +234,7 @@ public class UserController extends BaseController{
         }
     }
 	
-    private void sendSubscribeCoupon(User user){
+	private void sendSubscribeCoupon(User user){
 
 		synchronized (lock) {
 			
@@ -281,7 +280,7 @@ public class UserController extends BaseController{
 	@ResponseBody
 	public BaseResult<UserInfo> savePersonInfo(HttpSession session,@RequestBody User editUser,@ModelAttribute(Constants.USER)User user,
 			@PathVariable String captcha) throws Exception {
-		if(StringUtils.equals(editUser.getTel(),user.getTel())) {
+		if(StringUtil.equals(editUser.getTel(),user.getTel())) {
 			user.setSex(editUser.getSex());
 			user.setRealName(editUser.getRealName());
 			user.setName(editUser.getName());

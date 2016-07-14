@@ -47,8 +47,7 @@ import com.yumu.hexie.web.BaseResult;
 
 @Controller(value = "wuyeController")
 public class WuyeController extends BaseController {
-	
-	private static final Logger log = LoggerFactory.getLogger(WuyeController.class);
+	private static final Logger Log = LoggerFactory.getLogger(WuyeController.class);
 
 	@Inject
 	private WuyeService wuyeService;
@@ -298,13 +297,13 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入合协社区。您已获得价值10元红包一份。感谢您对合协社区的支持。";
+		String msg = "您好，欢迎加入我家大楼。您已获得价值10元红包一份。感谢您对我家大楼的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
 	@Async
 	private void sendRegTemplateMsg(User user){
-		TemplateMsgService.sendRegisterSuccessMsg(user,systemConfigService.queryWXAToken());
+		TemplateMsgService.sendRegisterSuccessMsg(user, systemConfigService.queryWXAToken());
 	}
 	
 	/**
@@ -316,39 +315,12 @@ public class WuyeController extends BaseController {
 	@RequestMapping(value = "/getCouponsPayWuYe", method = RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<List<Coupon>> getCoupons(HttpSession session){
-		
 		User user = (User)session.getAttribute(Constants.USER);
-		List<Coupon>list = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_REGIST);
-
-		String subscribeCouponRule = systemConfigService.queryValueByKey("SUBSCRIBE_COUPON_RULE");
-		int availableRule = 0;
-		if (!com.yumu.hexie.common.util.StringUtil.isEmpty(subscribeCouponRule)) {
-			availableRule = Integer.parseInt(subscribeCouponRule);
-		}
+		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list==null) {
 			list = new ArrayList<Coupon>();
 		}
-		
-		/*关注、注册红包只能用一个。*/
-		if (list.size()==0) {
-			
-			List<Coupon>subsCouponList = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_SUBSCRIB);
-			
-			for (int i = 0; i < subsCouponList.size(); i++) {
-				
-				Coupon c = subsCouponList.get(i);
-				
-				if (availableRule!=c.getRuleId()) {	//由于关注红包发放了2次，而第一次发放的并不能用于缴纳物业费。写死规则为1 TODO 活动结束后要删除
-					subsCouponList.remove(i);
-					i = i-1;
-				}
-			}
-
-			
-			list.addAll(subsCouponList);
-		}
-		
 		return BaseResult.successResult(list);
 		
 	}
@@ -379,42 +351,11 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult updateCouponStatus(HttpSession session){
 		
-		if (session == null) {
-			return BaseResult.fail("no session info ...");
-		}
-		
 		User user = (User)session.getAttribute(Constants.USER);
-		List<Coupon>list = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_REGIST);
-		
-		String subscribeCouponRule = systemConfigService.queryValueByKey("SUBSCRIBE_COUPON_RULE");
-		int availableRule = 0;
-		if (!com.yumu.hexie.common.util.StringUtil.isEmpty(subscribeCouponRule)) {
-			availableRule = Integer.parseInt(subscribeCouponRule);
+		if (user==null) {
+			return BaseResult.fail("no user .");
 		}
-		
-		if (list==null) {
-			list = new ArrayList<Coupon>();
-		}
-		
-		/*关注、注册红包只能用一个。*/
-		if (list.size()==0) {
-			
-			List<Coupon>subsCouponList = couponService.findAvaibleCoupon(user.getId(), ModelConstant.COUPON_SEED_USER_SUBSCRIB);
-			
-			for (int i = 0; i < subsCouponList.size(); i++) {
-				
-				Coupon c = subsCouponList.get(i);
-				
-				if (availableRule!=c.getRuleId()) {	//由于关注红包发放了2次，而第一次发放的并不能用于缴纳物业费。写死规则为1 TODO 活动结束后要删除
-					subsCouponList.remove(i);
-					i = i-1;
-				}
-			}
-
-			
-			list.addAll(subsCouponList);
-		}
-		
+		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
 			String result = wuyeService.queryCouponIsUsed(user.getWuyeId());
@@ -432,12 +373,9 @@ public class WuyeController extends BaseController {
 						
 						for (int j = 0; j < couponArr.length; j++) {
 							String coupon_id = couponArr[j];
-							try {
-								couponService.comsume("20", Integer.parseInt(coupon_id));	//这里写死20
-							} catch (Exception e) {
-								log.error("couponId : " + coupon_id + ", " + e.getMessage());
-							}
+							couponService.comsume("20", Integer.parseInt(coupon_id));	//这里写死20
 						}
+						
 						
 					}
 					
@@ -461,7 +399,7 @@ public class WuyeController extends BaseController {
 			
 		} catch (Exception e) {
 
-			log.error("add Coupons for wuye Pay : " + e.getMessage());
+			Log.error("add Coupons for wuye Pay : " + e.getMessage());
 		}
 		
 	}

@@ -21,7 +21,7 @@ public class AppInit implements WebApplicationInitializer {
         servletContext.addListener(new ContextLoaderListener(context));
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
         dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/wechat/*");
+        //dispatcher.addMapping("/wechat/*");
 
         configureEncodingFilter(servletContext);
         configSpringSessionRepositoryFilter(servletContext, context);
@@ -29,27 +29,16 @@ public class AppInit implements WebApplicationInitializer {
         dispatcher.setAsyncSupported(true);
     }
 
-//    private void configureSpringSecurity(ServletContext servletContext, WebApplicationContext rootContext) {
-//        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain",
-//                new DelegatingFilterProxy("springSecurityFilterChain", rootContext));
-//        springSecurity.addMappingForUrlPatterns(null, true, "/*");
-//    }
     private void configSpringSessionRepositoryFilter(ServletContext servletContext, WebApplicationContext rootContext) {
-        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSessionRepositoryFilter",
+        FilterRegistration.Dynamic session = servletContext.addFilter("springSessionRepositoryFilter",
                 new DelegatingFilterProxy("springSessionRepositoryFilter", rootContext));
-        springSecurity.addMappingForUrlPatterns(null, true, "/*");
+        session.addMappingForUrlPatterns(null, true, "/*");
     }
     private AnnotationConfigWebApplicationContext getContext() {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("com.yumu.hexie.common.config");
         return context;
     }
-
-//    private void configureSpringSecurity(ServletContext servletContext, WebApplicationContext rootContext) {
-//        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain",
-//                new DelegatingFilterProxy("springSecurityFilterChain", rootContext));
-//        springSecurity.addMappingForUrlPatterns(null, true, "/*");
-//    }
 
     private void configureEncodingFilter(ServletContext servletContext) {
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter", new CharacterEncodingFilter());

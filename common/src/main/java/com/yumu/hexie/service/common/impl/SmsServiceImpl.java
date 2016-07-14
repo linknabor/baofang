@@ -5,12 +5,12 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.yumu.hexie.common.util.RandomStringUtils;
 import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.eucp.CreateBlueUtil;
 import com.yumu.hexie.integration.eucp.YimeiUtil;
@@ -59,9 +59,7 @@ public class SmsServiceImpl implements SmsService {
         sms.setUserId(userId);
         sms = smsHisRepository.save(sms);
         
-        String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");
-        
-        boolean ret = false;
+		String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");        boolean ret = false;
         if(!"0".equals(sendMsg)){
         	if (systemConfigService.querySmsChannel()==0) {
         		ret = YimeiUtil.sendMessage(mobilePhone, message, sms.getId());//.sendBatchMessage(account, password, mobilePhone, message);
@@ -109,7 +107,6 @@ public class SmsServiceImpl implements SmsService {
 		try{
 			
 			String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");
-			
 			if(!"0".equals(sendMsg)){
 			    if (systemConfigService.querySmsChannel()==0) {
 	                res = YimeiUtil.sendMessage(mobile, msg, id);//.sendBatchMessage(account, password, mobilePhone, message);
@@ -141,7 +138,7 @@ public class SmsServiceImpl implements SmsService {
 		//是否使用自定义签名
 		String use_default_sign = systemConfigService.queryValueByKey("USE_DEFINED_MSG_SIGN"); 
 		
-		//1：自定义签名。0或者空：供应商签合协社区
+		//1：自定义签名。0或者空：供应商签我家大楼
 		if (!"1".equals(use_default_sign)) {
 			return ""; 
 		}
@@ -150,8 +147,8 @@ public class SmsServiceImpl implements SmsService {
 		sign = "【"+sign+"】";
 		
 		if (StringUtil.isEmpty(sign)) {
-			LOGGER.error("未配置系统参数SYS_NAME，默认值：合协社区");
-			sign = "【合协社区】";
+			LOGGER.error("未配置系统参数SYS_NAME，默认值：我家大楼");
+			sign = "【我家大楼】";
 		}
 		return sign;
 	}

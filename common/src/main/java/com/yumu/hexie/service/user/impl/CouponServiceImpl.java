@@ -14,18 +14,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yumu.hexie.common.util.DateUtil;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.info.Product;
 import com.yumu.hexie.model.commonsupport.info.ProductRepository;
-import com.yumu.hexie.model.localservice.BaseO2OService;
 import com.yumu.hexie.model.localservice.HomeCart;
-import com.yumu.hexie.model.localservice.HomeServiceConstant;
+import com.yumu.hexie.model.localservice.ServiceType;
+import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
 import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.market.Collocation;
 import com.yumu.hexie.model.market.OrderItem;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.market.saleplan.OnSaleRule;
+import com.yumu.hexie.model.market.saleplan.OnSaleRuleRepository;
 import com.yumu.hexie.model.market.saleplan.SalePlan;
 import com.yumu.hexie.model.promotion.PromotionConstant;
 import com.yumu.hexie.model.promotion.coupon.Coupon;
@@ -40,6 +42,7 @@ import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.model.user.UserRepository;
 import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.exception.BizValidateException;
+import com.yumu.hexie.service.o2o.HomeItemService;
 import com.yumu.hexie.service.sales.CollocationService;
 import com.yumu.hexie.service.sales.impl.BaseOrderServiceImpl;
 import com.yumu.hexie.service.user.CouponService;
@@ -73,6 +76,10 @@ public class CouponServiceImpl implements CouponService {
 	private UserRepository userRepository;
 	@Inject 
 	private CouponCombinationRepository couponCombinationRepository;
+    @Inject
+    private OnSaleRuleRepository onSaleRuleRepository;
+    @Inject
+    private HomeItemService homeItemService;
 	
 
 	public CouponSeed findSeedByStr(String seedStr){
@@ -98,19 +105,6 @@ public class CouponServiceImpl implements CouponService {
 		rule.addUsed();
 		saveRule(rule);
 	}
-
-//	@Override
-//	public CouponSeed saveSeed(CouponSeed seed) {
-//		if(seed.getId() == 0) {
-//			seed.getSeedStr();
-//			return couponSeedRepository.save(seed);
-//		} else {
-//			CouponSeed oriSeed = couponSeedRepository.findOne(seed.getId());
-//			oriSeed.update(seed);
-//			oriSeed.getSeedStr();
-//			return couponSeedRepository.save(oriSeed);
-//		}
-//	}
 
 	@Override
 	public CouponSeed createOrderSeed(long userId,ServiceOrder order) {
@@ -206,6 +200,10 @@ public class CouponServiceImpl implements CouponService {
 		
 		coupon = new Coupon(seed, chosedRule,user);
 		coupon = couponRepository.save(coupon);
+		try {
+            log.error("红包发放："+JacksonJsonUtil.beanToJson(coupon));
+        } catch (Exception e) {
+        }
 
 		//更新统计数据
 		updateSeedAndRuleForCouponReceive(seed, chosedRule, coupon);
@@ -309,13 +307,27 @@ public class CouponServiceImpl implements CouponService {
         
         List<Coupon> result = new ArrayList<Coupon>();
         for(Coupon coupon : coupons) {
-            if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICETYPE, cart.getBaseType(),
-                null, cart.getAmount().floatValue(), coupon, false)){
+            if(isAvaible(cart, coupon)){
                 result.add(coupon);
             }
         }
         return result;
 	}
+    @Override//FIXME 红包使用范围需要限定更小值
+    public List<Coupon> findAvaibleCoupon4ServiceType(long userId,long homeServiceType,Long parentType, Long itemId){
+        List<Integer> status = new ArrayList<Integer>();
+        status.add(ModelConstant.COUPON_STATUS_AVAILABLE);
+        List<Coupon> coupons = couponRepository.findByUserIdAndStatusIn(userId,status, new PageRequest(0,200));
+        
+        List<Coupon> result = new ArrayList<Coupon>();
+        for(Coupon coupon : coupons) {
+            if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE, homeServiceType,
+                parentType, itemId, null, coupon, false)){
+                result.add(coupon);
+            }
+        }
+        return result;
+    }
 	@Override
 	public List<Coupon> findAvaibleCoupon(long userId,SalePlan salePlan){
 		List<Coupon> result = new ArrayList<Coupon>();
@@ -325,84 +337,191 @@ public class CouponServiceImpl implements CouponService {
 		List<Integer> status = new ArrayList<Integer>();
 		status.add(ModelConstant.COUPON_STATUS_AVAILABLE);
 		List<Coupon> coupons = couponRepository.findByUserIdAndStatusIn(userId,status, new PageRequest(0,200));
+		
 		Integer onsaleType = !(salePlan instanceof OnSaleRule) ? null : ((OnSaleRule)salePlan).getProductType();
+		if (onsaleType==null) {
+			onsaleType = 0;
+		}
+		
+		Long orderType = 3l;
+		if (ModelConstant.ORDER_TYPE_RGROUP==salePlan.getSalePlanType()) {
+			orderType = Long.valueOf(ModelConstant.ORDER_TYPE_RGROUP);
+		}
+		
 		for(Coupon coupon : coupons) {
-			if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, salePlan.getProductId(), onsaleType, null, coupon,false)){
+			
+			if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, 
+					orderType, new Long(onsaleType), salePlan.getProductId(), null, coupon,false)){
 				result.add(coupon);
 			}
 		}
 		return result;
 	}
 
-	public boolean isAvaible(int itemType, long productId, Integer onsaleType, 
+	//服务-洗衣-服务项父类型-服务项 商户ID
+	public boolean isAvaible(int itemType, Long subItemType, Long serviceType, Long productId, 
 	                          Float amount, Coupon coupon, boolean locked) {
 	    if(coupon == null) {
 	        return false;
 	    }
-	    log.warn("Check Coupon["+itemType+"]["+productId+"]["
-	            +onsaleType+"]["+amount+"]["+coupon.getId()+"]["+locked+"]");
-	    //系统参数
-	    if(itemType != PromotionConstant.COUPON_ITEM_TYPE_ALL
-                && productId != 0) {
-            if(systemConfigService.getUnCouponItems().contains(itemType+"-"+productId)){
-                log.warn("不可以用（系统配置）");
-                return false;
-            }
-        }
-	       //大类型验证
-	    if(coupon.getItemType() != PromotionConstant.COUPON_ITEM_TYPE_ALL && coupon.getItemType() != itemType){
-	        log.warn("不可以用（类型验证）");
-	        return false;
-	    }
+	    log.warn("Check Coupon["+itemType+"]["+subItemType+"]["+serviceType+"]["+productId
+	        +"]["+amount+"]["+coupon.getId()+"]["+locked+"]");
 	    //状态验证
         if(!locked && coupon.getStatus() != ModelConstant.COUPON_STATUS_AVAILABLE){
-            log.warn("不可以用（状态验证）");
+            log.warn("不可用（状态验证）");
             return false;
         }
         if(locked && coupon.getStatus() != ModelConstant.COUPON_STATUS_LOCKED 
                 && coupon.getStatus() != ModelConstant.COUPON_STATUS_AVAILABLE){
-            log.warn("不可以用（锁定状态）");
+            log.warn("不可用（锁定状态）");
             return false;
         }
-
-        if(coupon.getUnsupportSaleType() != null && coupon.getUnsupportSaleType() != 0 
-                && (onsaleType != null && onsaleType== coupon.getUnsupportSaleType())) {
-            log.warn("不可以用（不支持的特卖类型）");
+        if(amount != null && coupon.getUsageCondition()-0.009 > amount) {
+            log.warn("不可用（金额不支持）");
             return false;
         }
-		if(coupon.getOnSaleType() != null && coupon.getOnSaleType() != 0 
-				&& (onsaleType == null || onsaleType!= coupon.getOnSaleType())) {
-            log.warn("不可以用（支持的特卖类型）");
-			return false;
-		}
-        
-		if(coupon.getProductId() != null && coupon.getProductId() != 0 
-				&&  productId != coupon.getProductId()){
-            log.warn("不可以用（不支持的商品ID）");
-			return false;
-		}
-		if(amount != null && coupon.getUsageCondition()-0.009 > amount) {
-            log.warn("不可以用（金额不支持）");
-		    return false;
-		}
 
         if(coupon.isAvailableForAll()){
             log.warn("可以用（面向全部可用）");
             return true;
         }
+        
+	    //系统参数 FIXME
+	    if(itemType != PromotionConstant.COUPON_ITEM_TYPE_ALL
+                && productId != null && productId != 0) {
+            if(systemConfigService.getUnCouponItems().contains(itemType+"-"+productId)){
+                log.warn("不可以用（系统配置）");
+                return false;
+            }
+        }
+
+//	    String typeStr = itemType + "-" + subItemType + "-" + serviceType + "-" + productId;
+        if(StringUtil.isNotEmpty(coupon.getPassTypePrefix())) {
+            
+        	int cItemType = coupon.getItemType();
+        	long cSubItemType = coupon.getSubItemType();
+        	long cServiceType = coupon.getServiceType();
+        	long cProductId = coupon.getProductId();
+        	
+        	if (cItemType!=itemType) {
+        		log.warn("itemType 不可用");
+        		return false;
+			}
+        	
+        	if (cSubItemType!=0 && cSubItemType!=subItemType) {
+        		log.warn("subItemType 不可用");
+        		return false;
+			}
+        	
+        	if (cServiceType!=0 && cServiceType!=serviceType) {
+        		log.warn("serviceType 不可用");
+        		return false;
+			}
+        	
+        	if (cProductId!=0 && cProductId!=productId) {
+        		log.warn("productId 不可用");
+        		return false;
+			}
+        	
+        }
+	    
+        if(StringUtil.isNotEmpty(coupon.getUnPassTypePrefix())) {
+        	
+            //反向验证
+        	int uItemType = coupon.getuItemType();
+        	long uSubItemType = coupon.getuSubItemType();
+        	long uServiceType = coupon.getuServiceType();
+        	long uProductId = coupon.getuProductId();
+        	
+        	if (uItemType == itemType) {
+        		
+        		if (uSubItemType == 0) {
+        			
+        			if (uProductId==productId) {
+        				log.warn("productId:"+uProductId+"不可用");
+                		return false;
+					}else if(uProductId==0) {
+						log.warn("subItemType:"+uSubItemType+"不可用");
+	            		return false;
+					}
+        			
+				}
+        		
+        		if (uSubItemType == subItemType) {
+        			
+        			if (uServiceType == 0) {
+        				
+        				if (uProductId==productId) {
+            				log.warn("productId:"+uProductId+"不可用");
+                    		return false;
+    					}else if(uProductId==0) {
+    						log.warn("serviceType:"+uServiceType+"不可用");
+    	            		return false;
+    					}
+        				
+    				}
+        			
+        			if (uServiceType == serviceType) {
+						
+        				if (uProductId==productId) {
+            				log.warn("productId:"+uProductId+"不可用");
+                    		return false;
+    					}else if(uProductId==0) {
+    						log.warn("serviceType:"+uServiceType+"不可用");
+    	            		return false;
+    					}
+        				
+					}
+        			
+        			
+				}
+        		
+        		
+			}
+        	
+        	
+        }
+
+        /*可用商户校验*/
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
-		    Product product = productRepository.findOne(productId);
-		    if(product == null || product.getMerchantId() != coupon.getMerchantId()){
-	            log.warn("不可以用（商户校验）");
-		        return false;
+		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
+		    log.error("merchantId:" + merchantId);
+		    if(merchantId == null || merchantId != coupon.getMerchantId()) {
+                log.warn("不可用（商户正向验证）");
+                return false;
 		    }
 		}
-
+		
+		/*不可用商户校验*/
+		if(coupon.getuMerchantId() != null && coupon.getuMerchantId() != 0 ){
+		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
+		    log.error("merchantId:" + merchantId);
+		    if(merchantId == coupon.getuMerchantId()) {
+                log.warn("不可用（商户逆向验证）");
+                return false;
+		    }
+		}
+		
         log.warn("可以用（全部通过）");
 		return true;
 	}
 
-	@Override
+	//itemType:1, serviceType:-0, productId:10
+	public Long getMerchatId(Long mainType, Long subType, Long itemId) {
+		
+		log.error("mainType:"+mainType+",subType:"+subType+",itemId:"+itemId);
+        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_MARKET).equals(mainType) && itemId != null && !itemId.equals(0)){
+            Product product = productRepository.findOne(itemId);
+            return product == null ? 0 : product.getMerchantId();
+        }
+        if(new Long(PromotionConstant.COUPON_ITEM_TYPE_SERVICE).equals(mainType) && subType != null && !subType.equals(0)) {
+            ServiceType type = homeItemService.queryTypeById(subType);
+            return type == null ? 0 : type.getMerchantId();
+        }
+        return 0l;
+	}
+
+	@Override//FIXME 如果特卖类型是0，如何处理
 	public boolean isAvaible(Cart cart, Coupon coupon) {
 	    Float amount = null;
         if(cart.getCollocationId()>0) {
@@ -410,13 +529,20 @@ public class CouponServiceImpl implements CouponService {
 	        amount = coll.getSatisfyAmount() <= cart.getTotalAmount() ? cart.getTotalAmount() - coll.getDiscountAmount() : cart.getTotalAmount();
         }
 	    for(long productId : cart.getProductIds()) {
-	        if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, productId, 
-	            null, amount, coupon,false)){
+	        if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET,new Long(ModelConstant.ORDER_TYPE_ONSALE), 0l, 
+	            productId, 
+	            amount, coupon,false)){
 	            return true;
 	        }
 	    }
 		return false;
 	}
+
+    @Override
+    public boolean isAvaible(HomeCart cart, Coupon coupon) {
+        return isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE, cart.getBaseType(),
+            cart.getItemType(),  cart.getItems().get(0).getServiceId(), cart.getAmount().floatValue(), coupon, false);
+    }
 	@Override
     public boolean isAvaible(String feePrice, Coupon coupon) {
 	    if(coupon.getItemType() != PromotionConstant.COUPON_ITEM_TYPE_ALL 
@@ -442,12 +568,20 @@ public class CouponServiceImpl implements CouponService {
     			return false;
     		}
     	}
-        for(OrderItem item : order.getItems()) {
-            if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, item.getProductId(), 
-                item.getOrderType(), order.getTotalAmount(), coupon,withLocked)){
-                return true;
+    	if(order.getItems() != null) {
+    	    for(OrderItem item : order.getItems()) {
+    	        Integer onsaleType = 0;
+    	        if(item.getOrderType() == ModelConstant.ORDER_TYPE_ONSALE) {
+    	            OnSaleRule plan = onSaleRuleRepository.findOne(item.getRuleId());
+    	            onsaleType = plan.getProductType();
+    	        }
+                if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_MARKET, new Long(item.getOrderType()),new Long(onsaleType),item.getProductId(), 
+                     order.getTotalAmount(), coupon,withLocked)){
+                    return true;
+                }
             }
-        }
+    	}
+        
     	return false;
     }
 
@@ -509,8 +643,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
 	public boolean lock(BaseO2OService bill, Coupon coupon){
         log.warn("lock红包["+bill.getId()+"]Coupon["+bill.getId()+"]");
-        if(!isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICETYPE,
-            bill.getOrderType(), null, bill.getAmount().floatValue(), coupon, true)){
+        if(!isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE,
+            new Long(bill.getOrderType()), bill.getItemType(), bill.getItemId(),bill.getAmount().floatValue(), coupon, true)){
             return false;
         }
         coupon.lock(bill.getId());
@@ -548,8 +682,8 @@ public class CouponServiceImpl implements CouponService {
         }
         log.warn("comsume红包Bill[BEG]["+bill.getId()+"]Coupon["+bill.getId()+"]");
 	    Coupon coupon = couponRepository.findOne(bill.getCouponId());
-		if(!isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICETYPE,
-            HomeServiceConstant.SERVICE_TYPE_XIYI, null, bill.getAmount().floatValue(), coupon, true)){
+		if(!isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE,
+            new Long(bill.getOrderType()), bill.getItemType(), bill.getItemId(), bill.getAmount().floatValue(), coupon, true)){
 			//throw new BizValidateException(ModelConstant.EXCEPTION_BIZ_TYPE_COUPON,coupon.getId(),"该现金券不可用于本订单");
 		    return false;
 		}
@@ -613,20 +747,20 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
-	public List<Coupon> findAvaibleCoupon(long userId, int seedType) {
+	public List<Coupon> findAvaibleCouponForWuye(long userId) {
 
 		List<Coupon> result = new ArrayList<Coupon>();
-		if(StringUtil.isEmpty(seedType)) {
-			return result;
-		}
-		List<Integer> status = new ArrayList<Integer>();
-		status.add(ModelConstant.COUPON_STATUS_AVAILABLE);
-		List<Coupon> coupons = couponRepository.findByStatusInAndSeedType(userId,status,seedType);
-		
-		for(Coupon coupon : coupons) {
-			result.add(coupon);
-		}
-		return result;
+        List<Integer> status = new ArrayList<Integer>();
+        status.add(ModelConstant.COUPON_STATUS_AVAILABLE);
+        List<Coupon> coupons = couponRepository.findByUserIdAndStatusIn(userId,status, new PageRequest(0,200));
+        for(Coupon coupon : coupons) {
+            if(isAvaible(PromotionConstant.COUPON_ITEM_TYPE_WUYE, 0l, 0l, 
+                0l, null, coupon,false)){
+                result.add(coupon);
+            }
+        }
+        return result;
+    
 	}
 
 	@Override
@@ -665,4 +799,12 @@ public class CouponServiceImpl implements CouponService {
 		return couponRepository.findTimeoutCouponByDate(fromDate, toDate, new PageRequest(0, 10000));
 	
 	}
+	
+	
+	public static void main(String[] args) {
+		
+		System.out.println(new Long(0) == 0);
+		
+	}
+	
 }

@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import org.springframework.beans.BeanUtils;
+
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.model.BaseModel;
 import com.yumu.hexie.model.ModelConstant;
@@ -48,14 +50,21 @@ public class Coupon extends BaseModel {
 	
 	/**************现金券适用范围**************/
 	private float usageCondition;//最小金额
-	private boolean availableForAll = true;//与以下三条互斥
-	
-	private Long merchantId;
-	private Long productId;
-	private Integer onSaleType;//特卖商品类型
-	
-	private int itemType = PromotionConstant.COUPON_ITEM_TYPE_ALL;//全部，商品项，服务项，服务类型
-    private Integer unsupportSaleType;
+    private boolean availableForAll = true;//与以下互斥
+    
+    //支持项目，不支持的优先过滤
+    private int itemType = PromotionConstant.COUPON_ITEM_TYPE_ALL;//全部，商品项，服务项，服务类型
+    private Long subItemType;//子类型，默认为空  对服务是base的serviceType，对集市是销售方案
+    private Long serviceType;//低于subItemType,如对洗衣是按件洗、按袋洗。对保洁是日常保洁，深度保洁。对特卖是频道
+    private Long productId;//对集市是商品ID，对服务是服务项
+    private Long merchantId;//商户类型
+    
+    //不支持项目
+    private Integer uItemType;
+    private Long uSubItemType;
+    private Long uServiceType;
+    private Long uProductId;
+    private Long uMerchantId;
 	/**************现金券适用范围**************/
 
 	private String suggestUrl;
@@ -63,6 +72,49 @@ public class Coupon extends BaseModel {
 	public String getUseStartDateStr(){
 		return DateUtil.dtFormat(useStartDate, "yyyy.MM.dd");
 	}
+
+    @Transient
+    private boolean notZero(Long value) {
+        return value != null && value > 0;
+    }
+    @Transient
+    public String getPassTypePrefix(){
+        if(getItemType() == PromotionConstant.COUPON_ITEM_TYPE_ALL) {
+            //正向验证通过
+            return "";
+        } else {
+            String couponPrefix = getItemType() + "-";
+            if(notZero(getSubItemType())) {
+                couponPrefix += getSubItemType() + "-";
+                if(notZero(getServiceType())) {
+                    couponPrefix += getServiceType() + "-";
+                    if(notZero(getProductId())) {
+                        couponPrefix += getProductId() + "-";
+                    }
+                }
+            }
+            return couponPrefix;
+        }
+    }
+    @Transient
+    public String getUnPassTypePrefix(){
+        if(getuItemType() == PromotionConstant.COUPON_ITEM_TYPE_ALL) {
+            //反向验证通过 FIXME 应该不存在，
+            return "";
+        } else {
+            String couponPrefix = getuItemType() + "-";
+            if(notZero(getuSubItemType())) {
+                couponPrefix += getuSubItemType() + "-";
+                if(notZero(getuServiceType())) {
+                    couponPrefix += getuServiceType() + "-";
+                    if(notZero(getuProductId())) {
+                        couponPrefix += getuProductId() + "-";
+                    }
+                }
+            }
+            return couponPrefix;
+        }
+    }
 
 	@Transient
 	public String getUseEndDateStr(){
@@ -99,6 +151,7 @@ public class Coupon extends BaseModel {
 		
 		ruleId = rule.getId();
 		
+		BeanUtils.copyProperties(rule, this);
 		if(rule.getExpiredDays()>0) {
 			useStartDate = new Date();
 			expiredDate = DateUtil.addDate(new Date(),rule.getExpiredDays());
@@ -106,22 +159,10 @@ public class Coupon extends BaseModel {
 			useStartDate = rule.getUseStartDate();
 			expiredDate = rule.getUseEndDate();
 		}
-		
-		title = rule.getTitle();
-		amount = rule.getAmount();
-		usageCondition = rule.getUsageCondition();//最小金额
-		availableForAll = rule.isAvailableForAll();//与以下三条互斥
-		couponDesc = rule.getCouponDesc();
-		
-		merchantId = rule.getMerchantId();
-		productId = rule.getProductId();
-		onSaleType = rule.getOnSaleType();//特卖商品类型
-		itemType = rule.getItemType();
-	    unsupportSaleType = rule.getUnsupportSaleType();
-		
-		suggestUrl = rule.getSuggestUrl();
 
+		setId(0l);
 		this.userId = user.getId();
+		super.setCreateDate(System.currentTimeMillis());
 		setUserName(user.getName());
 		setUserHeadImg(user.getHeadimgurl());
 	}
@@ -230,12 +271,6 @@ public class Coupon extends BaseModel {
 	public void setProductId(Long productId) {
 		this.productId = productId;
 	}
-	public Integer getOnSaleType() {
-		return onSaleType;
-	}
-	public void setOnSaleType(Integer onSaleType) {
-		this.onSaleType = onSaleType;
-	}
 	public Date getUseStartDate() {
 		return useStartDate;
 	}
@@ -301,12 +336,59 @@ public class Coupon extends BaseModel {
     public void setItemType(int itemType) {
         this.itemType = itemType;
     }
-
-    public Integer getUnsupportSaleType() {
-        return unsupportSaleType;
+    public Long getSubItemType() {
+        return subItemType;
     }
 
-    public void setUnsupportSaleType(Integer unsupportSaleType) {
-        this.unsupportSaleType = unsupportSaleType;
+    public void setSubItemType(Long subItemType) {
+        this.subItemType = subItemType;
+    }
+
+    public Long getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(Long serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public Integer getuItemType() {
+        return uItemType;
+    }
+
+    public void setuItemType(Integer uItemType) {
+        this.uItemType = uItemType;
+    }
+
+    public Long getuSubItemType() {
+        return uSubItemType;
+    }
+
+    public void setuSubItemType(Long uSubItemType) {
+        this.uSubItemType = uSubItemType;
+    }
+
+    public Long getuServiceType() {
+        return uServiceType;
+    }
+
+    public void setuServiceType(Long uServiceType) {
+        this.uServiceType = uServiceType;
+    }
+
+    public Long getuProductId() {
+        return uProductId;
+    }
+
+    public void setuProductId(Long uProductId) {
+        this.uProductId = uProductId;
+    }
+
+    public Long getuMerchantId() {
+        return uMerchantId;
+    }
+
+    public void setuMerchantId(Long uMerchantId) {
+        this.uMerchantId = uMerchantId;
     }
 }

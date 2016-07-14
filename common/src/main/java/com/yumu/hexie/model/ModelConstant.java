@@ -245,6 +245,7 @@ public class ModelConstant {
 	public static final int SCHEDULE_TYPE_PINDAN_TIMEOUT = 4;
     public static final int SCHEDULE_TYPE_TUANGOU_TIMEOUT = 5;
     public static final int SCHEDULE_TYPE_XIYI_TIMEOUT = 6;
+    public static final int SCHEDULE_TYPE_BAOJIE_TIMEOUT = 7;
 	
 
 	

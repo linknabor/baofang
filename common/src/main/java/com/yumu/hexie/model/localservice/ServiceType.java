@@ -25,6 +25,7 @@ public class ServiceType  extends BaseModel {
     private String description;
     private Long merchantId;
     private long parentId;
+    private Long shipTemplate;
     public ServiceType(){
         
     }
@@ -57,6 +58,12 @@ public class ServiceType  extends BaseModel {
     }
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
+    }
+    public Long getShipTemplate() {
+        return shipTemplate;
+    }
+    public void setShipTemplate(Long shipTemplate) {
+        this.shipTemplate = shipTemplate;
     }
 
 }

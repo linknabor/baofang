@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yumu.hexie.model.BaseModel;
 
 /**
@@ -35,9 +36,12 @@ public class ServiceItem extends BaseModel {
     private long type;
     @Transient//用户页面绑定
     private int count = 0;
-    
+    @JsonIgnore
     private BigDecimal settleRate;
+    @JsonIgnore
     private BigDecimal settleAmount;
+    //运费模板
+    private Long shipTemplate;
     
     private int status = HomeServiceConstant.SERVICE_ITEM_STATUS_VALID;
     public ServiceItem(){}
@@ -112,5 +116,11 @@ public class ServiceItem extends BaseModel {
     }
     public void setSettleAmount(BigDecimal settleAmount) {
         this.settleAmount = settleAmount;
+    }
+    public Long getShipTemplate() {
+        return shipTemplate;
+    }
+    public void setShipTemplate(Long shipTemplate) {
+        this.shipTemplate = shipTemplate;
     }
 }
