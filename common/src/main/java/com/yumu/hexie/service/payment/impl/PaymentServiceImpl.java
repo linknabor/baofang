@@ -17,7 +17,7 @@ import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.integration.wechat.entity.common.PaymentOrderResult;
 import com.yumu.hexie.integration.wechat.entity.common.PrePaymentOrder;
 import com.yumu.hexie.integration.wechat.entity.common.WxRefundOrder;
-import com.yumu.hexie.model.localservice.BaseO2OService;
+import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.payment.PaymentConstant;
 import com.yumu.hexie.model.payment.PaymentOrder;
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
     /** 
      * @param order
      * @return
-     * @see com.yumu.hexie.service.payment.PaymentService#fetchPaymentOrder(com.yumu.hexie.model.localservice.BaseO2OService)
+     * @see com.yumu.hexie.service.payment.PaymentService#fetchPaymentOrder(com.yumu.hexie.model.localservice.basemodel.BaseO2OService)
      */
     @Override
     public PaymentOrder fetchPaymentOrder(BaseO2OService order,String openId) {
@@ -98,7 +98,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     /** 
      * @param order
-     * @see com.yumu.hexie.service.payment.PaymentService#payOffline(com.yumu.hexie.model.localservice.BaseO2OService)
+     * @see com.yumu.hexie.service.payment.PaymentService#payOffline(com.yumu.hexie.model.localservice.basemodel.BaseO2OService)
      */
     @Override
     public void payOffline(BaseO2OService order) {

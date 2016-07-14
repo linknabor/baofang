@@ -115,7 +115,7 @@ public class ServiceOrder  extends BaseModel {
 	@JsonIgnore
     @OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH}, mappedBy = "serviceOrder")
     @Fetch(FetchMode.SUBSELECT)
-	private List<OrderItem> items = new ArrayList<>();
+	private List<OrderItem> items = new ArrayList<OrderItem>();
 
 	public ServiceOrder(){}
 	public ServiceOrder(SingleItemOrder sOrder) {

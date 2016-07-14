@@ -4,11 +4,11 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +21,7 @@ import com.yumu.hexie.integration.wechat.entity.common.PaymentOrderResult;
 import com.yumu.hexie.model.payment.PaymentConstant;
 import com.yumu.hexie.model.payment.PaymentOrder;
 import com.yumu.hexie.service.common.WechatCoreService;
+import com.yumu.hexie.service.o2o.BaojieService;
 import com.yumu.hexie.service.o2o.XiyiService;
 import com.yumu.hexie.service.payment.PaymentService;
 import com.yumu.hexie.service.sales.BaseOrderService;
@@ -45,6 +46,8 @@ public class WechatController extends BaseController{
     private BaseOrderService baseOrderService;
     @Inject
     private XiyiService xiyiService;
+    @Inject
+    private BaojieService baojieService;
 	@Inject
 	private PaymentService paymentService;
     
@@ -82,9 +85,11 @@ public class WechatController extends BaseController{
 			payment = paymentService.refreshStatus(payment);
 			if(payment.getOrderType() == PaymentConstant.TYPE_MARKET_ORDER){
 	            baseOrderService.update4Payment(payment);
-			} else {
-			    xiyiService.update4Payment(payment);
-			}
+			} else if(payment.getOrderType() == PaymentConstant.TYPE_XIYI_ORDER) {
+                xiyiService.update4Payment(payment);
+            } else if(payment.getOrderType() == PaymentConstant.TYPE_BAOJIE_ORDER) {
+                baojieService.update4Payment(payment);
+            }
     	}
     	return "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
     }
@@ -103,7 +108,7 @@ public class WechatController extends BaseController{
     	if(s != null) {
     		return new BaseResult<JsSign>().success(s);
     	} else {
-    		return new BaseResult<JsSign>().failMsg("微信初始化失败，请稍后重试！");
+    		return new BaseResult<JsSign>().failMsg("支付初始化失败，请稍后重试！");
     	}
     	
     }

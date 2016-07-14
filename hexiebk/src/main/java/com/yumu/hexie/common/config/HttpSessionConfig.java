@@ -19,13 +19,13 @@ public class HttpSessionConfig {
     private String host;
     @Value(value = "${redis.port}")
     private Integer port;
-
     @Bean
     public JedisConnectionFactory connectionFactory() {
     	LOGGER.error("JedisConnectionFactory connectionFactory()");
         JedisConnectionFactory factory = new JedisConnectionFactory();
         factory.setHostName(host);
         factory.setPort(port);
+        //factory.setPassword(redisPassword);
         return factory;
     }
 

@@ -25,15 +25,15 @@ public class AppInit implements WebApplicationInitializer {
 
         configureEncodingFilter(servletContext);
         configSpringSessionRepositoryFilter(servletContext, context);
-        configureSpringSecurity(servletContext, context);
+        //configureSpringSecurity(servletContext, context);
         dispatcher.setAsyncSupported(true);
     }
 
-    private void configureSpringSecurity(ServletContext servletContext, WebApplicationContext rootContext) {
-        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain",
-                new DelegatingFilterProxy("springSecurityFilterChain", rootContext));
-        springSecurity.addMappingForUrlPatterns(null, true, "/*");
-    }
+//    private void configureSpringSecurity(ServletContext servletContext, WebApplicationContext rootContext) {
+//        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain",
+//                new DelegatingFilterProxy("springSecurityFilterChain", rootContext));
+//        springSecurity.addMappingForUrlPatterns(null, true, "/*");
+//    }
     private void configSpringSessionRepositoryFilter(ServletContext servletContext, WebApplicationContext rootContext) {
         FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSessionRepositoryFilter",
                 new DelegatingFilterProxy("springSessionRepositoryFilter", rootContext));
@@ -44,12 +44,6 @@ public class AppInit implements WebApplicationInitializer {
         context.setConfigLocation("com.yumu.hexie.common.config");
         return context;
     }
-
-//    private void configureSpringSecurity(ServletContext servletContext, WebApplicationContext rootContext) {
-//        FilterRegistration.Dynamic springSecurity = servletContext.addFilter("springSecurityFilterChain",
-//                new DelegatingFilterProxy("springSecurityFilterChain", rootContext));
-//        springSecurity.addMappingForUrlPatterns(null, true, "/*");
-//    }
 
     private void configureEncodingFilter(ServletContext servletContext) {
         FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter", new CharacterEncodingFilter());

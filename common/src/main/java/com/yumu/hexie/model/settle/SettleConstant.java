@@ -18,8 +18,9 @@ public class SettleConstant {
     public static final int STATUS_CONFIRM = 2;
     public static final int STATUS_REFUNDING = 3;
     public static final int STATUS_REFUNDED = 4;
-    
+
     public static final int ORDER_TYPE_XIYI = 1;
+    public static final int ORDER_TYPE_BAOJIE = 2;
     
     public static final int TYPE_MARKET = 1;
     public static final int TYPE_HOME =2;

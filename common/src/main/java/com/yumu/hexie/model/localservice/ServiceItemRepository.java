@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ServiceItemRepository extends JpaRepository<ServiceItem, Long> {
 
     public List<ServiceItem> findByIdIn(List<Long> ids);
+    
+    public List<ServiceItem> findByType(long type);
 }

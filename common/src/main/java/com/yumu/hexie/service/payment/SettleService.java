@@ -7,7 +7,7 @@ package com.yumu.hexie.service.payment;
 import java.util.List;
 
 import com.yumu.hexie.model.localservice.HomeBillItem;
-import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
+import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
 import com.yumu.hexie.model.payment.PaymentOrder;
 import com.yumu.hexie.model.settle.SettleBill;
 
@@ -21,7 +21,7 @@ import com.yumu.hexie.model.settle.SettleBill;
  */
 public interface SettleService {
     //结算单落地
-    public SettleBill createSettle(YunXiyiBill xiyi,List<HomeBillItem> items, PaymentOrder pay);
+    public SettleBill createSettle(BaseO2OService bill, long merchantId,List<HomeBillItem> items, PaymentOrder pay);
     
     //订单用户确认
     public void confirmBiz(int orderType, long orderId);

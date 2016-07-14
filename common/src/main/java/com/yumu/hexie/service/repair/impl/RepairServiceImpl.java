@@ -17,8 +17,6 @@ import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairConstant;
-import com.yumu.hexie.model.localservice.repair.RepairOperator;
-import com.yumu.hexie.model.localservice.repair.RepairOperatorRepository;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
 import com.yumu.hexie.model.localservice.repair.RepairOrderRepository;
 import com.yumu.hexie.model.localservice.repair.RepairProject;
@@ -322,14 +320,13 @@ public class RepairServiceImpl implements RepairService {
         }
         return r;
     }
-
-	@Override
+    
+    @Override
 	public Long reassgin(long orderId, User user) {
 		
 		RepairOrder order = queryById(orderId);
 		repairAssignService.assignOrder(order);
         return order.getId();
 	}
-
 
 }

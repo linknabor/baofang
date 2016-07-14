@@ -5,9 +5,12 @@
 package com.yumu.hexie.service.common.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.common.SystemConfigService;
+import com.yumu.hexie.service.o2o.OperatorService;
 import com.yumu.hexie.service.user.UserService;
 
 /**
@@ -37,9 +41,10 @@ import com.yumu.hexie.service.user.UserService;
  * @version $Id: GotongServiceImple.java, v 0.1 2016年1月8日 上午10:01:41  Exp $
  */
 @Service("gotongService")
-public class GotongServiceImple implements GotongService {
+public class GotongServiceImpl implements GotongService {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(GotongServiceImpl.class);
+    
     public static String WEIXIU_NOTICE = ConfigUtil.get("weixiuNotice");
 
     public static String XIYI_NOTICE = ConfigUtil.get("weixiuNotice");
@@ -50,20 +55,21 @@ public class GotongServiceImple implements GotongService {
     
     public static String SUBSCRIBE_DETAIL = ConfigUtil.get("subscribeDetail");
     
-    public static String SUPERMARKET_DETAIL = ConfigUtil.get("supermarketDetail");
-    
+	public static String SUPERMARKET_DETAIL = ConfigUtil.get("supermarketDetail");
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
     @Inject
-    private UserService  userService;
+    private UserService userService;
     @Inject
-    private SystemConfigService  systemConfigService;
+    private OperatorService operatorService;
+	@Inject
+    private SystemConfigService systemConfigService;
 
     @Async
     @Override
     public void sendRepairAssignMsg(long opId,RepairOrder order,int distance){
         ServiceOperator op = serviceOperatorRepository.findOne(opId);
-        TemplateMsgService.sendRepairAssignMsg(order, op,systemConfigService.queryWXAToken());
+        TemplateMsgService.sendRepairAssignMsg(order, op, systemConfigService.queryWXAToken());
     }
     @Async
     @Override
@@ -87,7 +93,7 @@ public class GotongServiceImple implements GotongService {
 	public void sendSubscribeMsg(User user) {
 
          Article article = new Article();
-         article.setTitle("欢迎加入合协社区！");
+         article.setTitle("欢迎加入我家大楼！");
          article.setDescription("您已获得关注红包，点击查看。");
          article.setPicurl(SUBSCRIBE_IMG);
          article.setUrl(SUBSCRIBE_DETAIL);
@@ -96,7 +102,7 @@ public class GotongServiceImple implements GotongService {
          NewsMessage msg = new NewsMessage(news);
          msg.setTouser(user.getBindOpenId());
          msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-//         CustomService.sendCustomerMessage(msg);
+         //CustomService.sendCustomerMessage(msg);
 	}
 
     /** 
@@ -120,7 +126,24 @@ public class GotongServiceImple implements GotongService {
         String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
         CustomService.sendCustomerMessage(msg,token);
     }
-    
+    /** 
+     * @param count
+     * @param billName
+     * @param requireTime
+     * @param url
+     * @see com.yumu.hexie.service.common.GotongService#sendYuyueBillMsg(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Async
+    @Override
+    public void sendCommonYuyueBillMsg(int serviceType,String title, String billName, String requireTime, String url) {
+        LOG.error("发送预约通知！["+serviceType+"]" + billName + " -- " + requireTime);
+        List<ServiceOperator> ops = operatorService.findByType(serviceType);
+        for(ServiceOperator op: ops) {
+            LOG.error("发送到操作员！["+serviceType+"]" + billName + " -- " + op.getName() + "--" + op.getId());
+            TemplateMsgService.sendYuyueBillMsg(op.getOpenId(), title, billName, requireTime, url, systemConfigService.queryWXAToken());    
+        }
+        
+    }
 	@Override
 	public void sendSupermarketAssignMsg(long opId, ServiceOrder order) {
 		
@@ -129,9 +152,5 @@ public class GotongServiceImple implements GotongService {
         TemplateMsgService.sendSMOrderMsg(order, op, token);
 		
 	}
-    
-    
-    
-    
-    
+
 }

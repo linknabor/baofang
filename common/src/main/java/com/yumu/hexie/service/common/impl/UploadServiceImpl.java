@@ -10,7 +10,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.jsoup.helper.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +22,7 @@ import com.qiniu.api.io.PutExtra;
 import com.qiniu.api.io.PutRet;
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.common.util.IOUtils;
+import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.qiniu.util.QiniuUtil;
 import com.yumu.hexie.integration.wechat.service.FileService;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
@@ -47,12 +47,11 @@ public class UploadServiceImpl implements UploadService {
 
     @Value(value = "${qiniu.domain}")
     private String              domain;
-
+    
     @Inject
     private RepairOrderRepository repairOrderRepository;
-    @Inject
+	@Inject
     private SystemConfigService systemConfigService;
-    
     /** 
      * @param order
      * @see com.yumu.hexie.service.common.UploadService#updateRepairImg(com.yumu.hexie.model.localservice.repair.RepairOrder)
@@ -61,8 +60,8 @@ public class UploadServiceImpl implements UploadService {
     @Async
     public void updateRepairImg(RepairOrder order) {
         if (order.isImageUploaded()
-                ||( StringUtil.isBlank(order.getImgUrls()) 
-                && StringUtil.isBlank(order.getCommentImgUrls()))) {
+                ||( StringUtil.isEmpty(order.getImgUrls()) 
+                && StringUtil.isEmpty(order.getCommentImgUrls()))) {
             return;
         }
         String imgUrls = moveImges(order.getImgUrls());
@@ -75,7 +74,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     private String moveImges(String imgUrls) {
-        if(StringUtil.isBlank(imgUrls)) {
+        if(StringUtil.isEmpty(imgUrls)) {
             return "";
         }
         String newImgUrls = "";
@@ -135,7 +134,7 @@ public class UploadServiceImpl implements UploadService {
             int imgcounter = 0;
             inputStream = null;
             while (inputStream == null && imgcounter < 3) {
-                inputStream = FileService.downloadFile(mediaId,systemConfigService.queryWXAToken()); //重试3次
+                inputStream = FileService.downloadFile(mediaId, systemConfigService.queryWXAToken()); //重试3次
                 if (inputStream == null) {
                     log.error("获取图片附件失败。" + mediaId);
                 }

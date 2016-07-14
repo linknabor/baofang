@@ -20,12 +20,13 @@ import com.yumu.hexie.integration.wechat.entity.templatemsg.SupermarketOrderVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateItem;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateMsg;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.WuyePaySuccessVO;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.YuyueOrderVO;
 import com.yumu.hexie.integration.wechat.util.WeixinUtil;
 import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.user.User;
-import com.yumu.hexie.service.common.impl.GotongServiceImple;
+import com.yumu.hexie.service.common.impl.GotongServiceImpl;
 
 public class TemplateMsgService {
 	
@@ -38,8 +39,9 @@ public class TemplateMsgService {
 	public static String WUYE_PAY_SUCCESS_MSG_TEMPLATE = ConfigUtil.get("wuyePaySuccessTemplate");
 	public static String REPAIR_ASSIGN_TEMPLATE = ConfigUtil.get("reapirAssginTemplate");
 	public static String SM_ORDER_ASSGIN_TEMPLATE = ConfigUtil.get("smOrderAssginTemplate");
+	public static String YUYUE_ASSIGN_TEMPLATE = ConfigUtil.get("yuyueNoticeTemplate");
 	
-	/**
+/**
 	 * 模板消息发送
 	 */
 	public static String TEMPLATE_MSG = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
@@ -52,7 +54,6 @@ public class TemplateMsgService {
 			}
 		} catch (JSONException e) {
 			log.error("发送模板消息失败");
-			e.printStackTrace();
 		}
 		return false;
 	}
@@ -182,13 +183,30 @@ public class TemplateMsgService {
     	TemplateMsg<RepairOrderVO>msg = new TemplateMsg<RepairOrderVO>();
     	msg.setData(vo);
     	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
-    	msg.setUrl(GotongServiceImple.WEIXIU_NOTICE+ro.getId());
+    	msg.setUrl(GotongServiceImpl.WEIXIU_NOTICE+ro.getId());
     	msg.setTouser(op.getOpenId());
     	TemplateMsgService.sendMsg(msg,accessToken);
     	
     }
-	
-    /**
+    public static void sendYuyueBillMsg(String openId,String title,String billName, String requireTime, String url, String accessToken) {
+
+        //更改为使用模版消息发送
+        YuyueOrderVO vo = new YuyueOrderVO();
+        vo.setTitle(new TemplateItem(title));
+        vo.setProjectName(new TemplateItem(billName));
+        vo.setRequireTime(new TemplateItem(requireTime));
+        vo.setRemark(new TemplateItem("请尽快处理！"));
+  
+        TemplateMsg<YuyueOrderVO>msg = new TemplateMsg<YuyueOrderVO>();
+        msg.setData(vo);
+        msg.setTemplate_id(YUYUE_ASSIGN_TEMPLATE);
+        msg.setUrl(url);
+        msg.setTouser(openId);
+        TemplateMsgService.sendMsg(msg, accessToken);
+        
+    }
+
+	/**
 	 * 发送订单消息给商户
 	 * @param seed
 	 * @param ro
@@ -208,11 +226,10 @@ public class TemplateMsgService {
     	TemplateMsg<SupermarketOrderVO>msg = new TemplateMsg<SupermarketOrderVO>();
     	msg.setData(vo);
     	msg.setTemplate_id(SM_ORDER_ASSGIN_TEMPLATE);
-    	msg.setUrl(GotongServiceImple.SUPERMARKET_DETAIL+so.getId());
+    	msg.setUrl(GotongServiceImpl.SUPERMARKET_DETAIL+so.getId());
     	msg.setTouser(op.getBindOpenId());
     	TemplateMsgService.sendMsg(msg,accessToken);
     	
     }
-	
 
 }

@@ -1,9 +1,7 @@
 package com.yumu.hexie.common.config;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.transform.Source;
 
@@ -29,13 +27,10 @@ import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.HandlerMapping;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
-import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -114,17 +109,6 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return messageSource;
     }
     
-//    @Override  
-//    protected void addInterceptors(InterceptorRegistry registry) {  
-//    	LOGGER.error("addInterceptors start");  
-//        registry.addInterceptor(checkUserInterceptor());  
-//        LOGGER.error("addInterceptors end");  
-//    }
-//    
-//    @Bean
-//    public HandlerInterceptor checkUserInterceptor(){
-//    	return new CheckUserAddedInterceptor();
-//    }
     @Bean(name = "mapper")
     public ObjectMapper mapper() {
         return new ObjectMapper();

@@ -71,7 +71,7 @@ public class UserCarInfoServiceImpl implements UserCarInfoService {
 
 	@Override
 	public List<CarBrandName> getMakeName() {
-		List<?> lists = new ArrayList<>();
+		List<Object[]> lists = new ArrayList<Object[]>();
 		List<CarBrandName> carBrandNames= new ArrayList<CarBrandName>();
 		List<String> brandNames = new ArrayList<String>();
 

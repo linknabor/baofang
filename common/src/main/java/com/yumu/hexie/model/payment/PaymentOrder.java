@@ -7,7 +7,8 @@ import javax.persistence.Transient;
 
 import com.yumu.hexie.common.util.OrderNoUtil;
 import com.yumu.hexie.model.BaseModel;
-import com.yumu.hexie.model.localservice.BaseO2OService;
+import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
+import com.yumu.hexie.model.localservice.basemodel.HasMerchant;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.settle.SettleConstant;
 
@@ -71,7 +72,10 @@ public class PaymentOrder  extends BaseModel {
         setOrderId(order.getId());
         setUserId(order.getUserId());
         setOpenId(openId);
-        setMerchantId(order.getMerchantId() == null ? 0 : order.getMerchantId());
+        if(order instanceof HasMerchant) {
+            setMerchantId(((HasMerchant)order).getMerchantId() == null ? 0 : ((HasMerchant)order).getMerchantId());    
+        }
+        
         setPrice(order.getRealAmount().floatValue());
         setStatus(PaymentConstant.PAYMENT_STATUS_INIT);
         setOrderType(order.getPaymentOrderType());

@@ -20,7 +20,6 @@ import com.yumu.hexie.model.system.SystemConfig;
 import com.yumu.hexie.model.system.SystemConfigRepository;
 import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.exception.BizValidateException;
-
 /**
  * <pre>
  * 
@@ -32,12 +31,8 @@ import com.yumu.hexie.service.exception.BizValidateException;
 @Service("systemConfigService")
 public class SystemConfigServiceImpl implements SystemConfigService {
 
-    public static final String JS_TOKEN = "JS_TOKEN";
-    public static final String ACC_TOKEN = "ACCESS_TOKEN";
-    
-    private static final String NOCOUPON_ITEMS = "NOCOUPON_ITEMS";
-    private static final String ACT_PERIOD = "ACT_PERIOD";
-    
+	private static final String JS_TOKEN = "JS_TOKEN";
+	private static final String ACC_TOKEN = "ACCESS_TOKEN";
     private static final String APP_SECRET_KEY = "APPSEC_%s";
     public static final String APP_ACC_TOKEN = "APP_TOKEN_%s";
     private static final String APPIDS = "APPIDS";
@@ -62,9 +57,9 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         }
         return 0;
     }
-
+    
     public String[] queryActPeriod() {
-        List<SystemConfig> list = systemConfigRepository.findAllBySysKey(ACT_PERIOD);
+        List<SystemConfig> list = systemConfigRepository.findAllBySysKey("ACT_PERIOD");
         if (list.size()>0) {
             
             SystemConfig systemConfig = list.get(0);
@@ -78,7 +73,8 @@ public class SystemConfigServiceImpl implements SystemConfigService {
     
     public Set<String> getUnCouponItems() {
         Set<String> res = new HashSet<String>();
-        SystemConfig systemConfig = getConfigWithCache(NOCOUPON_ITEMS);
+        String key = "NOCOUPON_ITEMS";
+        SystemConfig systemConfig = getConfigWithCache(key);
         if(systemConfig != null) {
             String ids = systemConfig.getSysValue();
             for(String idStr: ids.split(",")) {
@@ -98,7 +94,8 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         }
         return systemConfig;
     }
-    /** 
+
+	/** 
      * @param appId
      * @return
      * @see com.yumu.hexie.service.common.SystemConfigService#queryWXAccToken(java.lang.String)
@@ -179,9 +176,8 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         throw new BizValidateException("微信token没有记录");
     }
     
-
     @Override
-    public String queryJsTickets() {
+	public String queryJsTickets() {
         String tickets = "";
         SystemConfig config = getConfigWithCache(JS_TOKEN);
         if (config != null) {
@@ -202,4 +198,5 @@ public class SystemConfigServiceImpl implements SystemConfigService {
 	
 		return ret;
 	}
+    
 }

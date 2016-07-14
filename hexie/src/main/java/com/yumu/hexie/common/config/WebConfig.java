@@ -45,34 +45,6 @@ public class WebConfig extends WebMvcConfigurationSupport {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
     private static final String PROP_FILE_ENCODING = "UTF-8";
 
-//    @Bean
-//    public ViewResolver viewResolver() {
-//    	VelocityViewResolver viewResolver = new VelocityViewResolver();
-//
-//        viewResolver.setSuffix(".vm");
-//        viewResolver.setContentType("text/html;charset=UTF-8");
-//        viewResolver.setDateToolAttribute("dateTool");
-//        viewResolver.setNumberToolAttribute("numberTool");
-//        viewResolver.setExposeRequestAttributes(true);
-//        viewResolver.setExposeSessionAttributes(true);
-//        viewResolver.setOrder(0);
-//        //viewResolver.setAllowSessionOverride(true);
-//        return viewResolver;
-//    }
-
-    
-//    @Bean
-//    public VelocityConfigurer velocityConfigurer(){
-//        VelocityConfigurer configurer = new VelocityConfigurer();
-//        configurer.setResourceLoaderPath("jsp");
-//        Map<String,Object> prop = new HashMap<String,Object>();
-//        prop.put("directive.foreach.counter.name","loopCounter");
-//        prop.put("directive.foreach.counter.initial.value",0);
-//        prop.put("input.encoding","UTF-8");
-//        prop.put("output.encoding","UTF-8");
-//        configurer.setVelocityPropertiesMap(prop);
-//        return configurer;
-//    }
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         RequestMappingHandlerMapping handlerMapping = super.requestMappingHandlerMapping();
