@@ -482,15 +482,26 @@ public class CouponServiceImpl implements CouponService {
         	
         }
 
+        /*可用商户校验*/
 		if(coupon.getMerchantId() != null && coupon.getMerchantId() != 0 ){
 		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
 		    log.error("merchantId:" + merchantId);
 		    if(merchantId == null || merchantId != coupon.getMerchantId()) {
-                log.warn("不可用（商户验证）");
+                log.warn("不可用（商户正向验证）");
                 return false;
 		    }
 		}
-
+		
+		/*不可用商户校验*/
+		if(coupon.getuMerchantId() != null && coupon.getuMerchantId() != 0 ){
+		    Long merchantId = getMerchatId(new Long(itemType), serviceType, productId);
+		    log.error("merchantId:" + merchantId);
+		    if(merchantId == coupon.getuMerchantId()) {
+                log.warn("不可用（商户逆向验证）");
+                return false;
+		    }
+		}
+		
         log.warn("可以用（全部通过）");
 		return true;
 	}
