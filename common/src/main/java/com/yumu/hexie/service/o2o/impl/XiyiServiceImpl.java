@@ -121,7 +121,8 @@ public class XiyiServiceImpl implements XiyiService {
         YunXiyiBill bill = yunXiyiBillRepository.save(ob.getBill());
         for(HomeBillItem item : ob.getBill().getItems()) {
             ServiceType type = homeItemService.findTypeByItem(item.getServiceId());
-            item.setBillType(type.getId());
+            item.setBillType(HomeServiceConstant.SERVICE_TYPE_XIYI);
+            item.setParentType(type.getId());
             item.setBillId(bill.getId());
         }
         homeBillItemRepository.save(ob.getBill().getItems());
