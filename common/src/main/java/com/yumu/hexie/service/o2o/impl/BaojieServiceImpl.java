@@ -106,7 +106,7 @@ public class BaojieServiceImpl implements BaojieService {
             
         Coupon coupon = req.getCouponId() != null && req.getCouponId() > 0 ? couponService.findOne(req.getCouponId()) : null;
         if(couponService.isAvaible(PromotionConstant.COUPON_ITEM_TYPE_SERVICE,
-            new Long(HomeServiceConstant.SERVICE_TYPE_BAOJIE), item.getBillType(),item.getServiceId(), ob.getBill().getAmount().floatValue(), coupon, false)){
+            new Long(HomeServiceConstant.SERVICE_TYPE_BAOJIE), item.getParentType(),item.getServiceId(), ob.getBill().getAmount().floatValue(), coupon, false)){
             ob.coupon(coupon);
         }
         ob.getBill().setTotalAmount(ob.getBill().getRealAmount());
@@ -115,7 +115,8 @@ public class BaojieServiceImpl implements BaojieService {
         BaojieBill bill =  baojieBillRepository.save(ob.getBill());
         for(HomeBillItem i : ob.getBill().getItems()) {
             ServiceType t = homeItemService.findTypeByItem(item.getServiceId());
-            i.setBillType(t.getId());
+            i.setBillType(HomeServiceConstant.SERVICE_TYPE_BAOJIE);
+            i.setParentType(t.getId());
             i.setBillId(bill.getId());
         }
         homeBillItemRepository.save(ob.getBill().getItems());
@@ -221,7 +222,7 @@ public class BaojieServiceImpl implements BaojieService {
 
     private void notify2Operators(BaojieBill bill){
         gotongService.sendCommonYuyueBillMsg(HomeServiceConstant.SERVICE_TYPE_BAOJIE,
-                "你有一条新的保洁订单",bill.getProjectName(), DateUtil.dtFormat(bill.getRequireDate(),"yyyy-MM-dd HH:mm"), "");    
+                "您有一条新的订单消息",bill.getProjectName(), DateUtil.dtFormat(bill.getRequireDate(),"yyyy-MM-dd HH:mm"), "");    
     }
 
     /** 
@@ -288,6 +289,5 @@ public class BaojieServiceImpl implements BaojieService {
         O2OServiceBuilder.init(bill).cancelByUser("手动操作");
         return baojieBillRepository.save(bill);
     }
-
 
 }
