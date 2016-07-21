@@ -95,7 +95,7 @@ public class XiyiServiceImpl implements XiyiService {
             throw new BizValidateException("预约服务时间不能大于7天。");
         }
         if (time<3600000) {
-			throw new BizValidateException("预约服务时间"+d+"早于当前时间");
+			throw new BizValidateException("预约服务时间"+DateUtil.dtFormat(d)+"早于当前时间");
 		}
         
         Address addr = addressService.queryAddressById(req.getAddressId());
