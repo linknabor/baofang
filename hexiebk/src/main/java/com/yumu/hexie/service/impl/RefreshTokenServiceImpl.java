@@ -4,15 +4,10 @@
  */
 package com.yumu.hexie.service.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -38,14 +33,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private static final Logger SCHEDULE_LOG = LoggerFactory.getLogger("com.yumu.hexie.schedule");
     
-    private static Properties props = new Properties();
-
     @Inject
     private SystemConfigService systemConfigService;
     
     @Inject
     private SharedSysConfigService sharedSysConfigService;
-    @Scheduled(cron = "0 1/4 * * * ?")
+    @Scheduled(cron = "0 0/105 * * * ?")
     public void refreshOtherAccessTokensJob() {
         if(!ConstantWeChat.isMainServer()){
             return;
@@ -63,7 +56,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         SCHEDULE_LOG.error("--------------------refresh Other token[E]-------------------");
     }
 
-    @Scheduled(cron = "0 1/2 * * * ?")
+    @Scheduled(cron = "0 0/105 * * * ?")
     public void refreshAccessTokenJob() {
         if(!ConstantWeChat.isMainServer()){
             return;
@@ -78,7 +71,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         SCHEDULE_LOG.error("--------------------refresh token[E]-------------------");
     }
 
-    @Scheduled(cron = "10 1/2 * * * ?")
+    @Scheduled(cron = "0 0/105 * * * ?")
     public void refreshJsTicketJob() {
         if(!ConstantWeChat.isMainServer()){
             return;
@@ -93,7 +86,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         SCHEDULE_LOG.error("--------------------refresh ticket[E]-------------------");
     }
 
-    @Scheduled(cron = "0 1/4 * * * ?")
+    @Scheduled(cron = "0 0/105 * * * ?")
     public void refreshChunhuiAccessTokensJob() {
         if(!ConstantWeChat.isMainServer()){
             return;
