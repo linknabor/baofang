@@ -47,7 +47,6 @@ import com.yumu.hexie.web.BaseResult;
 
 @Controller(value = "wuyeController")
 public class WuyeController extends BaseController {
-	
 	private static final Logger log = LoggerFactory.getLogger(WuyeController.class);
 
 	@Inject
@@ -298,13 +297,13 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入合协社区。您已获得价值10元红包一份。感谢您对合协社区的支持。";
+		String msg = "您好，欢迎加入我家大楼。您已获得价值10元红包一份。感谢您对我家大楼的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
 	@Async
 	private void sendRegTemplateMsg(User user){
-		TemplateMsgService.sendRegisterSuccessMsg(user);
+		TemplateMsgService.sendRegisterSuccessMsg(user, systemConfigService.queryWXAToken());
 	}
 	
 	/**
@@ -352,11 +351,10 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult updateCouponStatus(HttpSession session){
 		
-		if (session == null) {
-			return BaseResult.fail("no session info ...");
-		}
-		
 		User user = (User)session.getAttribute(Constants.USER);
+		if (user==null) {
+			return BaseResult.fail("no user .");
+		}
 		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
@@ -413,7 +411,8 @@ public class WuyeController extends BaseController {
 	@Async
 	private void sendPayTemplateMsg(User user, String tradeWaterId, String feePrice){
 		
-		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice);
+		String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
+		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice, token);
 	}
 	
 	
