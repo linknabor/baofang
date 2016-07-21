@@ -47,7 +47,8 @@ import com.yumu.hexie.web.BaseResult;
 
 @Controller(value = "wuyeController")
 public class WuyeController extends BaseController {
-	private static final Logger Log = LoggerFactory.getLogger(WuyeController.class);
+	
+	private static final Logger log = LoggerFactory.getLogger(WuyeController.class);
 
 	@Inject
 	private WuyeService wuyeService;
@@ -195,11 +196,11 @@ public class WuyeController extends BaseController {
 	public BaseResult<WechatPayInfo> getPrePayInfo(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId,
 			@RequestParam(required=false) String couponUnit, @RequestParam(required=false) String couponNum,
-			@RequestParam(required=false) String couponId)
+			@RequestParam(required=false) String couponId,@RequestParam(required=false) String mainBill,@RequestParam(required=false) String mainAmt)
 			throws Exception {
 		WechatPayInfo result;
 		try {
-			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), couponUnit, couponNum, couponId);
+			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), couponUnit, couponNum, couponId,mainBill,mainAmt);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -297,13 +298,13 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入我家大楼。您已获得价值10元红包一份。感谢您对我家大楼的支持。";
+		String msg = "您好，欢迎加入合协社区。您已获得价值10元红包一份。感谢您对合协社区的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
 	@Async
 	private void sendRegTemplateMsg(User user){
-		TemplateMsgService.sendRegisterSuccessMsg(user, systemConfigService.queryWXAToken());
+		TemplateMsgService.sendRegisterSuccessMsg(user);
 	}
 	
 	/**
@@ -351,10 +352,11 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult updateCouponStatus(HttpSession session){
 		
-		User user = (User)session.getAttribute(Constants.USER);
-		if (user==null) {
-			return BaseResult.fail("no user .");
+		if (session == null) {
+			return BaseResult.fail("no session info ...");
 		}
+		
+		User user = (User)session.getAttribute(Constants.USER);
 		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
@@ -373,7 +375,11 @@ public class WuyeController extends BaseController {
 						
 						for (int j = 0; j < couponArr.length; j++) {
 							String coupon_id = couponArr[j];
-							couponService.comsume("20", Integer.parseInt(coupon_id));	//这里写死20
+							try {
+								couponService.comsume("20", Integer.parseInt(coupon_id));	//这里写死20
+							} catch (Exception e) {
+								log.error("couponId : " + coupon_id + ", " + e.getMessage());
+							}
 						}
 						
 						
@@ -399,7 +405,7 @@ public class WuyeController extends BaseController {
 			
 		} catch (Exception e) {
 
-			Log.error("add Coupons for wuye Pay : " + e.getMessage());
+			log.error("add Coupons for wuye Pay : " + e.getMessage());
 		}
 		
 	}
@@ -407,8 +413,7 @@ public class WuyeController extends BaseController {
 	@Async
 	private void sendPayTemplateMsg(User user, String tradeWaterId, String feePrice){
 		
-		String token = systemConfigService.queryWXAccToken(user.getBindAppId()).getToken();
-		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice, token);
+		TemplateMsgService.sendWuYePaySuccessMsg(user, tradeWaterId, feePrice);
 	}
 	
 	
@@ -438,7 +443,7 @@ public class WuyeController extends BaseController {
 				user.setXiaoquName("宜川一村");
 				user.setXiaoquId(169);
 				user.setCountyId(27);
-				user.setWuyeId("CM150821400000009761");
+				user.setWuyeId("130428400000000013");
 				user.setHeadimgurl("http://wx.qlogo.cn/mmopen/ajNVdqHZLLBIY2Jial97RCIIyq0P4L8dhGicoYDlbNXqW5GJytxmkRDFdFlX9GScrsvo7vBuJuaEoMZeiaBPnb6AA/0");
 			}else {
 				if (!StringUtil.isEmpty(userId)) {

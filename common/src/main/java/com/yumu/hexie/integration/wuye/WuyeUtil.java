@@ -29,8 +29,8 @@ import com.yumu.hexie.integration.wuye.vo.WechatPayInfo;
 public class WuyeUtil {
 
 	private static String REQUEST_ADDRESS = "http://www.e-shequ.com/mobileInterface/mobile/";
-	private static String SYSTEM_NAME;
 	
+	private static String SYSTEM_NAME;
 	private static Properties props = new Properties();
 	
 	static {
@@ -58,7 +58,7 @@ public class WuyeUtil {
 	private static final String PAY_INFO_URL = "payMentRecordInfoSDO.do?user_id=%s&trade_water_id=%s"; // 获取支付记录详情
 	private static final String QUICK_PAY_URL = "quickPaySDO.do?stmt_id=%s&curr_page=%s&total_count=%s"; // 快捷支付
 	private static final String WXLOGIN_URL = "weixinLoginSDO.do?weixin_id=%s"; // 登录验证（微信登录）
-	private static final String WX_PAY_URL = "wechatPayRequestSDO.do?user_id=%s&bill_id=%s&stmt_id=%s&openid=%s&coupon_unit=%s&coupon_num=%s&coupon_id=%s&from_sys=%s"; // 微信支付请求
+	private static final String WX_PAY_URL = "wechatPayRequestSDO.do?user_id=%s&bill_id=%s&stmt_id=%s&openid=%s&coupon_unit=%s&coupon_num=%s&coupon_id=%s&from_sys=%s&mainBill=%s&mainAmt=%s"; // 微信支付请求
 	private static final String WX_PAY_NOTICE = "wechatPayQuerySDO.do?user_id=%s&bill_id=%s&stmt_id=%s&trade_water_id=%s&package=%s"; // 微信支付返回
 	//private static final String GET_LOCATION_URL = "getGeographicalPositionSDO.do"; // 用户地理位置
 	private static final String COUPON_USE_QUERY_URL = "conponUseQuerySDO.do?user_id=%s";
@@ -128,14 +128,14 @@ public class WuyeUtil {
 	}
 	// 10.缴费
 	public static BaseResult<WechatPayInfo> getPrePayInfo(String userId,String billId,String stmtId,String openId,
-				String couponUnit, String couponNum, String couponId) throws ValidationException {
-		String url = REQUEST_ADDRESS + String.format(WX_PAY_URL, userId,billId,stmtId,openId,couponUnit,couponNum,couponId,SYSTEM_NAME);
-		
-			BaseResult baseResult = httpGet(url,WechatPayInfo.class);
-			if (!baseResult.isSuccess()) {
-				throw new ValidationException(baseResult.getData().toString());
-			}
-			return (BaseResult<WechatPayInfo>)httpGet(url,WechatPayInfo.class);
+		String couponUnit, String couponNum, String couponId,String mainBill,String mainAmt) throws ValidationException {
+		String url = REQUEST_ADDRESS + String.format(WX_PAY_URL, userId,billId,stmtId,openId,couponUnit,couponNum,couponId,SYSTEM_NAME,mainBill,mainAmt);
+	
+		BaseResult baseResult = httpGet(url,WechatPayInfo.class);
+		if (!baseResult.isSuccess()) {
+			throw new ValidationException(baseResult.getData().toString());
+		}
+		return (BaseResult<WechatPayInfo>)httpGet(url,WechatPayInfo.class);
 	}
 	
 	// 11.通知已支付
@@ -208,10 +208,11 @@ public class WuyeUtil {
 	private static final Logger Log = LoggerFactory.getLogger(WuyeUtil.class);
 	
 	public static void main(String args[]) throws JSONException {
-		String resp = "{\"result\":\"00\",\"data\":{\"trade_water_id\":\"20160112175644955015\",\"merger_status\":\"02\",\"package\":\"wx20160112175645c1930803540408946371\"}}";
+		String resp = "{\"result\":\"00\",\"data\":{\"total_count\":15,\"bill_info\":[{\"bill_id\":\"150212800002396603\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"物业管理费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年8月\",\"pay_status\":\"02\",\"fee_price\":\"41.10\"},{\"bill_id\":\"150212800002396615\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"电梯、水泵运行费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年8月\",\"pay_status\":\"02\",\"fee_price\":\"22.10\"},{\"bill_id\":\"150212800002396604\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"物业管理费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年9月\",\"pay_status\":\"02\",\"fee_price\":\"41.10\"},{\"bill_id\":\"150212800002396616\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"电梯、水泵运行费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年9月\",\"pay_status\":\"02\",\"fee_price\":\"22.10\"},{\"bill_id\":\"150212800002396605\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"物业管理费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年10月\",\"pay_status\":\"02\",\"fee_price\":\"41.10\"},{\"bill_id\":\"150212800002396617\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"电梯、水泵运行费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年10月\",\"pay_status\":\"02\",\"fee_price\":\"22.10\"},{\"bill_id\":\"150212800002396606\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"物业管理费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年11月\",\"pay_status\":\"02\",\"fee_price\":\"41.10\"},{\"bill_id\":\"150212800002396618\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"电梯、水泵运行费\",\"pay_cell_addr\":\"宝山区菊盛路851弄1号1403室\",\"service_fee_cycle\":\"2016年11月\",\"pay_status\":\"02\",\"fee_price\":\"22.10\"},{\"bill_id\":\"150212800002439002\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"物业管理费\",\"pay_cell_addr\":\"宝山区菊盛路851弄21号1004室\",\"service_fee_cycle\":\"2016年11月\",\"pay_status\":\"02\",\"fee_price\":\"59.20\"},{\"bill_id\":\"150212800002439014\",\"is_onlinepay\":\"true\",\"service_fee_name\":\"电梯、水泵运行费\",\"pay_cell_addr\":\"宝山区菊盛路851弄21号1004室\",\"service_fee_cycle\":\"2016年11月\",\"pay_status\":\"02\",\"fee_price\":\"31.80\"}],\"permit_skip_pay\":\"0\",\"permit_skip_car_pay\":\"0\"}}";
 
 		try {
-			BaseResult v =jsonToBeanResult(resp, PayResult.class);
+			BaseResult v =jsonToBeanResult(resp, BillListVO.class);
+			System.out.println();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
