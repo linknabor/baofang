@@ -91,9 +91,13 @@ public class XiyiServiceImpl implements XiyiService {
     public YunXiyiBill createBill(User user,CommonBillReq req, HomeCart cart) {
         Date d = DateUtil.parse(req.getReqTime(),"yyyy-MM-dd HH:mm");
         long time = d.getTime()-System.currentTimeMillis();
-        if(time>7*24*3600000 || time < 7200000) {
-            throw new BizValidateException("服务时间不支持！");
+        if(time>7*24*3600000) {
+            throw new BizValidateException("预约服务时间不能大于7天。");
         }
+        if (time<3600000) {
+			throw new BizValidateException("预约服务时间"+DateUtil.dtFormat(d, "yyyy-MM-dd HH:mm")+"早于当前时间");
+		}
+        
         Address addr = addressService.queryAddressById(req.getAddressId());
         O2OServiceBuilder<YunXiyiBill> ob = O2OServiceBuilder.init(YunXiyiBill.class);
         ob.initCart(cart).userId(user.getId()).req(req)
