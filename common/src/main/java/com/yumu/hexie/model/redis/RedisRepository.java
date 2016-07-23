@@ -5,15 +5,27 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.yumu.hexie.model.localservice.HomeCart;
 import com.yumu.hexie.model.market.Cart;
+import com.yumu.hexie.model.market.car.OrderCarInfo;
+import com.yumu.hexie.model.market.saleplan.RgroupRule;
 import com.yumu.hexie.model.promotion.share.ShareAccessRecord;
 import com.yumu.hexie.model.system.SystemConfig;
+import com.yumu.hexie.model.user.User;
 
 @Component(value = "redisRepository")
 public class RedisRepository {
+    @Inject
+    private StringRedisTemplate stringRedisTemplate;
+    @Inject
+    private RedisTemplate<String, Long> redisTemplate;
+    @Inject
+    private RedisTemplate<String, User> redisUserTemplate;
+    @Inject
+    private RedisTemplate<String, RgroupRule> redisRgroupRuleTemplate;
 
     @Inject
     private RedisTemplate<String, Cart> cartRedisTemplate;
@@ -21,8 +33,27 @@ public class RedisRepository {
     private RedisTemplate<String, HomeCart> homeCartRedisTemplate;
     @Inject
     private RedisTemplate<String, ShareAccessRecord> shareAccessRecordTemplate;
+    
     @Inject
     private RedisTemplate<String, SystemConfig> systemConfigRedisTemplate;
+    
+    @Inject
+    private RedisTemplate<String, OrderCarInfo> orderCarInfoRedisTemplate;//创建订单之前用户填写的车辆信息
+    
+    /**
+     * 获取订单车辆信息 
+     */
+    public OrderCarInfo getOrderCarInfo(long userId) {
+    	return orderCarInfoRedisTemplate.opsForValue().get(Keys.orderCarInfoKey(userId));
+    }
+    
+    /**
+     * 保存订单车辆信息
+     * @param carInfo
+     */
+    public void setOrderCarInfo(OrderCarInfo carInfo) {
+    	orderCarInfoRedisTemplate.opsForValue().set(Keys.orderCarInfoKey(carInfo.getUserId()), carInfo);
+    }
     
     public SystemConfig getSystemConfig(String key) {
         return systemConfigRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
