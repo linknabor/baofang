@@ -45,6 +45,7 @@ import com.yumu.hexie.service.user.UserNoticeService;
 import com.yumu.hexie.service.user.UserService;
 import com.yumu.hexie.vo.CreateOrderReq;
 import com.yumu.hexie.vo.SingleItemOrder;
+import com.yumu.hexie.service.car.CarService;
 
 @Service("baseOrderService")
 public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrderService {
@@ -76,6 +77,9 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 	@Inject
 	private SalePlanService salePlanService;
 	
+	@Inject
+	private CarService carService;
+
     @Value(value = "${testMode}")
     private boolean testMode;
 	private void preOrderCreate(ServiceOrder order, Address address){
@@ -159,6 +163,9 @@ public class BaseOrderServiceImpl extends BaseOrderProcessor implements BaseOrde
 			item.setUserId(o.getUserId());
 			orderItemRepository.save(item);
 		}
+
+		//3.1保存车辆信息 20160721 车大大的车辆服务
+		carService.saveOrderCarInfo(o);
 
         log.warn("[Create]订单创建OrderNo:" + o.getOrderNo());
 		//4. 订单后处理
