@@ -11,6 +11,7 @@ public class BillListVO implements Serializable {
 	
 	private int total_count;
 	private List<BillInfo> bill_info;
+	private List<BillInfo> car_bill_info;
 	private int permit_skip_pay;//0?
 	private int permit_skip_car_pay;
 	private String meet_the_number;
@@ -54,6 +55,11 @@ public class BillListVO implements Serializable {
 	public void setPermit_skip_pay(int permit_skip_pay) {
 		this.permit_skip_pay = permit_skip_pay;
 	}
-	
+	public List<BillInfo> getCar_bill_info() {
+		return car_bill_info;
+	}
+	public void setCar_bill_info(List<BillInfo> car_bill_info) {
+		this.car_bill_info = car_bill_info;
+	}
 	
 }
