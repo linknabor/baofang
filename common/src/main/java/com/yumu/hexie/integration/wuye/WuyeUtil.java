@@ -128,8 +128,8 @@ public class WuyeUtil {
 	}
 	// 10.缴费
 	public static BaseResult<WechatPayInfo> getPrePayInfo(String userId,String billId,String stmtId,String openId,
-				String couponUnit, String couponNum, String couponId) throws ValidationException {
-		String url = REQUEST_ADDRESS + String.format(WX_PAY_URL, userId,billId,stmtId,openId,couponUnit,couponNum,couponId,SYSTEM_NAME);
+				String couponUnit, String couponNum, String couponId,String mianBill,String mianAmt) throws ValidationException {
+		String url = REQUEST_ADDRESS + String.format(WX_PAY_URL, userId,billId,stmtId,openId,couponUnit,couponNum,couponId,SYSTEM_NAME,mianBill,mianAmt);
 		
 			BaseResult baseResult = httpGet(url,WechatPayInfo.class);
 			if (!baseResult.isSuccess()) {
