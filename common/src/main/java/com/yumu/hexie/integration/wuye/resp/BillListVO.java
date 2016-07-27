@@ -7,22 +7,28 @@ import com.yumu.hexie.integration.wuye.vo.BillInfo;
 
 public class BillListVO implements Serializable {
 
-	private static final long serialVersionUID = -3218697946940987315L;
-	
+	private static final long serialVersionUID = 1592900991660863594L;
+
 	private int total_count;
 	private List<BillInfo> bill_info;
 	private List<BillInfo> car_bill_info;
 	private int permit_skip_pay;//0?
 	private int permit_skip_car_pay;
-	private String meet_the_number;
+	private int park_discount_rule_conf;
+	private String park_discount_rule;
 	private int bills_size;
 
-	
-	public String getMeet_the_number() {
-		return meet_the_number;
+	public int getPark_discount_rule_conf() {
+		return park_discount_rule_conf;
 	}
-	public void setMeet_the_number(String meet_the_number) {
-		this.meet_the_number = meet_the_number;
+	public void setPark_discount_rule_conf(int park_discount_rule_conf) {
+		this.park_discount_rule_conf = park_discount_rule_conf;
+	}
+	public String getPark_discount_rule() {
+		return park_discount_rule;
+	}
+	public void setPark_discount_rule(String park_discount_rule) {
+		this.park_discount_rule = park_discount_rule;
 	}
 	public int getPermit_skip_car_pay() {
 		return permit_skip_car_pay;

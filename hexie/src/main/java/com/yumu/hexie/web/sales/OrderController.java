@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
-import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.comment.Comment;
@@ -49,6 +48,10 @@ import com.yumu.hexie.web.sales.resp.BuyInfoVO;
 
 @Controller(value = "orderController")
 public class OrderController extends BaseController{
+	
+	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+
+	
     @Inject
     private ServiceOrderRepository serviceOrderRepository;
     @Inject
@@ -70,7 +73,6 @@ public class OrderController extends BaseController{
 	@Inject
 	private ServiceOperatorRepository serviceOperatorRepository;
 	
-
 	@RequestMapping(value = "/getProduct/{productId}", method = RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<Product> getProduct(@PathVariable long productId) throws Exception {
@@ -298,6 +300,8 @@ public class OrderController extends BaseController{
 		}
 		
 		if (order.getUserId() != user.getId() && !assginedOp.contains(user.getId())) {
+			
+			log.error("userId : " + user.getId() + ", orderId : " + orderId);
 			return new BaseResult<ServiceOrder>().failMsg("你没有权限查看该订单！");
 		}
 		

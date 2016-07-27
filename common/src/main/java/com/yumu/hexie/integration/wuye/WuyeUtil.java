@@ -30,7 +30,6 @@ public class WuyeUtil {
 
 	private static String REQUEST_ADDRESS = "http://www.e-shequ.com/mobileInterface/mobile/";
 	private static String SYSTEM_NAME;
-	
 	private static Properties props = new Properties();
 	
 	static {
