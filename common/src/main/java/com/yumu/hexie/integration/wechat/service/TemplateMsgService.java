@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import com.yumu.hexie.common.util.ConfigUtil;
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.common.util.JacksonJsonUtil;
+import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.entity.common.WechatResponse;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.PaySuccessVO;
 import com.yumu.hexie.integration.wechat.entity.templatemsg.RegisterSuccessVO;
@@ -188,14 +189,17 @@ public class TemplateMsgService {
     	TemplateMsgService.sendMsg(msg,accessToken);
     	
     }
-    public static void sendYuyueBillMsg(String openId,String title,String billName, String requireTime, String url, String accessToken) {
+    public static void sendYuyueBillMsg(String openId,String title,String billName, String requireTime, String url, String remark, String accessToken) {
 
         //更改为使用模版消息发送
         YuyueOrderVO vo = new YuyueOrderVO();
         vo.setTitle(new TemplateItem(title));
         vo.setProjectName(new TemplateItem(billName));
         vo.setRequireTime(new TemplateItem(requireTime));
-        vo.setRemark(new TemplateItem("请尽快处理！"));
+        if (StringUtil.isEmpty(remark)) {
+			remark = "请尽快处理！";
+		}
+        vo.setRemark(new TemplateItem(remark));
   
         TemplateMsg<YuyueOrderVO>msg = new TemplateMsg<YuyueOrderVO>();
         msg.setData(vo);

@@ -135,13 +135,13 @@ public class GotongServiceImpl implements GotongService {
      */
     @Async
     @Override
-    public void sendCommonYuyueBillMsg(int serviceType,String title, String billName, String requireTime, String url) {
+    public void sendCommonYuyueBillMsg(int serviceType,String title, String billName, String requireTime, String url, String remark) {
         LOG.error("发送预约通知！["+serviceType+"]" + billName + " -- " + requireTime);
         List<ServiceOperator> ops = operatorService.findByType(serviceType);
         for(ServiceOperator op: ops) {
             LOG.error("发送到操作员！["+serviceType+"]" + billName + " -- " + op.getName() + "--" + op.getId());
             String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
-            TemplateMsgService.sendYuyueBillMsg(op.getBindOpenId(), title, billName, requireTime, url, token);    
+            TemplateMsgService.sendYuyueBillMsg(op.getBindOpenId(), title, billName, requireTime, url, remark, token);    
         }
         
     }
