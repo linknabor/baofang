@@ -140,7 +140,8 @@ public class GotongServiceImpl implements GotongService {
         List<ServiceOperator> ops = operatorService.findByType(serviceType);
         for(ServiceOperator op: ops) {
             LOG.error("发送到操作员！["+serviceType+"]" + billName + " -- " + op.getName() + "--" + op.getId());
-            TemplateMsgService.sendYuyueBillMsg(op.getOpenId(), title, billName, requireTime, url, systemConfigService.queryWXAToken());    
+            String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
+            TemplateMsgService.sendYuyueBillMsg(op.getBindOpenId(), title, billName, requireTime, url, token);    
         }
         
     }
