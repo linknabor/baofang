@@ -168,7 +168,7 @@ public class XiyiServiceImpl implements XiyiService {
     	String tel = bill.getTel();
     	String name = bill.getReceiverName();
     	
-    	String remark = "联系人："+name+"先生\r\n电话："+tel+"\r\n地址："+addr;
+    	String remark = "联系人："+name+" 先生/女士\r\n电话："+tel+"\r\n地址："+addr;
         gotongService.sendCommonYuyueBillMsg(HomeServiceConstant.SERVICE_TYPE_XIYI,
                 "您有一条新的订单消息",bill.getProjectName(), DateUtil.dtFormat(bill.getRequireDate(),"yyyy-MM-dd HH:mm"), "", remark);    
     }
