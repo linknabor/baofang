@@ -47,10 +47,6 @@ public class SystemConfigServiceImpl implements SystemConfigService {
     @Inject
     private RedisRepository redisRepository;
     
-    /** 
-     * @return
-     * @see com.yumu.hexie.service.common.SystemConfigService#querySmsChannel()
-     */
     @Override
     public int querySmsChannel() {
     	
@@ -87,11 +83,6 @@ public class SystemConfigServiceImpl implements SystemConfigService {
         return res;
     }
     
-    /** 
-     * @param appId
-     * @return
-     * @see com.yumu.hexie.service.common.SystemConfigService#querySecret(java.lang.String)
-     */
     @Override 
     public String querySecret(String appId) {
     	String value = queryValueByKey(String.format(APP_SECRET_KEY, appId));
@@ -122,11 +113,6 @@ public class SystemConfigServiceImpl implements SystemConfigService {
     
     }
     
-	/** 
-     * @param appId
-     * @return
-     * @see com.yumu.hexie.service.common.SystemConfigService#queryWXAccToken(java.lang.String)
-     */
     @Override
     public AccessToken queryWXAccToken(String appId) {
         SystemConfig config = getConfigFromCache(String.format(APP_ACC_TOKEN, appId));
