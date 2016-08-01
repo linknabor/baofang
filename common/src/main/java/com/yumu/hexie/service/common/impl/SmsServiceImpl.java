@@ -59,7 +59,8 @@ public class SmsServiceImpl implements SmsService {
         sms.setUserId(userId);
         sms = smsHisRepository.save(sms);
         
-		String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");        boolean ret = false;
+		String sendMsg = systemConfigService.queryValueByKey("SEND_MSG");        
+		boolean ret = false;
         if(!"0".equals(sendMsg)){
         	if (systemConfigService.querySmsChannel()==0) {
         		ret = YimeiUtil.sendMessage(mobilePhone, message, sms.getId());//.sendBatchMessage(account, password, mobilePhone, message);

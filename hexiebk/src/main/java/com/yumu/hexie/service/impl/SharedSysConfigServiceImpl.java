@@ -200,6 +200,8 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 	@Override
 	public void updateCaches(String appId, String key) {
 		
+		log.warn("appid: " + appId + ", key : " + key);
+		
 		String sysName = getSysNameByAppId(appId);
 		SystemConfig config = multipleRepository.getValueByKey(sysName, key);
 		String token = null;
@@ -218,11 +220,15 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 			//TODO	
 		}
 		
-		AccessToken at = new AccessToken();
-		at.setToken(token);
-		at.setExpiresIn(7200);	//FIXEDME 写死
+		log.warn("access token is : " + token);
 		
-		saveAccessTokenByAppid(appId, at);
+		if (!StringUtil.isEmpty(token)) {
+			AccessToken at = new AccessToken();
+			at.setToken(token);
+			at.setExpiresIn(7200);	//FIXEDME 写死
+			saveAccessTokenByAppid(appId, at);
+		}
+		
 		
 	}
 	

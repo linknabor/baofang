@@ -64,11 +64,11 @@ public class MultipleRepository {
         SCHEDULE_LOG.warn("BEGIN set other cache:" + "sysName:" + sysName +",key :" + key + ", value ["+value+"]");
         
         if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-        	mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+        	mainRedisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+			baofangRedisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+			chunhuiRedisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
 		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
