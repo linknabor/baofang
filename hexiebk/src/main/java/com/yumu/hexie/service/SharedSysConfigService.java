@@ -16,7 +16,9 @@ import com.yumu.hexie.integration.wechat.entity.AccessToken;
  */
 public interface SharedSysConfigService {
 
-    public void saveAccessTokenInfo(AccessToken at);
+    public void saveAccessToken(AccessToken at);
     public void saveJsToken(String jsToken);
-    public void saveOtherAccessTokenInfo(String appId, AccessToken at);
+    public void saveAccessTokenByAppid(String appId, AccessToken at);
+    public void updateCaches(String appId, String key);
+    
 }

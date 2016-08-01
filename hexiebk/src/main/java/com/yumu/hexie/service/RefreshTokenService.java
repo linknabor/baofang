@@ -5,6 +5,7 @@
 package com.yumu.hexie.service;
 
 
+
 /**
  * <pre>
  * 
@@ -14,10 +15,15 @@ package com.yumu.hexie.service;
  * @version $Id: RefreshTokenService.java, v 0.1 2016年5月9日 下午8:01:52  Exp $
  */
 public interface RefreshTokenService {
-    public void refreshOtherAccessTokensJob();
+	
+	public static final String SYS_NAME_HEXIE = "hexie";
+    public static final String SYS_NAME_BAOFANG = "baofang";
+    public static final String SYS_NAME_CHUNHUI = "chunhui";
+    
+    public void refreshOtherAccessTokenJob();
 
     public void refreshAccessTokenJob();
 
     public void refreshJsTicketJob();
-
+    
 }

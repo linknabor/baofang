@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.system.SystemConfig;
+import com.yumu.hexie.service.RefreshTokenService;
 
 @Component(value = "multipleRepository")
 public class MultipleRepository {
@@ -58,15 +59,38 @@ public class MultipleRepository {
     /**
      * 为其他公众号SET ACCESS_TOKEN,除了合协以外的
      */
-    public void setOtherAccessToken(String key,SystemConfig value){
+    public void setAccessTokenBySysName(String sysName, String key, SystemConfig value){
     	
-        SCHEDULE_LOG.warn("BEGIN set other cache:" + key + "["+value+"]");
-
-        chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
-        SCHEDULE_LOG.warn("set chunhuiRedis cache:"+Keys.systemConfigKey(key) + "["+value+"]");
+        SCHEDULE_LOG.warn("BEGIN set other cache:" + "sysName:" + sysName +",key :" + key + ", value ["+value+"]");
+        
+        if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
+        	mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
+			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 5, TimeUnit.MINUTES);
+		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
     	
+    }
+    
+    /**
+     * 根据key从redis中取value
+     * @param sysName
+     * @param key
+     */
+    public SystemConfig getValueByKey(String sysName, String key){
+    	
+    	SystemConfig systemconfig = null; 
+    	if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
+    		systemconfig = mainRedisTemplate.opsForValue().get(key);
+		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
+			systemconfig = baofangRedisTemplate.opsForValue().get(key);
+		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
+			systemconfig = chunhuiRedisTemplate.opsForValue().get(key);
+		}
+    	return systemconfig;
     }
 
 }

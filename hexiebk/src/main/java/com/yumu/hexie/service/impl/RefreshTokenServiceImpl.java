@@ -4,6 +4,9 @@
  */
 package com.yumu.hexie.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -38,24 +41,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     
     @Inject
     private SharedSysConfigService sharedSysConfigService;
-    @Scheduled(cron = "0 0 0/1 * * ?")
-    public void refreshOtherAccessTokensJob() {
-        if(!ConstantWeChat.isMainServer()){
-            return;
-        }
-        SCHEDULE_LOG.error("--------------------refresh Other token[B]-------------------");
-        String[] appIds = systemConfigService.queryAppIds();
-        for(String appId : appIds) {
-            AccessToken at = WeixinUtilV2.getAccessToken(appId, systemConfigService.querySecret(appId));
-            if (at == null) {
-                SCHEDULE_LOG.error("获取Other token失败----------------------------------------------！！！！！！！！！！！");
-                return;
-            }
-            systemConfigService.saveAccessToken(appId, at);
-        }
-        SCHEDULE_LOG.error("--------------------refresh Other token[E]-------------------");
-    }
-
+    
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void refreshAccessTokenJob() {
         if(!ConstantWeChat.isMainServer()){
@@ -67,7 +53,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             SCHEDULE_LOG.error("获取token失败----------------------------------------------！！！！！！！！！！！");
             return;
         }
-        sharedSysConfigService.saveAccessTokenInfo(at);
+        sharedSysConfigService.saveAccessToken(at);
         SCHEDULE_LOG.error("--------------------refresh token[E]-------------------");
     }
 
@@ -85,28 +71,25 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
         SCHEDULE_LOG.error("--------------------refresh ticket[E]-------------------");
     }
-
+    
     @Scheduled(cron = "0 0 0/1 * * ?")
-    public void refreshChunhuiAccessTokensJob() {
+    public void refreshOtherAccessTokenJob() {
         if(!ConstantWeChat.isMainServer()){
             return;
         }
-        
-        SCHEDULE_LOG.error("--------------------refresh chunhui token[B]-------------------");
-        
-        String appId = systemConfigService.queryValueByKey("CHUNHUI_APPID");
-        
-        AccessToken at = WeixinUtilV2.getAccessToken(appId, systemConfigService.querySecret(appId));
-        if (at == null) {
-            SCHEDULE_LOG.error("获取Other token失败----------------------------------------------！！！！！！！！！！！");
-            return;
+        SCHEDULE_LOG.error("--------------------refresh Other token[B]-------------------");
+        String[] appIds = systemConfigService.queryAppIds();
+        for(String appId : appIds) {
+            AccessToken at = WeixinUtilV2.getAccessToken(appId, systemConfigService.querySecret(appId));
+            if (at == null) {
+                SCHEDULE_LOG.error("获取Other token失败----------------------------------------------！！！！！！！！！！！");
+                return;
+            }
+            sharedSysConfigService.saveAccessTokenByAppid(appId, at);
         }
-//        systemConfigService.saveAccessToken(appId, at);
-        
-        /*20160516 huym 更新其他（春晖）的ACCESS_TOKEN*/
-        sharedSysConfigService.saveOtherAccessTokenInfo(appId, at);
-        SCHEDULE_LOG.error("--------------------refresh chunhui token[E]-------------------");
+        SCHEDULE_LOG.error("--------------------refresh Other token[E]-------------------");
     }
-    
+
+    	
     
 }
