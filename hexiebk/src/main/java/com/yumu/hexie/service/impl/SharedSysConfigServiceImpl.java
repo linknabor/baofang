@@ -204,28 +204,27 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		
 		String sysName = getSysNameByAppId(appId);
 		SystemConfig config = multipleRepository.getValueBySysKey(sysName, key);
-		String token = null;
-		if (config!=null) {
-			token = config.getSysValue();
-		}
-		if (StringUtil.isEmpty(token)) {
+		
+		if (config == null) {
 			List<SystemConfig> configs = systemConfigRepository.findAllBySysKey(key);
 		    if (configs.size() > 0) {
 		        config = configs.get(0);
-		        token = config.getSysKey();
 		    }
 		}
 		
-		if (StringUtil.isEmpty(token)) {
-			//TODO	
+		AccessToken at = null;
+		if (config!=null) {
+			
+			log.warn("systemconfig value:" + config.getSysValue());
+			
+			try {
+				at = (AccessToken) JacksonJsonUtil.jsonToBean(config.getSysValue(), AccessToken.class);
+			} catch (Exception e) {
+				log.error("convert bean error . ", e);
+			}
 		}
 		
-		log.warn("access token is : " + token);
-		
-		if (!StringUtil.isEmpty(token)) {
-			AccessToken at = new AccessToken();
-			at.setToken(token);
-			at.setExpiresIn(7200);	//FIXEDME 写死
+		if (!StringUtil.isEmpty(at)) {
 			saveAccessTokenByAppid(appId, at);
 		}
 		

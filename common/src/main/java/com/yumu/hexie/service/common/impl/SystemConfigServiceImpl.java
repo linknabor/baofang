@@ -108,6 +108,7 @@ public class SystemConfigServiceImpl implements SystemConfigService {
 			log.error("could not find key [" + key +"] in cache " );
 			int ret = SystemConfigUtil.notifyRefreshing(key);
 			log.error("notify refreshing the cache : " + ret);
+			throw new BizValidateException("重新生成"+key+"，请重试。");
     	}
     	return systemConfig;
     
