@@ -4,9 +4,6 @@
  */
 package com.yumu.hexie.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;

@@ -114,7 +114,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
     	String sysName = getSysNameByAppId(appId);
 		
 		if (!StringUtil.isEmpty(sysName)) {
-			saveTokenBySysName(sysName, "JS_TOKEN", appId, config);
+			saveTokenBySysName(sysName, "JS_TOKEN", appId, config.getSysValue());
 		}else {
 			log.error("no mappping for key : APPID_MAPPING ");
 		}
@@ -131,7 +131,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
     	String sysName = getSysNameByAppId(appId);
 			
 		if (!StringUtil.isEmpty(sysName)) {
-			saveTokenBySysName(sysName, null, appId, config);
+			saveTokenBySysName(sysName, null, appId, config.getSysValue());
 		}else {
 			log.error("no mappping for key : APPID_MAPPING ");
 		}
@@ -180,10 +180,10 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
      * @param appId
      * @param at
      */
-	private void saveTokenBySysName(String sysName, String key, String appId, SystemConfig config) {
+	private void saveTokenBySysName(String sysName, String key, String appId, String sysValue) {
 		
-		if (config == null) {
-			log.error("access token is null ");
+		if (StringUtil.isEmpty(sysValue)) {
+			log.error("token is null ");
 			return;
 		}
 		
@@ -201,6 +201,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 				keyName = JS_TOKEN;
 			}
 			
+			SystemConfig config = new SystemConfig(keyName, sysValue);
 			multipleRepository.setTokenBySysName(sysName, keyName, config);
 			
 		} catch (Exception e) {
@@ -231,7 +232,6 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		    }
 		}
 		
-		
 		if (!StringUtil.isEmpty(config)) {
 			
 			if ("JS_TOKEN".equals(key)) {
@@ -244,6 +244,24 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		
 		
 	}
+
+	@Override
+	public void saveAccessTokenByAppid(String appId, AccessToken at) {
+		
+		
+		try {
+			SystemConfig conifg = new SystemConfig("", JacksonJsonUtil.beanToJson(at));
+			saveAccessTokenByAppid(appId, conifg);
+		
+		} catch (Exception e) {
+
+			log.error("bean convert error ", e);
+		}
+		
+	}
+	
+	
+	
 	
 	
 }
