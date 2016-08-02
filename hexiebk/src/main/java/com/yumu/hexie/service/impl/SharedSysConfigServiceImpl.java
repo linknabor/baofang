@@ -203,7 +203,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		log.warn("appid: " + appId + ", key : " + key);
 		
 		String sysName = getSysNameByAppId(appId);
-		SystemConfig config = multipleRepository.getValueByKey(sysName, key);
+		SystemConfig config = multipleRepository.getValueBySysKey(sysName, key);
 		String token = null;
 		if (config!=null) {
 			token = config.getSysValue();
