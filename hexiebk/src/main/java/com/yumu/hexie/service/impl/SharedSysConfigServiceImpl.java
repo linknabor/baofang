@@ -190,19 +190,20 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		try {
 			
 			String keyName = null;
-			if (StringUtil.isNotEmpty(key)) {
+			if ("JS_TOKEN".equals(key)) {
+				keyName = JS_TOKEN;
+			}else if (StringUtil.isEmpty(key)) {
 				keyName = APP_ACC_TOKEN;
 				if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
 					keyName = ACC_TOKEN;
 				}else {
 					keyName = String.format(APP_ACC_TOKEN, appId);
 				}
-			}else {
-				keyName = JS_TOKEN;
 			}
 			
 			SystemConfig config = new SystemConfig(keyName, sysValue);
 			multipleRepository.setTokenBySysName(sysName, keyName, config);
+			systemConfigRepository.save(config);
 			
 		} catch (Exception e) {
 			
