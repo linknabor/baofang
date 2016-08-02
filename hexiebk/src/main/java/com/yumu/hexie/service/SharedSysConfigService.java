@@ -5,6 +5,7 @@
 package com.yumu.hexie.service;
 
 import com.yumu.hexie.integration.wechat.entity.AccessToken;
+import com.yumu.hexie.model.system.SystemConfig;
 
 /**
  * <pre>
@@ -18,7 +19,7 @@ public interface SharedSysConfigService {
 
     public void saveAccessToken(AccessToken at);
     public void saveJsToken(String jsToken);
-    public void saveAccessTokenByAppid(String appId, Object obj);
+    public void saveAccessTokenByAppid(String appId, SystemConfig config);
     public void updateCaches(String appId, String key);
     
 }
