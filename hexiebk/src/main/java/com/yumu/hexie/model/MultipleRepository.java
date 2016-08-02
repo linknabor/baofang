@@ -59,7 +59,7 @@ public class MultipleRepository {
     /**
      * 为其他公众号SET ACCESS_TOKEN,除了合协以外的
      */
-    public void setAccessTokenBySysName(String sysName, String key, SystemConfig value){
+    public void setTokenBySysName(String sysName, String key, SystemConfig value){
     	
         SCHEDULE_LOG.warn("BEGIN set other cache:" + "sysName:" + sysName +",key :" + key + ", value ["+value+"]");
         

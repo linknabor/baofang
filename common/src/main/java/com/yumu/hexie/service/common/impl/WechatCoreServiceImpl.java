@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.JacksonJsonUtil;
-import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
 import com.yumu.hexie.integration.wechat.entity.AccessToken;
 import com.yumu.hexie.integration.wechat.entity.AccessTokenOAuth;
@@ -46,7 +44,6 @@ import com.yumu.hexie.service.user.CouponService;
 @Service(value = "wechatCoreService")
 public class WechatCoreServiceImpl implements WechatCoreService {
 
-	private static final Logger SCHEDULE_LOG = LoggerFactory.getLogger("com.yumu.hexie.schedule");
 	public AccessToken at;
 	public String jsTicket = "";
 	private static final Logger LOGGER = LoggerFactory.getLogger(WechatCoreServiceImpl.class);

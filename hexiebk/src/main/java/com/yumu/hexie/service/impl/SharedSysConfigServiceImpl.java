@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -98,10 +99,32 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
         systemConfigRepository.save(config);
     }
     
-    @Override
-	public void saveAccessTokenByAppid(String appId, AccessToken at) {
+    
+    /**
+     * 同ACCESS_TOKEN
+     * key: js_token, value: xxxx
+     * @param jsToken
+     */
+    public void saveJsTokenByAppid(String appId, Object obj) {
     	
-    	if (at == null) {
+    	if (obj==null) {
+			log.error("js token is null ");
+			return;
+    	}
+    	
+    	String sysName = getSysNameByAppId(appId);
+		
+		if (!StringUtil.isEmpty(sysName)) {
+			saveTokenBySysName(sysName, "JS_TOKEN", appId, obj);
+		}else {
+			log.error("no mappping for key : APPID_MAPPING ");
+		}
+    }
+    
+    @Override
+	public void saveAccessTokenByAppid(String appId, Object obj) {
+    	
+    	if (obj == null) {
 			log.error("access token is null ");
 			return;
 		}
@@ -109,7 +132,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
     	String sysName = getSysNameByAppId(appId);
 			
 		if (!StringUtil.isEmpty(sysName)) {
-			saveAccessTokenBySysName(sysName, appId, at);
+			saveTokenBySysName(sysName, null, appId, obj);
 		}else {
 			log.error("no mappping for key : APPID_MAPPING ");
 		}
@@ -158,31 +181,36 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
      * @param appId
      * @param at
      */
-	private void saveAccessTokenBySysName(String sysName, String appId, AccessToken at) {
+	private void saveTokenBySysName(String sysName, String key, String appId, Object obj) {
 		
-		if (at == null) {
+		if (obj == null) {
 			log.error("access token is null ");
 			return;
 		}
 		
 		try {
 			
-			String keyName = APP_ACC_TOKEN;
-			if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-				keyName = ACC_TOKEN;
+			String keyName = null;
+			if (StringUtil.isNotEmpty(key)) {
+				keyName = APP_ACC_TOKEN;
+				if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
+					keyName = ACC_TOKEN;
+				}else {
+					keyName = String.format(APP_ACC_TOKEN, appId);
+				}
 			}else {
-				keyName = String.format(APP_ACC_TOKEN, appId);
+				keyName = JS_TOKEN;
 			}
 			
 			SystemConfig config = null;
 			List<SystemConfig> configs = systemConfigRepository.findAllBySysKey(keyName);
 		    if (configs.size() > 0) {
 		        config = configs.get(0);
-		        config.setSysValue(JacksonJsonUtil.beanToJson(at));
+		        config.setSysValue(JacksonJsonUtil.beanToJson(obj));
 		    } else {
-		        config = new SystemConfig(keyName,JacksonJsonUtil.beanToJson(at));
+		        config = new SystemConfig(keyName,JacksonJsonUtil.beanToJson(obj));
 		    }
-			multipleRepository.setAccessTokenBySysName(sysName, keyName, config);
+			multipleRepository.setTokenBySysName(sysName, keyName, config);
 			
 		} catch (Exception e) {
 			
@@ -212,20 +240,26 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		    }
 		}
 		
-		AccessToken at = null;
+		Object obj = null;
 		if (config!=null) {
 			
 			log.warn("systemconfig value:" + config.getSysValue());
 			
 			try {
-				at = (AccessToken) JacksonJsonUtil.jsonToBean(config.getSysValue(), AccessToken.class);
+				obj = JacksonJsonUtil.jsonToBean(config.getSysValue(), Object.class);
 			} catch (Exception e) {
 				log.error("convert bean error . ", e);
 			}
 		}
 		
-		if (!StringUtil.isEmpty(at)) {
-			saveAccessTokenByAppid(appId, at);
+		if (!StringUtil.isEmpty(obj)) {
+			
+			if ("JS_TOKEN".equals(key)) {
+				saveJsTokenByAppid(appId, obj);
+			}else {
+				saveAccessTokenByAppid(appId, obj);
+			}
+			
 		}
 		
 		
