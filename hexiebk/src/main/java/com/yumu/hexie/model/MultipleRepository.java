@@ -68,6 +68,7 @@ public class MultipleRepository {
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);	//宝房也存上
 			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 		}
         
