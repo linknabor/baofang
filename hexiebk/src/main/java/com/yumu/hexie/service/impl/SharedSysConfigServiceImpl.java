@@ -211,6 +211,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 	        }
 			
 			multipleRepository.setTokenBySysName(sysName, keyName, config);
+			systemConfigRepository.save(config);
 			
 		} catch (Exception e) {
 			

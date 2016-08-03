@@ -34,19 +34,19 @@ public class MultipleRepository {
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
-        mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+        mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 
         SystemConfig c = mainRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
         if(c != null) {
             SCHEDULE_LOG.warn("get mainRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
-        baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+        baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
         
         c = baofangRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
         if(c != null) {
             SCHEDULE_LOG.warn("get baofangRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
-        chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+        chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
         
         c = chunhuiRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
         if(c != null) {
@@ -64,11 +64,11 @@ public class MultipleRepository {
         SCHEDULE_LOG.warn("BEGIN set other cache:" + "sysName:" + sysName +",key :" + key + ", value ["+value+"]");
         
         if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-        	mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+        	mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 60, TimeUnit.MINUTES);
+			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
 		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
