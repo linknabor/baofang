@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.market.Collocation;
-import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.redis.RedisRepository;
 import com.yumu.hexie.model.user.User;
@@ -96,6 +95,22 @@ public class CollocationController extends BaseController{
 
 		baseOrderService.notifyPayed(orderId);
 		collocationService.AssginSupermarketOrder(orderId, user);
+		return new BaseResult<String>().success("success");
+	}
+	
+	/**
+	 * 内部补单用
+	 * @param orderId
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/collocation/renotify/{orderId}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<String> renotify(@PathVariable long orderId, @ModelAttribute(Constants.USER)User user) throws Exception{
+
+		baseOrderService.notifyPayed(orderId);
+		collocationService.AssginSupermarketOrder(orderId);
 		return new BaseResult<String>().success("success");
 	}
 	

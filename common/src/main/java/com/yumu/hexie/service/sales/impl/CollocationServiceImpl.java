@@ -93,5 +93,21 @@ public class CollocationServiceImpl implements CollocationService {
 	}
 
 	
+	@Override
+	public void AssginSupermarketOrder(long orderId) {
+		
+		ServiceOrder order = serviceOrderRepository.findOne(orderId);
+		
+		log.warn("超市快购notifyPayed成功[BEG]" + orderId); 
+			try {
+				Thread.sleep(1000);//等待微信端处理完成
+		} catch (InterruptedException e) {
+			
+		}
+
+		billAssignService.assginSupermarketOrder(order);
+		
+	}
+	
 	
 }

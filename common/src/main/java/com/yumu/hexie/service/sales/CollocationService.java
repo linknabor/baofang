@@ -17,4 +17,6 @@ public interface CollocationService {
 	
 	public void AssginSupermarketOrder(long orderId, User user);
 	
+	public void AssginSupermarketOrder(long orderId);
+	
 }
