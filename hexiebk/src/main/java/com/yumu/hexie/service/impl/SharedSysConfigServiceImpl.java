@@ -201,7 +201,15 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 				}
 			}
 			
-			SystemConfig config = new SystemConfig(keyName, sysValue);
+			SystemConfig config = null;			
+			List<SystemConfig>configs = systemConfigRepository.findAllBySysKey(keyName);
+			if (configs.size() > 0) {
+	            config = configs.get(0);
+	            config.setSysValue(sysValue);
+	        } else {
+	            config = new SystemConfig(keyName, sysValue);
+	        }
+			
 			multipleRepository.setTokenBySysName(sysName, keyName, config);
 			
 		} catch (Exception e) {
