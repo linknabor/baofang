@@ -23,6 +23,8 @@ import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBillRepository;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.market.ServiceOrderRepository;
+import com.yumu.hexie.model.market.SupermarketAssgin;
+import com.yumu.hexie.model.market.SupermarketAssginRepository;
 import com.yumu.hexie.model.market.saleplan.RgroupRule;
 import com.yumu.hexie.model.market.saleplan.RgroupRuleRepository;
 import com.yumu.hexie.model.op.ScheduleRecord;
@@ -41,6 +43,7 @@ import com.yumu.hexie.service.common.SmsService;
 import com.yumu.hexie.service.common.WechatCoreService;
 import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.o2o.BaojieService;
+import com.yumu.hexie.service.o2o.BillAssignService;
 import com.yumu.hexie.service.o2o.XiyiService;
 import com.yumu.hexie.service.sales.BaseOrderService;
 import com.yumu.hexie.service.sales.RgroupService;
@@ -64,7 +67,6 @@ public class ScheduleServiceImpl implements ScheduleService{
     private BaseOrderService baseOrderService;
 	@Inject
 	private RgroupRuleRepository rgroupRuleRepository;
-
     @Inject
     private YunXiyiBillRepository yunXiyiBillRepository;
     @Inject
@@ -73,21 +75,20 @@ public class ScheduleServiceImpl implements ScheduleService{
     private BaojieBillRepository baojieBillRepository;
     @Inject
     private BaojieService baojieService;
-
     @Inject
     private BizErrorRepository bizErrorRepository;
-    
     @Inject 
     private ScheduleRecordRepository scheduleRecordRepository;
-    
     @Inject
     private CouponService couponService;
-    
     @Inject
     private UserRepository userRepository;
-    
     @Inject
     private SmsService smsService;
+    @Inject
+    private SupermarketAssginRepository supermarketAssginRepository;
+    @Inject
+    private BillAssignService billAssignService; 
 	
 	//1. 订单超时
     @Scheduled(cron = "50 1/3 * * * ?")
@@ -404,6 +405,33 @@ public class ScheduleServiceImpl implements ScheduleService{
 		}
 		SCHEDULE_LOG.debug("--------------------end executeCouponHintJob-------------------");
 	}
+	
+	@Override
+	@Scheduled(cron = "0 0/2 * * * ?")
+	public void executeSmOrderReassign() {
+
+		List<Integer> status = new ArrayList<Integer>();
+		status.add(ModelConstant.ORDER_STATUS_CONFIRM);
+		long merchantId = 8;	//超市快购商户ID
+		
+		List<ServiceOrder> list = serviceOrderRepository.findByStatusAndMerchatIdAndOrderType(status, merchantId, ModelConstant.ORDER_TYPE_ONSALE);
+		
+		for (ServiceOrder serviceOrder : list) {
+			
+			long orderId = serviceOrder.getId();
+			List<SupermarketAssgin>asginList = supermarketAssginRepository.findByServiceOrderId(orderId);
+			//没有发成功的需要重发
+			if (asginList == null || asginList.size()==0) {
+				baseOrderService.notifyPayed(orderId);
+				billAssignService.assginSupermarketOrder(serviceOrder);
+			}
+			
+		}
+		
+		
+	}
+	
+	
 	
 	
 }
