@@ -410,6 +410,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Scheduled(cron = "0 0/2 * * * ?")
 	public void executeSmOrderReassign() {
 
+		SCHEDULE_LOG.debug("--------------------start executeSmOrderReassign-------------------");
+		
 		List<Integer> status = new ArrayList<Integer>();
 		status.add(ModelConstant.ORDER_STATUS_CONFIRM);
 		long merchantId = 8;	//超市快购商户ID
@@ -419,14 +421,20 @@ public class ScheduleServiceImpl implements ScheduleService{
 		for (ServiceOrder serviceOrder : list) {
 			
 			long orderId = serviceOrder.getId();
+			SCHEDULE_LOG.debug("orderId is : " + orderId);
+			
 			List<SupermarketAssgin>asginList = supermarketAssginRepository.findByServiceOrderId(orderId);
 			//没有发成功的需要重发
 			if (asginList == null || asginList.size()==0) {
+				
+				SCHEDULE_LOG.debug("start to reassign, orderId " + orderId);
 				baseOrderService.notifyPayed(orderId);
 				billAssignService.assginSupermarketOrder(serviceOrder);
 			}
 			
 		}
+		
+		SCHEDULE_LOG.debug("--------------------end executeSmOrderReassign-------------------");
 		
 		
 	}
