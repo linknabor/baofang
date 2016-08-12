@@ -29,5 +29,5 @@ public interface GotongService {
     
     public void sendCommonYuyueBillMsg(int serviceType,String title,String billName, String requireTime, String url, String remark);
 
-	public void sendSupermarketAssignMsg(long opId, ServiceOrder order);
+	public boolean sendSupermarketAssignMsg(long opId, ServiceOrder order);
 }

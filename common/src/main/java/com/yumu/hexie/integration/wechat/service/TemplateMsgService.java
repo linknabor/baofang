@@ -215,7 +215,7 @@ public class TemplateMsgService {
 	 * @param seed
 	 * @param ro
 	 */
-    public static void sendSMOrderMsg(ServiceOrder so, ServiceOperator op,String accessToken) {
+    public static boolean sendSMOrderMsg(ServiceOrder so, ServiceOperator op,String accessToken) {
     	
     	log.error("发送超市快购订单分配模版消息#########" + ", order id: " + so.getId() + "operator id : " + op.getId());
     	
@@ -232,7 +232,7 @@ public class TemplateMsgService {
     	msg.setTemplate_id(SM_ORDER_ASSGIN_TEMPLATE);
     	msg.setUrl(GotongServiceImpl.SUPERMARKET_DETAIL+so.getId());
     	msg.setTouser(op.getBindOpenId());
-    	TemplateMsgService.sendMsg(msg,accessToken);
+    	return TemplateMsgService.sendMsg(msg,accessToken);
     	
     }
 

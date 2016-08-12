@@ -146,11 +146,11 @@ public class GotongServiceImpl implements GotongService {
         
     }
 	@Override
-	public void sendSupermarketAssignMsg(long opId, ServiceOrder order) {
+	public boolean sendSupermarketAssignMsg(long opId, ServiceOrder order) {
 		
 		ServiceOperator op = serviceOperatorRepository.findOne(opId);
 		String token = systemConfigService.queryWXAccToken(op.getBindAppId()).getToken();
-        TemplateMsgService.sendSMOrderMsg(order, op, token);
+        return TemplateMsgService.sendSMOrderMsg(order, op, token);
 		
 	}
 
