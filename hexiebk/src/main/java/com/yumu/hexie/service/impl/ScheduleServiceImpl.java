@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.model.ModelConstant;
+import com.yumu.hexie.model.distribution.region.Merchant;
+import com.yumu.hexie.model.distribution.region.MerchantRepository;
 import com.yumu.hexie.model.localservice.bill.BaojieBill;
 import com.yumu.hexie.model.localservice.bill.BaojieBillRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
@@ -88,7 +90,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Inject
     private SupermarketAssginRepository supermarketAssginRepository;
     @Inject
-    private BillAssignService billAssignService; 
+    private BillAssignService billAssignService;
+    @Inject
+    private MerchantRepository merchantRepository;
 	
 	//1. 订单超时
     @Scheduled(cron = "50 1/3 * * * ?")
@@ -414,7 +418,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 		List<Integer> status = new ArrayList<Integer>();
 		status.add(ModelConstant.ORDER_STATUS_CONFIRM);
-		long merchantId = 8;	//超市快购商户ID
+		
+		Merchant merchant = merchantRepository.findMechantByNameLike("超市");
+		long merchantId = merchant.getId();	//超市快购商户ID
 		
 		List<ServiceOrder> list = serviceOrderRepository.findByStatusAndMerchatIdAndOrderType(status, merchantId, ModelConstant.ORDER_TYPE_ONSALE);
 		
