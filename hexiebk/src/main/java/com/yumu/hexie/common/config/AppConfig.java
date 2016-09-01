@@ -181,8 +181,8 @@ public class AppConfig {
         return connectionFactory;
     }
     
-    @Bean(name="xianRdisConnectionFactory")
-    public RedisConnectionFactory xianRdisConnectionFactory() {
+    @Bean(name="liangyouRdisConnectionFactory")
+    public RedisConnectionFactory liangyouRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(liangyouRedisHost);
         connectionFactory.setPort(Integer.valueOf(liangyouRedisPort));
@@ -219,7 +219,7 @@ public class AppConfig {
     @Bean(name = "liangyouRedisTemplate")
     public RedisTemplate<String,SystemConfig> liangyouRedisTemplate(){
         RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(xianRdisConnectionFactory());
+        redisTemplate.setConnectionFactory(liangyouRdisConnectionFactory());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
