@@ -31,6 +31,10 @@ public class MultipleRepository {
     @Named("chunhuiRedisTemplate")
     private RedisTemplate<String, SystemConfig> chunhuiRedisTemplate;
     
+    @Inject
+    @Named("liangyouRedisTemplate")
+    private RedisTemplate<String, SystemConfig> liangyouRedisTemplate;
+    
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
@@ -52,6 +56,11 @@ public class MultipleRepository {
         if(c != null) {
             SCHEDULE_LOG.warn("get chunhuiRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
+        
+        c = liangyouRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        if (c != null) {
+        	SCHEDULE_LOG.warn("get liangyouRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
+		}
         
         SCHEDULE_LOG.warn("END update cache:" + key + "["+value+"]");
     }
