@@ -38,26 +38,29 @@ public class MultipleRepository {
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
-        mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-
-        SystemConfig c = mainRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        
+        String sysKey = Keys.systemConfigKey(key);
+        
+        mainRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        SystemConfig c = mainRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get mainRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
-        baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-        
-        c = baofangRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+
+        baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = baofangRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get baofangRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
-        chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
         
-        c = chunhuiRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = chunhuiRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get chunhuiRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
-        c = liangyouRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = liangyouRedisTemplate.opsForValue().get(sysKey);
         if (c != null) {
         	SCHEDULE_LOG.warn("get liangyouRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
 		}
