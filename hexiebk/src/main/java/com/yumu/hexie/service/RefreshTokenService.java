@@ -19,6 +19,7 @@ public interface RefreshTokenService {
 	public static final String SYS_NAME_HEXIE = "hexie";
     public static final String SYS_NAME_BAOFANG = "baofang";
     public static final String SYS_NAME_CHUNHUI = "chunhui";
+    public static final String SYS_NAME_LIANGYOU = "liangyou";
     
     public void refreshOtherAccessTokenJob();
 
