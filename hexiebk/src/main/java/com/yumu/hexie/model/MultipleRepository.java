@@ -39,26 +39,28 @@ public class MultipleRepository {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
         
-        mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-        SystemConfig c = mainRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        String sysKey = Keys.systemConfigKey(key);
+        
+        mainRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        SystemConfig c = mainRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get mainRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
-        baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-        c = baofangRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = baofangRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get baofangRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
-        chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-        c = chunhuiRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = chunhuiRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get chunhuiRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
-        liangyouRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
-        c = liangyouRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+        liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = liangyouRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get liangyouRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
@@ -73,16 +75,18 @@ public class MultipleRepository {
     	
         SCHEDULE_LOG.warn("BEGIN set other cache:" + "sysName:" + sysName +",key :" + key + ", value ["+value+"]");
         
+        String sysKey = Keys.systemConfigKey(key);
+        
         if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-        	mainRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
+        	mainRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);	//宝房也存上
-			chunhuiRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);	//宝房也存上
-			liangyouRedisTemplate.opsForValue().set(Keys.systemConfigKey(key), value, 120, TimeUnit.MINUTES);
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
@@ -97,14 +101,17 @@ public class MultipleRepository {
     public SystemConfig getValueBySysKey(String sysName, String key){
     	
     	SystemConfig systemconfig = null; 
+    	
+    	String sysKey = Keys.systemConfigKey(key);
+    	
     	if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-    		systemconfig = mainRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+    		systemconfig = mainRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
-			systemconfig = baofangRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+			systemconfig = baofangRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			systemconfig = chunhuiRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+			systemconfig = chunhuiRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
-			systemconfig = liangyouRedisTemplate.opsForValue().get(Keys.systemConfigKey(key));
+			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}
     	return systemconfig;
     }
