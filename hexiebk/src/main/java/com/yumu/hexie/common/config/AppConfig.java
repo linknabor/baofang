@@ -84,6 +84,12 @@ public class AppConfig {
     private String chunhuiRedisHost;
     @Value(value = "${chunhuiRedis.port}")
     private String chunhuiRedisPort;    
+    
+    @Value(value = "${liangyouRedis.host}")
+    private String liangyouRedisHost;
+    @Value(value = "${liangyouRedis.port}")
+    private String liangyouRedisPort;
+    
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
     }
@@ -175,6 +181,14 @@ public class AppConfig {
         return connectionFactory;
     }
     
+    @Bean(name="liangyouRdisConnectionFactory")
+    public RedisConnectionFactory liangyouRdisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setHostName(liangyouRedisHost);
+        connectionFactory.setPort(Integer.valueOf(liangyouRedisPort));
+        connectionFactory.setUsePool(true);
+        return connectionFactory;
+    }
     
     @Bean(name = "mainRedisTemplate")
     public  RedisTemplate<String, SystemConfig> mainRedisTemplate(){
@@ -201,6 +215,16 @@ public class AppConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
+    
+    @Bean(name = "liangyouRedisTemplate")
+    public RedisTemplate<String,SystemConfig> liangyouRedisTemplate(){
+        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
+        redisTemplate.setConnectionFactory(liangyouRdisConnectionFactory());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+
 
     @Bean(name = "stringRedisTemplate")
     public StringRedisTemplate getStringRedisTemplate() {
