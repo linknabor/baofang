@@ -20,6 +20,7 @@ public interface RefreshTokenService {
     public static final String SYS_NAME_BAOFANG = "baofang";
     public static final String SYS_NAME_CHUNHUI = "chunhui";
     public static final String SYS_NAME_LIANGYOU = "liangyou";
+    public static final String SYS_NAME_WEIFA = "weifa";
     
     public void refreshOtherAccessTokenJob();
 

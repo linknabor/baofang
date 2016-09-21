@@ -35,6 +35,10 @@ public class MultipleRepository {
     @Named("liangyouRedisTemplate")
     private RedisTemplate<String, SystemConfig> liangyouRedisTemplate;
     
+    @Inject
+    @Named("weifaRedisTemplate")
+    private RedisTemplate<String, SystemConfig> weifaRedisTemplate;
+    
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
@@ -65,6 +69,12 @@ public class MultipleRepository {
             SCHEDULE_LOG.warn("get liangyouRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
+        weifaRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = weifaRedisTemplate.opsForValue().get(sysKey);
+        if(c != null) {
+            SCHEDULE_LOG.warn("get weifaRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
+        }
+        
         SCHEDULE_LOG.warn("END update cache:" + key + "["+value+"]");
     }
     
@@ -87,6 +97,9 @@ public class MultipleRepository {
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			weifaRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
@@ -112,6 +125,8 @@ public class MultipleRepository {
 			systemconfig = chunhuiRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
+			systemconfig = weifaRedisTemplate.opsForValue().get(sysKey);
 		}
     	return systemconfig;
     }
