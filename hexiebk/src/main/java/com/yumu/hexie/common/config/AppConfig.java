@@ -90,6 +90,11 @@ public class AppConfig {
     @Value(value = "${liangyouRedis.port}")
     private String liangyouRedisPort;
     
+    @Value(value = "${weifaRedis.host}")
+    private String weifaRedisHost;
+    @Value(value = "${weifaRedis.port}")
+    private String weifaRedisPort;
+    
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
     }
@@ -190,6 +195,15 @@ public class AppConfig {
         return connectionFactory;
     }
     
+    @Bean(name="weifaRdisConnectionFactory")
+    public RedisConnectionFactory weifaRdisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setHostName(weifaRedisHost);
+        connectionFactory.setPort(Integer.valueOf(weifaRedisPort));
+        connectionFactory.setUsePool(true);
+        return connectionFactory;
+    }
+    
     @Bean(name = "mainRedisTemplate")
     public  RedisTemplate<String, SystemConfig> mainRedisTemplate(){
         RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
@@ -220,6 +234,15 @@ public class AppConfig {
     public RedisTemplate<String,SystemConfig> liangyouRedisTemplate(){
         RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
         redisTemplate.setConnectionFactory(liangyouRdisConnectionFactory());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+    
+    @Bean(name = "weifaRedisTemplate")
+    public RedisTemplate<String,SystemConfig> weifaRedisTemplate(){
+        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
+        redisTemplate.setConnectionFactory(weifaRdisConnectionFactory());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
