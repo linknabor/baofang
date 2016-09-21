@@ -79,7 +79,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         for(String appId : appIds) {
             AccessToken at = WeixinUtilV2.getAccessToken(appId, systemConfigService.querySecret(appId));
             if (at == null) {
-                SCHEDULE_LOG.error("获取Other token失败----------------------------------------------！！！！！！！！！！！");
+                SCHEDULE_LOG.error("获取Other token失败， appId is" + appId+" ----------------------------------------------！！！！！！！！！！！");
                 return;
             }
             sharedSysConfigService.saveAccessTokenByAppid(appId, at);
