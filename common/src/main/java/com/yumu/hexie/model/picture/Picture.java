@@ -12,6 +12,7 @@ public class Picture extends BaseModel {
      private String code ;
      private String describe;
      private String url;
+     private String onClickUrl;
 
     public String getCode() {
         return code;
@@ -31,7 +32,11 @@ public class Picture extends BaseModel {
     public void setUrl(String url) {
         this.url = url;
     }
-     
-
+    public String getOnClickUrl() {
+        return onClickUrl;
+    }
+    public void setOnClickUrl(String onClickUrl) {
+        this.onClickUrl = onClickUrl;
+    }
 
 }
