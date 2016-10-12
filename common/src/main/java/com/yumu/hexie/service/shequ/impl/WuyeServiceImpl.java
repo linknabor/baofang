@@ -92,9 +92,9 @@ public class WuyeServiceImpl implements WuyeService {
 	}
 
 	@Override
-	public String queryCouponIsUsed(String userId) {
+	public String queryCouponIsUsed(String userId, String payCellId) {
 
-		BaseResult<String> r = WuyeUtil.couponUseQuery(userId);
+		BaseResult<String> r = WuyeUtil.couponUseQuery(userId, payCellId);
 		return r.getResult();
 	}
 	

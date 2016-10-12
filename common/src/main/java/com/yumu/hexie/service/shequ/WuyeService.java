@@ -40,6 +40,6 @@ public interface WuyeService {
 	// 11.通知已支付
 	public PayResult noticePayed(String userId,String billId,String stmtId, String tradeWaterId, String packageId);
 	// 12.查询是否已经用过红包
-	public String queryCouponIsUsed(String userId);
+	public String queryCouponIsUsed(String userId, String payCellId);
 	
 }
