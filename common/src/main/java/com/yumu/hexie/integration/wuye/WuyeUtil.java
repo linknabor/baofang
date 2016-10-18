@@ -60,7 +60,7 @@ public class WuyeUtil {
 	private static final String WX_PAY_URL = "wechatPayRequestSDO.do?user_id=%s&bill_id=%s&stmt_id=%s&openid=%s&coupon_unit=%s&coupon_num=%s&coupon_id=%s&from_sys=%s&mianBill=%s&mianAmt=%s"; // 微信支付请求
 	private static final String WX_PAY_NOTICE = "wechatPayQuerySDO.do?user_id=%s&bill_id=%s&stmt_id=%s&trade_water_id=%s&package=%s"; // 微信支付返回
 	//private static final String GET_LOCATION_URL = "getGeographicalPositionSDO.do"; // 用户地理位置
-	private static final String COUPON_USE_QUERY_URL = "conponUseQuerySDO.do?user_id=%s";
+	private static final String COUPON_USE_QUERY_URL = "conponUseQuerySDO.do?user_id=%s&payCellId=%s";
 	
 	public static BaseResult<BillListVO> quickPayInfo(String stmtId, String currPage, String totalCount) {
 		String url = REQUEST_ADDRESS + String.format(QUICK_PAY_URL, stmtId, currPage, totalCount);
@@ -144,9 +144,9 @@ public class WuyeUtil {
 	}
 	
 	// 12.红包使用情况查询
-	public static BaseResult<String> couponUseQuery(String userId){
+	public static BaseResult<String> couponUseQuery(String userId, String payCellId){
 		
-		String url = REQUEST_ADDRESS + String.format(COUPON_USE_QUERY_URL, userId);
+		String url = REQUEST_ADDRESS + String.format(COUPON_USE_QUERY_URL, userId, payCellId);
 		return (BaseResult<String>)httpGet(url,String.class);
 		
 	}
