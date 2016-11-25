@@ -38,4 +38,14 @@ public class PageConfigController extends BaseController{
         response.setCharacterEncoding("UTF-8");
         return pageConfigService.findByTempKey(tempKey);
     }
+    
+    @ResponseBody
+    @RequestMapping(value = "/pageconfig2/{tempKey}", method = RequestMethod.GET )
+    public String process2(HttpServletRequest request,
+            HttpServletResponse response,@PathVariable String tempKey) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        return pageConfigService.findByTempKey2(tempKey);
+    }
+
 }

@@ -23,6 +23,7 @@ import com.yumu.hexie.model.BaseModel;
 import com.yumu.hexie.model.ModelConstant;
 import com.yumu.hexie.model.commonsupport.info.Product;
 import com.yumu.hexie.model.localservice.repair.RepairOrder;
+import com.yumu.hexie.model.picture.Picture;
 import com.yumu.hexie.model.promotion.coupon.Coupon;
 import com.yumu.hexie.model.user.Address;
 import com.yumu.hexie.vo.CreateOrderReq;
@@ -74,6 +75,8 @@ public class ServiceOrder  extends BaseModel {
 	private double lat;
 	private double lng;
 	private long xiaoquId;
+	
+	private Picture pic;
 	
 	
 	/**团购状态*/
@@ -748,4 +751,11 @@ public class ServiceOrder  extends BaseModel {
                 || ModelConstant.ORDER_STATUS_RETURNED == getStatus()
                 | ModelConstant.ORDER_STATUS_PAYED == getStatus());
     }
+    public Picture getPic() {
+        return pic;
+    }
+    public void setPic(Picture pic) {
+        this.pic = pic;
+    }
+
 }

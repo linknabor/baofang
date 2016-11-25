@@ -7,6 +7,7 @@ package com.yumu.hexie.web.home.vo;
 import java.math.BigDecimal;
 
 import com.yumu.hexie.model.localservice.bill.BaojieBill;
+import com.yumu.hexie.model.picture.Picture;
 
 /**
  * <pre>
@@ -29,6 +30,7 @@ public class BaojieDetailVO extends  BaojieListVO {
     private long xiaoquId;
     private String xiaoquName;
     private String memo;
+    private Picture pic;
 
     private BigDecimal realAmount;//实付金额
     private BigDecimal totalAmount;
@@ -116,5 +118,12 @@ public class BaojieDetailVO extends  BaojieListVO {
     public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
     }
+    public Picture getPic() {
+        return pic;
+    }
+    public void setPic(Picture pic) {
+        this.pic = pic;
+    }
+    
     
 }

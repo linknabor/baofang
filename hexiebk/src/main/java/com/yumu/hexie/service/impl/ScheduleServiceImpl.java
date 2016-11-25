@@ -420,6 +420,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 		status.add(ModelConstant.ORDER_STATUS_CONFIRM);
 		
 		Merchant merchant = merchantRepository.findMechantByNameLike("超市");
+		if (merchant==null) {
+			return;
+		}
 		long merchantId = merchant.getId();	//超市快购商户ID
 		
 		List<ServiceOrder> list = serviceOrderRepository.findByStatusAndMerchatIdAndOrderType(status, merchantId, ModelConstant.ORDER_TYPE_ONSALE);
