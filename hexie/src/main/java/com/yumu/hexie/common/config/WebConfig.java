@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yumu.hexie.web.interceptor.CheckUserAddedInterceptor;
+import com.yumu.hexie.web.interceptor.TimerInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -115,7 +116,8 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Override  
     protected void addInterceptors(InterceptorRegistry registry) {  
     	LOGGER.error("addInterceptors start");  
-        registry.addInterceptor(checkUserInterceptor());  
+        registry.addInterceptor(checkUserInterceptor()); 
+        registry.addInterceptor(calcTimerInterceptor()).addPathPatterns("/**");
         LOGGER.error("addInterceptors end");  
     }
     
@@ -123,6 +125,12 @@ public class WebConfig extends WebMvcConfigurationSupport {
     public HandlerInterceptor checkUserInterceptor(){
     	return new CheckUserAddedInterceptor();
     }
+    
+    @Bean
+    public HandlerInterceptor calcTimerInterceptor(){
+    	return new TimerInterceptor();
+    }
+    
     @Bean(name = "mapper")
     public ObjectMapper mapper() {
         return new ObjectMapper();
