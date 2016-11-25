@@ -4,6 +4,8 @@
  */
 package com.yumu.hexie.web.page;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yumu.hexie.common.util.JacksonJsonUtil;
+import com.yumu.hexie.integration.wuye.vo.HexieHouse;
+import com.yumu.hexie.model.view.Banner;
 import com.yumu.hexie.service.page.PageConfigService;
 import com.yumu.hexie.web.BaseController;
+import com.yumu.hexie.web.BaseResult;
 
 /**
  * <pre>
@@ -41,11 +47,10 @@ public class PageConfigController extends BaseController{
     
     @ResponseBody
     @RequestMapping(value = "/pageconfig2/{tempKey}", method = RequestMethod.GET )
-    public String process2(HttpServletRequest request,
+    public BaseResult<List<Banner>> process2(HttpServletRequest request,
             HttpServletResponse response,@PathVariable String tempKey) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        return pageConfigService.findByTempKey2(tempKey);
+        
+    	return BaseResult.successResult(pageConfigService.findByTempKey2(tempKey));
     }
 
 }
