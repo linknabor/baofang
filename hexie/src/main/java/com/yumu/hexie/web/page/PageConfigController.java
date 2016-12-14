@@ -41,11 +41,10 @@ public class PageConfigController extends BaseController{
     
     @ResponseBody
     @RequestMapping(value = "/pageconfig2/{tempKey}", method = RequestMethod.GET )
-    public String process2(HttpServletRequest request,
+    public BaseResult<List<Banner>> process2(HttpServletRequest request,
             HttpServletResponse response,@PathVariable String tempKey) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        return pageConfigService.findByTempKey2(tempKey);
+        
+    	return BaseResult.successResult(pageConfigService.findByTempKey2(tempKey));
     }
 
 }
