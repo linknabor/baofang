@@ -1,0 +1,336 @@
+21:56:03.636 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+21:56:08.278 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476798967475</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+21:56:08.301 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476798967475</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+21:56:14.654 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+21:56:14.707 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476798973944</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+21:56:14.721 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476798973944</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+21:56:54.900 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+21:56:54.966 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799014194</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+21:56:54.966 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799014194</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+21:57:06.757 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+21:57:06.822 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799026054</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+21:57:06.822 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799026054</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+21:57:12.661 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+21:57:12.712 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799031945</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+21:57:12.712 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799031945</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:05:08.674 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:05:08.819 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799508026</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:05:08.820 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799508026</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:05:09.478 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:05:09.544 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799508745</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:05:09.545 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799508745</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:13:03.585 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:13:04.786 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799984014</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:13:04.787 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799984014</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:13:13.635 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:13:13.695 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476799992904</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:13:13.695 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476799992904</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:13:35.703 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:13:35.757 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800014983</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:13:35.757 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800014983</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:14:07.240 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:14:07.275 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800046498</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:14:07.276 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800046498</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:17:41.898 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:17:41.988 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800261203</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:17:41.988 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800261203</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:18:09.312 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:18:09.355 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800288562</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:18:09.355 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800288562</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:18:14.378 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:18:14.416 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800293625</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:18:14.421 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800293625</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:18:17.920 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:18:17.961 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800297172</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:18:17.961 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800297172</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:18:22.191 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:18:22.237 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800301453</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:18:22.239 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800301453</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:18:48.756 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:18:48.814 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800328031</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:18:48.815 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800328031</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:19:16.665 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:19:16.706 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800355907</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:19:16.709 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800355907</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:19:21.121 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:19:21.156 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800360376</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:19:21.156 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800360376</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:19:59.232 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:19:59.281 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800398501</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:19:59.281 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800398501</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:20:46.959 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:20:47.031 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800446236</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:20:47.035 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800446236</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+22:21:16.355 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+22:21:16.575 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476800475783</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+22:21:16.578 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476800475783</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:19:21.021 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:19:22.270 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:19:23.936 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:19:25.482 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807564380</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:19:25.481 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807564365</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:19:25.504 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807564365</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:19:25.598 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807564365</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:19:25.602 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807564365</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:19:25.603 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807564380</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:21:12.205 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:21:12.274 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807671335</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:21:12.275 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807671335</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:22:05.956 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:22:06.149 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807725195</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:22:06.151 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807725195</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:22:47.989 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:22:48.096 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476807767148</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:22:48.097 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476807767148</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:28:30.215 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:28:30.405 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808109449</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:28:30.407 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808109449</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:28:54.038 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:28:54.105 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808133168</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:28:54.107 [http-nio-8888-exec-2] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808133168</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:29:25.636 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:29:25.720 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808164762</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:29:25.720 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808164762</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:29:29.984 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:29:30.032 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808169090</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:29:30.032 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808169090</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:30:46.678 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:30:46.772 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808245809</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:30:46.798 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808245809</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:31:13.880 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:31:13.983 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808273028</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:31:13.984 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808273028</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:31:29.582 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:31:29.653 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808288700</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:31:29.654 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808288700</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+00:37:30.959 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+00:37:31.138 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476808650189</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+00:37:31.139 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476808650189</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:16:19.089 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:16:20.648 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843380250</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:16:20.668 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843380250</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:16:21.815 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:16:21.869 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843381516</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:16:21.869 [http-nio-8888-exec-9] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843381516</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:20:01.937 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:20:02.064 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843601706</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:20:02.064 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843601706</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:20:22.973 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:20:23.103 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843622753</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:20:23.108 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843622753</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:22:14.687 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:22:15.040 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843734692</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:22:15.043 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843734692</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+10:22:19.836 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+10:22:19.924 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1476843739583</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+10:22:19.924 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1476843739583</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:39:52.984 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:39:53.802 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477895993536</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:39:53.816 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477895993536</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:39:58.919 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:39:58.963 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477895998723</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:39:58.965 [http-nio-8888-exec-6] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477895998723</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:39:59.987 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:00.039 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477895999801</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:00.040 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477895999801</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:01.153 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:01.189 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896000942</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:01.189 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896000942</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:11.472 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:11.504 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896011270</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:11.504 [http-nio-8888-exec-10] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896011270</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:48.067 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:48.124 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896047865</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:48.124 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896047865</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:50.787 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:50.818 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896050584</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:50.818 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896050584</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:52.764 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:52.789 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896052553</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:52.790 [http-nio-8888-exec-1] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896052553</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:56.595 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:56.637 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896056396</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:56.638 [http-nio-8888-exec-7] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896056396</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:40:57.210 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:40:57.236 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896057006</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:40:57.236 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896057006</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:41:02.198 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:41:02.237 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896062006</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:41:02.238 [http-nio-8888-exec-4] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896062006</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:41:28.796 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:41:28.824 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896088584</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:41:28.824 [http-nio-8888-exec-5] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896088584</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+14:41:34.098 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+14:41:34.129 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477896093897</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+14:41:34.129 [http-nio-8888-exec-3] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477896093897</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
+16:10:58.422 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - REQ:http://test.e-shequ.com/baofang/bk/refreshCache?bindAppId=wx9ffe0a2b5a64a285&key=JS_TOKEN
+16:10:58.890 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - RESP:<Map xmlns=""><timestamp>1477901458431</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+
+16:10:58.907 [http-nio-8888-exec-8] ERROR c.y.h.i.s.SystemConfigUtil - Unexpected character ('<' (code 60)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+ at [Source: <Map xmlns=""><timestamp>1477901458431</timestamp><status>404</status><error>Not Found</error><message>No message available</message><path>/refreshCache</path></Map>
+; line: 1, column: 2]
