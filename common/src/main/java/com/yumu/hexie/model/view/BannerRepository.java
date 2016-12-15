@@ -17,5 +17,6 @@ public interface BannerRepository extends JpaRepository<Banner, Long> {
 			+ "order by m.sortNo asc,m.id desc ")
 	public List<Banner> queryByBannerTypeAndUser(long provinceId,long cityId,long countyId,long xiaoquId, int bannerType);
 	
-	List<Banner> findByBannerType(int bannerType);
+//	List<Banner> findByBannerType(int bannerType);
+	List<Banner> findByBannerTypeAndRegionIdIn(int bannerType,List<Long> regionId);
 }
