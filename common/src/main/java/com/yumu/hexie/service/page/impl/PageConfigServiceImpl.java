@@ -44,7 +44,7 @@ public class PageConfigServiceImpl implements PageConfigService {
 
     @Override
     public List<Banner> findByTempKey2(String key,List<Long> regions) {
-        List<Banner> banners = bannerRepository.findByBannerTypeAndRegionIdIn(Integer.valueOf(key),regions);
+        List<Banner> banners = bannerRepository.findByBannerTypeAndRegionIdInAndStatus(Integer.valueOf(key),regions,1);
 //        StringBuilder v = new StringBuilder();
 //        v.append("{\"banners:\":[");
 //        for(int i =0;i<banners.size();i++){

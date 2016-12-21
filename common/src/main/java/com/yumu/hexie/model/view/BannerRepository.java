@@ -18,5 +18,5 @@ public interface BannerRepository extends JpaRepository<Banner, Long> {
 	public List<Banner> queryByBannerTypeAndUser(long provinceId,long cityId,long countyId,long xiaoquId, int bannerType);
 	
 //	List<Banner> findByBannerType(int bannerType);
-	List<Banner> findByBannerTypeAndRegionIdIn(int bannerType,List<Long> regionId);
+	List<Banner> findByBannerTypeAndRegionIdInAndStatus(int bannerType,List<Long> regionId,int status);
 }
