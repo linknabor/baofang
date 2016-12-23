@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.web.BaseResult;
 import com.yumu.hexie.common.Constants;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.model.view.Banner;
 import com.yumu.hexie.service.page.PageConfigService;
@@ -54,6 +55,7 @@ public class PageConfigController extends BaseController{
             ,@ModelAttribute(Constants.USER)User user
             ) throws Exception {
         List<Long> regions = new ArrayList<>();
+        System.out.println("user:"+JacksonJsonUtil.beanToJson(user));
         regions.add(Long.valueOf(1));
         if(null!=user){
             regions.add(user.getXiaoquId());
