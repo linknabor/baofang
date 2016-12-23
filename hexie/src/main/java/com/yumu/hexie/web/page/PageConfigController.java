@@ -4,6 +4,8 @@
  */
 package com.yumu.hexie.web.page;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ import com.yumu.hexie.web.BaseController;
  */
 @Controller(value = "pageConfigController")
 public class PageConfigController extends BaseController{
+
+	private static final Logger log = LoggerFactory.getLogger(PageConfigController.class);
     
     @Inject
     private PageConfigService pageConfigService;
@@ -55,7 +59,7 @@ public class PageConfigController extends BaseController{
             ,@ModelAttribute(Constants.USER)User user
             ) throws Exception {
         List<Long> regions = new ArrayList<>();
-        System.out.println("user:"+JacksonJsonUtil.beanToJson(user));
+        log.info("user:"+ JacksonJsonUtil.beanToJson(user));
         regions.add(Long.valueOf(1));
         if(null!=user){
             regions.add(user.getXiaoquId());
