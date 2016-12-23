@@ -59,7 +59,7 @@ public class PageConfigController extends BaseController{
             ,@ModelAttribute(Constants.USER)User user
             ) throws Exception {
         List<Long> regions = new ArrayList<>();
-        log.info("user:"+ JacksonJsonUtil.beanToJson(user));
+        log.error("user:"+ JacksonJsonUtil.beanToJson(user));
         regions.add(Long.valueOf(1));
         if(null!=user){
             regions.add(user.getXiaoquId());
