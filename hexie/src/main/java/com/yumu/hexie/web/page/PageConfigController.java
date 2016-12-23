@@ -24,6 +24,8 @@ import com.yumu.hexie.web.BaseResult;
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.model.user.User;
+import com.yumu.hexie.model.user.XiaoquRepository;
+import com.yumu.hexie.model.user.Xiaoqu;
 import com.yumu.hexie.model.view.Banner;
 import com.yumu.hexie.service.page.PageConfigService;
 import com.yumu.hexie.web.BaseController;
@@ -43,6 +45,8 @@ public class PageConfigController extends BaseController{
     
     @Inject
     private PageConfigService pageConfigService;
+    @Inject
+    private XiaoquRepository xiaoquRepository;
     @ResponseBody
     @RequestMapping(value = "/pageconfig/{tempKey}", method = RequestMethod.GET )
     public String process(HttpServletRequest request,
@@ -61,8 +65,11 @@ public class PageConfigController extends BaseController{
         List<Long> regions = new ArrayList<>();
         log.info("user:"+ JacksonJsonUtil.beanToJson(user));
         regions.add(Long.valueOf(1));
-        if(null!=user){
-            regions.add(user.getXiaoquId());
+        if(null!=user ){
+            Xiaoqu xiaoqu = xiaoquRepository.findOne(user.getXiaoquId());
+            if( null != xiaoqu ){
+                regions.add(xiaoqu.getXiaoquId());
+            }
         }
     	return BaseResult.successResult(pageConfigService.findByTempKey2(tempKey,regions));
     }
