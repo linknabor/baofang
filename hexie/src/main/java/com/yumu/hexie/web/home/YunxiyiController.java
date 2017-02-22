@@ -26,6 +26,7 @@ import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.o2o.HomeItemService;
 import com.yumu.hexie.service.o2o.XiyiService;
 import com.yumu.hexie.service.o2o.req.CommonBillReq;
+import com.yumu.hexie.service.picture.PictureService;
 import com.yumu.hexie.web.BaseController;
 import com.yumu.hexie.web.BaseResult;
 import com.yumu.hexie.web.home.resp.XiyiDetail;
@@ -41,6 +42,8 @@ public class YunxiyiController extends BaseController{
     private XiyiService xiyiService;
     @Inject
     private HomeItemService homeItemService;
+    @Inject
+    private PictureService pictureService;
     
 	@RequestMapping(value = "/serviceTypes/{region}", method = RequestMethod.GET)
 	@ResponseBody
@@ -105,6 +108,7 @@ public class YunxiyiController extends BaseController{
         }
         XiyiDetail d = new XiyiDetail(bill);
         d.setItems(xiyiService.findItems(billId));
+        d.setPic(pictureService.findByCode("xiyi"));
         return new BaseResult<XiyiDetail>().success(d);
     }
     

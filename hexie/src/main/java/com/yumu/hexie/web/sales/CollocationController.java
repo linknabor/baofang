@@ -1,5 +1,8 @@
 package com.yumu.hexie.web.sales;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.model.market.Cart;
 import com.yumu.hexie.model.market.Collocation;
+import com.yumu.hexie.model.market.CollocationItem;
 import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.redis.RedisRepository;
 import com.yumu.hexie.model.user.User;
@@ -53,7 +57,14 @@ public class CollocationController extends BaseController{
 	public BaseResult<Collocation> collocation(@PathVariable long collId) throws Exception {
 		Collocation c = collocationService.findOneWithItem(collId);
 		if(c!=null) {
-			c.setProducts(c.getItems());
+		    List<CollocationItem>  items = c.getItems();
+		    List<CollocationItem>  products = new ArrayList<>();
+		    for(int i=0;i<items.size();i++){
+		        if(1 == items.get(i).getStatus() ){
+		            products.add(items.get(i));
+		        }
+		    }
+			c.setProducts(products);
 		}
 		return new BaseResult<Collocation>().success(c);
     }
