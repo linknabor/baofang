@@ -116,7 +116,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 		if (!StringUtil.isEmpty(sysName)) {
 			saveTokenBySysName(sysName, "JS_TOKEN", appId, config.getSysValue());
 		}else {
-			log.error("no mappping for key : APPID_MAPPING ");
+			log.error("no mappping for key : " + appId);
 		}
     }
     
@@ -161,7 +161,7 @@ public class SharedSysConfigServiceImpl implements SharedSysConfigService {
 			if (map!=null) {
 				sysName = (String)map.get(appId);
 			}else {
-				log.error("no mappping for key : APPID_MAPPING ");
+				log.error("no mappping for key : " + appId);
 			}
 			
 		} catch (Exception e) {
