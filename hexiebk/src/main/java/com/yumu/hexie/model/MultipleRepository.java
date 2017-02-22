@@ -38,7 +38,7 @@ public class MultipleRepository {
     @Inject
     @Named("weifaRedisTemplate")
     private RedisTemplate<String, SystemConfig> weifaRedisTemplate;
-    
+   
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
@@ -88,18 +88,30 @@ public class MultipleRepository {
         String sysKey = Keys.systemConfigKey(key);
         
         if (RefreshTokenService.SYS_NAME_HEXIE.equals(sysName)) {
-        	mainRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        	//合协的这里不做设置
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//在宝房的redis中也存上
 			chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			weifaRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ1.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
+			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//dhzj开头的都存到良友的redis中，只是前缀不同
+		}else if (RefreshTokenService.SYS_NAME_DHZJ2.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ3.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ4.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}
         
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
@@ -111,7 +123,7 @@ public class MultipleRepository {
      * @param sysName
      * @param key
      */
-    public SystemConfig getValueBySysKey(String sysName, String key){
+	public SystemConfig getValueBySysKey(String sysName, String key){
     	
     	SystemConfig systemconfig = null; 
     	
@@ -127,6 +139,14 @@ public class MultipleRepository {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
 			systemconfig = weifaRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ1.equals(sysName)) {
+			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ2.equals(sysName)) {
+			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ3.equals(sysName)) {
+			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_DHZJ4.equals(sysName)) {
+			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}
     	return systemconfig;
     }
