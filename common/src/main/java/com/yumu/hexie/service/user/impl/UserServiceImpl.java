@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.StringUtil;
+import com.yumu.hexie.integration.charger.ChargerUtil;
 import com.yumu.hexie.integration.wechat.entity.user.UserWeiXin;
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BaseResult;
@@ -200,5 +201,11 @@ public class UserServiceImpl implements UserService {
 	public UserWeiXin getUserByCode(String code) {
         return wechatCoreService.getByOAuthAccessToken(code);
     }
+	
+	@Override
+	public boolean saveMargerUser(String phone, long user_id, long sect_id, String sect_name, String public_no) {
+		BaseResult<String> r = ChargerUtil.saveMarger(phone, user_id, sect_id, sect_name, public_no);
+		return r.isSuccess();
+	}
 
 }
