@@ -203,8 +203,8 @@ public class UserServiceImpl implements UserService {
     }
 	
 	@Override
-	public boolean saveMargerUser(String phone, long user_id, long sect_id, String sect_name, String public_no) {
-		BaseResult<String> r = ChargerUtil.saveMarger(phone, user_id, sect_id, sect_name, public_no);
+	public boolean saveMargerUser(String phone, long user_id, long sect_id, String sect_name) {
+		BaseResult<String> r = ChargerUtil.saveMarger(phone, user_id, sect_id, sect_name);
 		return r.isSuccess();
 	}
 

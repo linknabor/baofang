@@ -33,5 +33,5 @@ public interface UserService {
 	public User queryByShareCode(String code);
 	
 	//把用户注册的信息汇总到backmng的汇总表中，便于以后统计汇总
-	public boolean saveMargerUser(String phone, long user_id, long sect_id, String sect_name, String no);
+	public boolean saveMargerUser(String phone, long user_id, long sect_id, String sect_name);
 }

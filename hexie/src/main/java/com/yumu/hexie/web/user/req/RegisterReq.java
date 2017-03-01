@@ -26,15 +26,6 @@ public class RegisterReq implements Serializable{
 	private Long amapId;
 
 	private boolean oper_flag = false; //默认是内部注册，true为从外部跳入的注册
-	private String public_no; //存放公众号类别，用于区分数据是从哪个公众号来的
-	
-	public String getPublic_no() {
-		return public_no;
-	}
-
-	public void setPublic_no(String public_no) {
-		this.public_no = public_no;
-	}
 
 	public boolean isOper_flag() {
 		return oper_flag;

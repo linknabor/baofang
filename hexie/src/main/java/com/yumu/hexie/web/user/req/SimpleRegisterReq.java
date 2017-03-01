@@ -28,15 +28,8 @@ public class SimpleRegisterReq implements Serializable{
     private String xioquAddr;
     
     private boolean oper_flag = false; //默认是内部注册，true为从外部跳入的注册
-    private String public_no;
-    
-    public String getPublic_no() {
-		return public_no;
-	}
-	public void setPublic_no(String public_no) {
-		this.public_no = public_no;
-	}
-	public boolean isOper_flag() {
+
+    public boolean isOper_flag() {
 		return oper_flag;
 	}
 	public void setOper_flag(boolean oper_flag) {

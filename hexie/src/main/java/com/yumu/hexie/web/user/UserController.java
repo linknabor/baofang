@@ -332,7 +332,7 @@ public class UserController extends BaseController{
 			//如果是云充入口进入的注册，那么同时开通云充账户（把用户信息汇总到物业后台）
             if(req.isOper_flag())//如果是true，则表示为外部页面跳入
             {
-            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName(), req.getPublic_no());
+            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName());
             	if(!istrue)
             	return new BaseResult<UserInfo>().failMsg("校验失败！");
             }
@@ -393,7 +393,7 @@ public class UserController extends BaseController{
 			//如果是云充入口进入的注册，那么同时开通云充账户（把用户信息汇总到物业后台）
             if(req.isOper_flag())//如果是true，则表示为外部页面跳入
             {
-            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName(), req.getPublic_no());
+            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName());
             	if (!istrue) {
             		return BaseResult.fail("注册失败！");
         		}
