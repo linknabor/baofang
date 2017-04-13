@@ -152,7 +152,7 @@ public class WuyeUtil {
 	}
 	
 	
-	private static BaseResult httpGet(String reqUrl, Class c){
+	public static BaseResult httpGet(String reqUrl, Class c){
 		HttpGet get = new HttpGet(reqUrl);
 		get.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36");
 		String resp;

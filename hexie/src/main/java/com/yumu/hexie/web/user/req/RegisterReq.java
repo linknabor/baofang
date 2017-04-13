@@ -25,6 +25,16 @@ public class RegisterReq implements Serializable{
 	private String detailAddress;
 	private Long amapId;
 
+	private boolean oper_flag = false; //默认是内部注册，true为从外部跳入的注册
+
+	public boolean isOper_flag() {
+		return oper_flag;
+	}
+
+	public void setOper_flag(boolean oper_flag) {
+		this.oper_flag = oper_flag;
+	}
+
 	public String getName() {
 		return name;
 	}
