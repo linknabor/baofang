@@ -328,6 +328,15 @@ public class UserController extends BaseController{
             
             user.setRegisterDate(System.currentTimeMillis());
             session.setAttribute(Constants.USER, userService.save(user));
+            
+			//如果是云充入口进入的注册，那么同时开通云充账户（把用户信息汇总到物业后台）
+            if(req.isOper_flag())//如果是true，则表示为外部页面跳入
+            {
+            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName());
+            	if(!istrue)
+            	return new BaseResult<UserInfo>().failMsg("校验失败！");
+            }
+            
 //            couponService.addCoupon4Regist(user);
             return new BaseResult<UserInfo>().success(new UserInfo(user));
         }
@@ -380,6 +389,16 @@ public class UserController extends BaseController{
 			addressService.configDefaultAddress(user, addr.getId());
 			session.setAttribute(Constants.USER, user);
 //			couponService.addCoupon4Regist(user);
+			
+			//如果是云充入口进入的注册，那么同时开通云充账户（把用户信息汇总到物业后台）
+            if(req.isOper_flag())//如果是true，则表示为外部页面跳入
+            {
+            	boolean istrue = userService.saveMargerUser(user.getTel(), user.getId(), user.getXiaoquId(), user.getXiaoquName());
+            	if (!istrue) {
+            		return BaseResult.fail("注册失败！");
+        		}
+            }
+            
 			return new BaseResult<UserInfo>().success(new UserInfo(user));
 		}
     }
