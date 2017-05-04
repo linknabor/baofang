@@ -34,6 +34,7 @@ import com.yumu.hexie.model.redis.Keys;
 import com.yumu.hexie.model.redis.RedisRepository;
 import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.o2o.SendGoodsService;
+import com.yumu.hexie.service.picture.PictureService;
 import com.yumu.hexie.service.sales.BaseOrderService;
 import com.yumu.hexie.service.sales.ProductService;
 import com.yumu.hexie.service.sales.RgroupService;
@@ -72,6 +73,8 @@ public class OrderController extends BaseController{
 	private SendGoodsService sendGoodsService;
 	@Inject
 	private ServiceOperatorRepository serviceOperatorRepository;
+	@Inject
+	private PictureService pictureService;
 	
 	@RequestMapping(value = "/getProduct/{productId}", method = RequestMethod.GET)
 	@ResponseBody
@@ -205,6 +208,7 @@ public class OrderController extends BaseController{
 		if(order.getUserId() != user.getId()){
 			return new BaseResult<ServiceOrder>().failMsg("你没有权限查看该订单！");
 		}
+		order.setPic(pictureService.findByCode("dingdan"));
 		return new BaseResult<ServiceOrder>().success(order);
     }
 
