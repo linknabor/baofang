@@ -8,4 +8,5 @@ import com.yumu.hexie.model.view.Banner;
 public interface PageConfigService {
 	public List<Banner> queryBannerType(User user, int bannerType);
     public String findByTempKey(String key);
+    public List<Banner> findByTempKey2(String tempKey,List<Long> regions);
 }

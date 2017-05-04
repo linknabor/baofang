@@ -3,6 +3,9 @@ package com.yumu.hexie.integration.wechat.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
 import com.yumu.hexie.integration.wechat.entity.common.WxRefundOrder;
 import com.yumu.hexie.integration.wechat.entity.common.WxRefundResp;
@@ -14,6 +17,8 @@ public class RefundService {
 
 	private static final String REFUND_URL = "https://api.mch.weixin.qq.com/secapi/pay/refund";
 	private static final String REFUND_QUERY_URL = "https://api.mch.weixin.qq.com/pay/refundquery";
+	
+	private static final Logger logger = LoggerFactory.getLogger(RefundService.class);
 	
 	/**
 	 * 微信退款支付申请
@@ -39,6 +44,9 @@ public class RefundService {
 		String sign = WeixinUtil.createSign(map, ConstantWeChat.KEY);
 		map.put("sign", sign);	
 		String requestXml = MessageUtil.createPayRequestXML(map);
+		
+		logger.error("requestXml is : " + requestXml);
+		
 		WxRefundResp r = (WxRefundResp)WeixinUtil.httpsRequestXmlWithStore(
 				REFUND_URL,  "POST", requestXml,WxRefundResp.class);
 		return r; 

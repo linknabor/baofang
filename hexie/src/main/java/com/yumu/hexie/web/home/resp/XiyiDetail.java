@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.model.localservice.HomeBillItem;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
+import com.yumu.hexie.model.picture.Picture;
 
 /**
  * <pre>
@@ -50,6 +51,8 @@ public class XiyiDetail implements Serializable {
     private String address;
     private String tel;
     private String receiverName;
+    
+    private Picture pic;
     
     private List<HomeBillItem> items;
     
@@ -178,5 +181,12 @@ public class XiyiDetail implements Serializable {
 	public void setShipFee(BigDecimal shipFee) {
 		this.shipFee = shipFee;
 	}
+    public Picture getPic() {
+        return pic;
+    }
+    public void setPic(Picture pic) {
+        this.pic = pic;
+    }
     
+	
 }

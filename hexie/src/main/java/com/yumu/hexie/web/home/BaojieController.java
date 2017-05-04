@@ -24,6 +24,7 @@ import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.o2o.BaojieService;
 import com.yumu.hexie.service.o2o.HomeItemService;
 import com.yumu.hexie.service.o2o.req.BaojieReq;
+import com.yumu.hexie.service.picture.PictureService;
 import com.yumu.hexie.service.user.AddressService;
 import com.yumu.hexie.service.user.CouponService;
 import com.yumu.hexie.web.BaseController;
@@ -45,6 +46,8 @@ public class BaojieController extends BaseController{
     private AddressService addressService;
     @Inject
     private CouponService couponService;
+    @Inject
+    private PictureService pictureService;
 	
 	/***********************新的保洁服务*************************/
 	//日常保洁类型
@@ -124,7 +127,9 @@ public class BaojieController extends BaseController{
     @ResponseBody
     public BaseResult<BaojieDetailVO> query(@ModelAttribute(Constants.USER)User user,@PathVariable long billId) {
         Log.error("baojie/get/" + billId);
-        return new BaseResult<BaojieDetailVO>().success(new BaojieDetailVO(baojieService.get(billId, user)));
+        BaojieDetailVO baojieDetailVO = new BaojieDetailVO(baojieService.get(billId, user)) ;
+        baojieDetailVO.setPic(pictureService.findByCode("baojie"));
+        return new BaseResult<BaojieDetailVO>().success(baojieDetailVO);
     }
 }
 
