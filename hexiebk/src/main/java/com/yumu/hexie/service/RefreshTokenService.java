@@ -21,6 +21,7 @@ public interface RefreshTokenService {
     public static final String SYS_NAME_CHUNHUI = "chunhui";
     public static final String SYS_NAME_LIANGYOU = "liangyou";
     public static final String SYS_NAME_WEIFA = "weifa";
+    public static final String SYS_NAME_YOUYI = "youyi";
     public static final String SYS_NAME_DHZJ1 = "dhzj1";
     public static final String SYS_NAME_DHZJ2 = "dhzj2";
     public static final String SYS_NAME_DHZJ3 = "dhzj3";
