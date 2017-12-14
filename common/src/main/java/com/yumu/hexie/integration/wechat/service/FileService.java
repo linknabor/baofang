@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yumu.hexie.integration.wechat.entity.common.WechatResponse;
 import com.yumu.hexie.integration.wechat.util.WechatConfig;
-import com.yumu.hexie.integration.wechat.util.WeixinUtil;
 import com.yumu.hexie.service.exception.BizValidateException;
 
 /**
