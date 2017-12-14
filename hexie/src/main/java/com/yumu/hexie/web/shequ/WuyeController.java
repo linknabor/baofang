@@ -349,9 +349,9 @@ public class WuyeController extends BaseController {
 	}
 	
 	@SuppressWarnings({ "rawtypes" })
-	@RequestMapping(value = "updateCouponStatus/{payCellId}", method = RequestMethod.GET)
+	@RequestMapping(value = "updateCouponStatus", method = RequestMethod.GET)
 	@ResponseBody
-	public BaseResult updateCouponStatus(HttpSession session, @PathVariable String payCellId){
+	public BaseResult updateCouponStatus(HttpSession session){
 		
 		if (session == null) {
 			return BaseResult.fail("no session info ...");
@@ -361,7 +361,7 @@ public class WuyeController extends BaseController {
 		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {
-			String result = wuyeService.queryCouponIsUsed(user.getWuyeId(), payCellId);
+			String result = wuyeService.queryCouponIsUsed(user.getWuyeId());
 			for (int i = 0; i < list.size(); i++) {
 				Coupon coupon = list.get(i);
 				if ((coupon.getStatus() == ModelConstant.COUPON_STATUS_AVAILABLE)) {
@@ -370,10 +370,6 @@ public class WuyeController extends BaseController {
 						
 						if ("99".equals(result)) {
 							return BaseResult.fail("网络异常，请刷新后重试");
-						}
-						
-						if ("0".equals(result)) {
-							return BaseResult.successResult("0");	//返回0表示该用户已使用过红包在该套房子上，不能再次使用红包。或者红包活动已经结束。
 						}
 						
 						String[]couponArr = result.split(",");
