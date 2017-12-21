@@ -146,9 +146,9 @@ public class WuyeUtil {
 	}
 	
 	// 12.红包使用情况查询
-	public static BaseResult<String> couponUseQuery(String userId, String payCellId){
+	public static BaseResult<String> couponUseQuery(String userId){
 		
-		String url = REQUEST_ADDRESS + String.format(COUPON_USE_QUERY_URL, userId, payCellId);
+		String url = REQUEST_ADDRESS + String.format(COUPON_USE_QUERY_URL, userId);
 		return (BaseResult<String>)httpGet(url,String.class);
 		
 	}

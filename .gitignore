@@ -10,4 +10,11 @@
 /common/.settings
 /hexie/.settings
 /hexiebk/.settings
+
 /build/
+/common/.project
+/.project
+/hexie/src/main/resources/config.properties
+/hexiebk/src/main/resources/config.properties
+/hexie/.project
+/common/target/classes/com/yumu/hexie/common/util/*.class

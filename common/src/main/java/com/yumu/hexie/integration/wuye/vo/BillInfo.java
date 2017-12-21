@@ -15,7 +15,6 @@ public class BillInfo implements Serializable {
 	private String service_fee_cycle;
 	private String pay_status;
 	private String fee_price;
-	private String pay_mng_cell_id;
 	
 	private boolean selected =false;//为了展示用
 	
@@ -66,12 +65,6 @@ public class BillInfo implements Serializable {
 	}
 	public void setSelected(boolean selected) {
 		this.selected = selected;
-	}
-	public String getPay_mng_cell_id() {
-		return pay_mng_cell_id;
-	}
-	public void setPay_mng_cell_id(String pay_mng_cell_id) {
-		this.pay_mng_cell_id = pay_mng_cell_id;
 	}
 	
 	
