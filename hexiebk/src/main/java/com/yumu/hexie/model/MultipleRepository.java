@@ -38,6 +38,10 @@ public class MultipleRepository {
     @Inject
     @Named("weifaRedisTemplate")
     private RedisTemplate<String, SystemConfig> weifaRedisTemplate;
+    
+    @Inject
+    @Named("zhongxinRedisTemplate")
+    private RedisTemplate<String, SystemConfig> zhongxinRedisTemplate;
    
     public void setSystemConfig(String key,SystemConfig value) {
 
@@ -120,7 +124,7 @@ public class MultipleRepository {
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+			zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
     	
@@ -160,7 +164,7 @@ public class MultipleRepository {
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
-			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
+			systemconfig = zhongxinRedisTemplate.opsForValue().get(sysKey);
 		}
     	return systemconfig;
     }

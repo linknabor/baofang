@@ -204,6 +204,16 @@ public class AppConfig {
         return connectionFactory;
     }
     
+    @Bean(name="zhongxinRdisConnectionFactory")
+    public RedisConnectionFactory zhongxinRdisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setHostName(liangyouRedisHost);
+        connectionFactory.setPort(Integer.valueOf(liangyouRedisPort));
+        connectionFactory.setDatabase(4);
+        connectionFactory.setUsePool(true);
+        return connectionFactory;
+    }
+    
     @Bean(name = "mainRedisTemplate")
     public  RedisTemplate<String, SystemConfig> mainRedisTemplate(){
         RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
@@ -247,6 +257,16 @@ public class AppConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
+    
+    @Bean(name = "zhongxinRedisTemplate")
+    public RedisTemplate<String,SystemConfig> zhongxinRedisTemplate(){
+        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
+        redisTemplate.setConnectionFactory(zhongxinRdisConnectionFactory());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+
 
 
     @Bean(name = "stringRedisTemplate")
