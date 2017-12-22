@@ -79,6 +79,12 @@ public class MultipleRepository {
             SCHEDULE_LOG.warn("get weifaRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
+        zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = zhongxinRedisTemplate.opsForValue().get(sysKey);
+        if (c != null) {
+        	SCHEDULE_LOG.warn("get zhongxinRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
+		}
+        
         SCHEDULE_LOG.warn("END update cache:" + key + "["+value+"]");
     }
     
