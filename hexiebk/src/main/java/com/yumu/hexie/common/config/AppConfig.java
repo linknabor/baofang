@@ -74,6 +74,10 @@ public class AppConfig {
     private String mainRedisHost;
     @Value(value = "${mainRedis.port}")
     private String mainRedisPort;
+    @Value(value = "${mainRedis.password}")
+    private String mainPassword;
+    @Value(value = "${mainRedis.database}")
+    private Integer mainDatabase;
     
     @Value(value = "${baofangRedis.host}")
     private String baofangRedisHost;
@@ -164,6 +168,8 @@ public class AppConfig {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(mainRedisHost);
         connectionFactory.setPort(Integer.valueOf(mainRedisPort));
+        connectionFactory.setPassword(mainPassword);
+        connectionFactory.setDatabase(mainDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
