@@ -98,6 +98,10 @@ public class AppConfig {
     private String weifaRedisHost;
     @Value(value = "${weifaRedis.port}")
     private String weifaRedisPort;
+    @Value(value = "${weifaRedis.password}")
+    private String weifaRedisPassword;
+    @Value(value = "${weifaRedis.database}")
+    private Integer weifaRedisDatabase;
     
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
@@ -206,6 +210,8 @@ public class AppConfig {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(weifaRedisHost);
         connectionFactory.setPort(Integer.valueOf(weifaRedisPort));
+        connectionFactory.setPassword(weifaRedisPassword);
+        connectionFactory.setDatabase(weifaRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
