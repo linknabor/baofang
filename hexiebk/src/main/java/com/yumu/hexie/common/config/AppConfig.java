@@ -103,6 +103,15 @@ public class AppConfig {
     @Value(value = "${weifaRedis.port}")
     private String weifaRedisPort;
     
+    @Value(value = "${xingshequRedis.host}")
+    private String xingshequRedisHost;
+    @Value(value = "${xingshequRedis.port}")
+    private String xingshequRedisPort;
+    @Value(value = "${xingshequRedis.password}")
+    private String xingshequPassword;
+    @Value(value = "${xingshequRedis.database}")
+    private Integer xingshequDatabase;
+    
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
     }
@@ -216,6 +225,17 @@ public class AppConfig {
         return connectionFactory;
     }
     
+    @Bean(name="xingshequRedisConnectionFactory")
+    public RedisConnectionFactory xingshequRedisConnectionFactory() {
+        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
+        connectionFactory.setHostName(xingshequRedisHost);
+        connectionFactory.setPort(Integer.valueOf(xingshequRedisPort));
+        connectionFactory.setPassword(xingshequPassword);
+        connectionFactory.setDatabase(xingshequDatabase);
+        connectionFactory.setUsePool(true);
+        return connectionFactory;
+    }
+    
     @Bean(name="zhongxinRdisConnectionFactory")
     public RedisConnectionFactory zhongxinRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
@@ -234,6 +254,7 @@ public class AppConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
+    
     @Bean(name = "baofangRedisTemplate")
     public RedisTemplate<String,SystemConfig> baofangRedisTemplate(){
         RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
@@ -265,6 +286,15 @@ public class AppConfig {
     public RedisTemplate<String,SystemConfig> weifaRedisTemplate(){
         RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
         redisTemplate.setConnectionFactory(weifaRdisConnectionFactory());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+    
+    @Bean(name = "xingshequRedisTemplate")
+    public  RedisTemplate<String, SystemConfig> xingshequRedisTemplate(){
+        RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
+        redisTemplate.setConnectionFactory(xingshequRedisConnectionFactory());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
