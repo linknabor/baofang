@@ -40,6 +40,10 @@ public class MultipleRepository {
     private RedisTemplate<String, SystemConfig> weifaRedisTemplate;
     
     @Inject
+    @Named("xingshequRedisTemplate")
+    private RedisTemplate<String, SystemConfig> xingshequRedisTemplate;
+    
+    @Inject
     @Named("zhongxinRedisTemplate")
     private RedisTemplate<String, SystemConfig> zhongxinRedisTemplate;
    
@@ -77,6 +81,12 @@ public class MultipleRepository {
         c = weifaRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get weifaRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
+        }
+        
+        xingshequRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+        c = xingshequRedisTemplate.opsForValue().get(sysKey);
+        if(c != null) {
+            SCHEDULE_LOG.warn("get xingshequRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
         zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
@@ -131,6 +141,9 @@ public class MultipleRepository {
 		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+		}else if (RefreshTokenService.SYS_NAME_XINGSHEQU.equals(sysName)) {
+			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
+			xingshequRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}
         SCHEDULE_LOG.warn("END set other cache:" + key + "["+value+"]");
     	
@@ -171,6 +184,8 @@ public class MultipleRepository {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
 			systemconfig = zhongxinRedisTemplate.opsForValue().get(sysKey);
+		}else if (RefreshTokenService.SYS_NAME_XINGSHEQU.equals(sysName)) {
+			systemconfig = xingshequRedisTemplate.opsForValue().get(sysKey);
 		}
     	return systemconfig;
     }
