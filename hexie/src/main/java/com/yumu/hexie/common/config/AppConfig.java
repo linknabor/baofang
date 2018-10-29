@@ -70,10 +70,6 @@ public class AppConfig {
     private String redisHost;
     @Value(value = "${redis.port}")
     private String redisPort;
-    @Value(value = "${redis.password}")
-    private String redisPassword;
-    @Value(value = "${redis.database}")
-    private int redisDatabase;
     
 
     public static void main(String[] args) {
@@ -158,8 +154,6 @@ public class AppConfig {
         connectionFactory.setHostName(redisHost);
         connectionFactory.setPort(Integer.valueOf(redisPort));
         connectionFactory.setUsePool(true);
-        connectionFactory.setPassword(redisPassword);
-        connectionFactory.setDatabase(redisDatabase);
         return connectionFactory;
     }
 
