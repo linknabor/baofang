@@ -310,10 +310,6 @@ public class UserController extends BaseController{
             return new BaseResult<UserInfo>().failMsg("信息请填写完整！");
         }
         
-        if(StringUtil.isEmpty(req.getXiaoquId()) || StringUtil.isEmpty(req.getXiaoquName())){
-        	return new BaseResult<UserInfo>().failMsg("请选择小区！");
-        }
-        
         boolean result = smsService.checkVerificationCode(req.getMobile(), req.getYzm());
         if(!result){
             return new BaseResult<UserInfo>().failMsg("校验失败！");
