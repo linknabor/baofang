@@ -118,10 +118,6 @@ public class AppConfig {
     private String weifaRedisPassword;
     @Value(value = "${weifaRedis.database}")
     private Integer weifaRedisDatabase;
-    @Value(value = "${weifaRedis.password}")
-    private String weifaRedisPassword;
-    @Value(value = "${weifaRedis.database}")
-    private Integer weifaRedisDatabase;
     
     @Value(value = "${xingshequRedis.host}")
     private String xingshequRedisHost;
@@ -194,6 +190,8 @@ public class AppConfig {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(redisHost);
         connectionFactory.setPort(Integer.valueOf(redisPort));
+        connectionFactory.setPassword(redisPassword);
+        connectionFactory.setDatabase(redisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }

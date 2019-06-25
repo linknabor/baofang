@@ -500,6 +500,5 @@
 		<module>common</module> 
 		<module>hexie</module>
 		<module>hexiebk</module> 
-		<module>hexiebk</module> 
 	</modules> 
 </project>
