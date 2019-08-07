@@ -68,16 +68,16 @@ public class AppConfig {
     @Value(value = "${redis.host}")
     private String redisHost;
     @Value(value = "${redis.port}")
-    private String redisPort;
+    private Integer redisPort;
     @Value(value = "${redis.password}")
     private String redisPassword;
     @Value(value = "${redis.database}")
-    private int redisDatabase;
+    private Integer redisDatabase;
 
 	@Value(value = "${mainRedis.host}")
     private String mainRedisHost;
     @Value(value = "${mainRedis.port}")
-    private String mainRedisPort;
+    private Integer mainRedisPort;
     @Value(value = "${mainRedis.password}")
     private String mainPassword;
     @Value(value = "${mainRedis.database}")
@@ -86,31 +86,50 @@ public class AppConfig {
     @Value(value = "${baofangRedis.host}")
     private String baofangRedisHost;
     @Value(value = "${baofangRedis.port}")
-    private String baofangRedisPort;
+    private Integer baofangRedisPort;
+    @Value(value = "${baofangRedis.password}")
+    private String baofangRedisPassword;
+    @Value(value = "${baofangRedis.database}")
+    private Integer baofangRedisDatabase;
     
     @Value(value = "${chunhuiRedis.host}")
     private String chunhuiRedisHost;
     @Value(value = "${chunhuiRedis.port}")
-    private String chunhuiRedisPort;    
+    private Integer chunhuiRedisPort;
+    @Value(value = "${chunhuiRedis.password}")
+    private String chunhuiRedisPassword;
+    @Value(value = "${chunhuiRedis.database}")
+    private Integer chunhuiRedisDatabase;
     
     @Value(value = "${liangyouRedis.host}")
     private String liangyouRedisHost;
     @Value(value = "${liangyouRedis.port}")
-    private String liangyouRedisPort;
+    private Integer liangyouRedisPort;
+    @Value(value = "${liangyouRedis.password}")
+    private String liangyouRedisPassword;
+    @Value(value = "${liangyouRedis.database}")
+    private Integer liangyouRedisDatabase;
     
     @Value(value = "${weifaRedis.host}")
     private String weifaRedisHost;
     @Value(value = "${weifaRedis.port}")
-    private String weifaRedisPort;
+    private Integer weifaRedisPort;
+    @Value(value = "${weifaRedis.password}")
+    private String weifaRedisPassword;
+    @Value(value = "${weifaRedis.database}")
+    private Integer weifaRedisDatabase;
     
     @Value(value = "${xingshequRedis.host}")
     private String xingshequRedisHost;
     @Value(value = "${xingshequRedis.port}")
-    private String xingshequRedisPort;
+    private Integer xingshequRedisPort;
     @Value(value = "${xingshequRedis.password}")
     private String xingshequPassword;
     @Value(value = "${xingshequRedis.database}")
     private Integer xingshequDatabase;
+    
+    @Value(value = "${zhongxinRedis.database}")
+    private Integer zhongxinRedisDatabase;
     
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
@@ -182,7 +201,7 @@ public class AppConfig {
     public RedisConnectionFactory mainRedisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(mainRedisHost);
-        connectionFactory.setPort(Integer.valueOf(mainRedisPort));
+        connectionFactory.setPort(mainRedisPort);
         connectionFactory.setPassword(mainPassword);
         connectionFactory.setDatabase(mainDatabase);
         connectionFactory.setUsePool(true);
@@ -193,7 +212,9 @@ public class AppConfig {
     public RedisConnectionFactory baofangrRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(baofangRedisHost);
-        connectionFactory.setPort(Integer.valueOf(baofangRedisPort));
+        connectionFactory.setPort(baofangRedisPort);
+        connectionFactory.setPassword(baofangRedisPassword);
+        connectionFactory.setDatabase(baofangRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
@@ -202,7 +223,9 @@ public class AppConfig {
     public RedisConnectionFactory chunhuiRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(chunhuiRedisHost);
-        connectionFactory.setPort(Integer.valueOf(chunhuiRedisPort));
+        connectionFactory.setPort(chunhuiRedisPort);
+        connectionFactory.setPassword(chunhuiRedisPassword);
+        connectionFactory.setDatabase(chunhuiRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
@@ -211,7 +234,9 @@ public class AppConfig {
     public RedisConnectionFactory liangyouRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(liangyouRedisHost);
-        connectionFactory.setPort(Integer.valueOf(liangyouRedisPort));
+        connectionFactory.setPort(liangyouRedisPort);
+        connectionFactory.setPassword(liangyouRedisPassword);
+        connectionFactory.setDatabase(liangyouRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
@@ -220,7 +245,9 @@ public class AppConfig {
     public RedisConnectionFactory weifaRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(weifaRedisHost);
-        connectionFactory.setPort(Integer.valueOf(weifaRedisPort));
+        connectionFactory.setPort(weifaRedisPort);
+        connectionFactory.setPassword(weifaRedisPassword);
+        connectionFactory.setDatabase(weifaRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
@@ -240,8 +267,9 @@ public class AppConfig {
     public RedisConnectionFactory zhongxinRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
         connectionFactory.setHostName(liangyouRedisHost);
-        connectionFactory.setPort(Integer.valueOf(liangyouRedisPort));
-        connectionFactory.setDatabase(4);
+        connectionFactory.setPort(liangyouRedisPort);
+        connectionFactory.setPassword(liangyouRedisPassword);
+        connectionFactory.setDatabase(zhongxinRedisDatabase);
         connectionFactory.setUsePool(true);
         return connectionFactory;
     }
