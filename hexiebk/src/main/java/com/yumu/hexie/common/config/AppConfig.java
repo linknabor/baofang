@@ -92,15 +92,6 @@ public class AppConfig {
     @Value(value = "${baofangRedis.database}")
     private Integer baofangRedisDatabase;
     
-    @Value(value = "${chunhuiRedis.host}")
-    private String chunhuiRedisHost;
-    @Value(value = "${chunhuiRedis.port}")
-    private Integer chunhuiRedisPort;
-    @Value(value = "${chunhuiRedis.password}")
-    private String chunhuiRedisPassword;
-    @Value(value = "${chunhuiRedis.database}")
-    private Integer chunhuiRedisDatabase;
-    
     @Value(value = "${liangyouRedis.host}")
     private String liangyouRedisHost;
     @Value(value = "${liangyouRedis.port}")
@@ -127,9 +118,6 @@ public class AppConfig {
     private String xingshequPassword;
     @Value(value = "${xingshequRedis.database}")
     private Integer xingshequDatabase;
-    
-    @Value(value = "${zhongxinRedis.database}")
-    private Integer zhongxinRedisDatabase;
     
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
@@ -219,17 +207,6 @@ public class AppConfig {
         return connectionFactory;
     }
     
-    @Bean(name="chunhuiRdisConnectionFactory")
-    public RedisConnectionFactory chunhuiRdisConnectionFactory() {
-        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
-        connectionFactory.setHostName(chunhuiRedisHost);
-        connectionFactory.setPort(chunhuiRedisPort);
-        connectionFactory.setPassword(chunhuiRedisPassword);
-        connectionFactory.setDatabase(chunhuiRedisDatabase);
-        connectionFactory.setUsePool(true);
-        return connectionFactory;
-    }
-    
     @Bean(name="liangyouRdisConnectionFactory")
     public RedisConnectionFactory liangyouRdisConnectionFactory() {
         JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
@@ -263,81 +240,38 @@ public class AppConfig {
         return connectionFactory;
     }
     
-    @Bean(name="zhongxinRdisConnectionFactory")
-    public RedisConnectionFactory zhongxinRdisConnectionFactory() {
-        JedisConnectionFactory connectionFactory = new JedisConnectionFactory();
-        connectionFactory.setHostName(liangyouRedisHost);
-        connectionFactory.setPort(liangyouRedisPort);
-        connectionFactory.setPassword(liangyouRedisPassword);
-        connectionFactory.setDatabase(zhongxinRedisDatabase);
-        connectionFactory.setUsePool(true);
-        return connectionFactory;
-    }
-    
     @Bean(name = "mainRedisTemplate")
     public  RedisTemplate<String, SystemConfig> mainRedisTemplate(){
-        RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(mainRedisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
+        return getStringSystemConfigRedisTemplate(mainRedisConnectionFactory());
     }
     
     @Bean(name = "baofangRedisTemplate")
     public RedisTemplate<String,SystemConfig> baofangRedisTemplate(){
-        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(baofangrRdisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
-    }
-    
-    @Bean(name = "chunhuiRedisTemplate")
-    public RedisTemplate<String,SystemConfig> chunhuiRedisTemplate(){
-        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(chunhuiRdisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
+        return getStringSystemConfigRedisTemplate(baofangrRdisConnectionFactory());
     }
     
     @Bean(name = "liangyouRedisTemplate")
     public RedisTemplate<String,SystemConfig> liangyouRedisTemplate(){
-        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(liangyouRdisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
+        return getStringSystemConfigRedisTemplate(liangyouRdisConnectionFactory());
     }
     
     @Bean(name = "weifaRedisTemplate")
     public RedisTemplate<String,SystemConfig> weifaRedisTemplate(){
-        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(weifaRdisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
+        return getStringSystemConfigRedisTemplate(weifaRdisConnectionFactory());
     }
     
     @Bean(name = "xingshequRedisTemplate")
     public  RedisTemplate<String, SystemConfig> xingshequRedisTemplate(){
+        return getStringSystemConfigRedisTemplate(xingshequRedisConnectionFactory());
+    }
+
+    private RedisTemplate<String, SystemConfig> getStringSystemConfigRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(xingshequRedisConnectionFactory());
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
-    
-    @Bean(name = "zhongxinRedisTemplate")
-    public RedisTemplate<String,SystemConfig> zhongxinRedisTemplate(){
-        RedisTemplate<String,SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(zhongxinRdisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
-    }
-
-
 
     @Bean(name = "stringRedisTemplate")
     public StringRedisTemplate getStringRedisTemplate() {
@@ -346,7 +280,7 @@ public class AppConfig {
 
     @Bean(name = "redisTemplate")
     public <V> RedisTemplate<String, V> getRedisTemplate() {
-        RedisTemplate<String, V> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, V> redisTemplate = new RedisTemplate<String, V>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -382,11 +316,7 @@ public class AppConfig {
 
     @Bean(name = "systemConfigRedisTemplate")
     public RedisTemplate<String, SystemConfig> systemConfigRedisTemplate(){
-        RedisTemplate<String, SystemConfig> redisTemplate = new RedisTemplate<String, SystemConfig>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SystemConfig>(SystemConfig.class));
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
+        return getStringSystemConfigRedisTemplate(redisConnectionFactory());
     };
     public KeyGenerator keyGenerator() {
         return new KeyGenerator(){

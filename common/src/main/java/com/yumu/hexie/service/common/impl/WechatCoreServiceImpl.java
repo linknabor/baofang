@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
-import com.yumu.hexie.integration.wechat.entity.AccessToken;
 import com.yumu.hexie.integration.wechat.entity.AccessTokenOAuth;
 import com.yumu.hexie.integration.wechat.entity.common.CloseOrderResp;
 import com.yumu.hexie.integration.wechat.entity.common.JsSign;
@@ -44,8 +43,6 @@ import com.yumu.hexie.service.user.CouponService;
 @Service(value = "wechatCoreService")
 public class WechatCoreServiceImpl implements WechatCoreService {
 
-	public AccessToken at;
-	public String jsTicket = "";
 	private static final Logger LOGGER = LoggerFactory.getLogger(WechatCoreServiceImpl.class);
 	@Inject
 	private SystemConfigService systemConfigService;
@@ -75,67 +72,55 @@ public class WechatCoreServiceImpl implements WechatCoreService {
 
 			String respContent = "";
 			// wait
-			switch (msgType) {
-			case ConstantWeChat.REQ_MESSAGE_TYPE_TEXT:// 文本消息
-				break;
-			case ConstantWeChat.REQ_MESSAGE_TYPE_EVENT:// 事件消息
+            // 文本消息
+            if (ConstantWeChat.REQ_MESSAGE_TYPE_TEXT.equals(msgType)) {
+            } else if (ConstantWeChat.REQ_MESSAGE_TYPE_EVENT.equals(msgType)) {// 事件消息
 
-				// 事件类型
-				switch (requestMap.getEvent()) {
-				case ConstantWeChat.EVENT_TYPE_SUBSCRIBE:// 订阅
-					respContent = "欢迎来到我家大楼\n"
-							+ "【我的房子】物业费缴纳、账单查询\n"
-							+ "【到家服务】一键预约，随叫随到\n"
-							+ "【限时特卖】每日限时劲爆商品抢鲜\n"
-							+ "【客服】如有问题咨询021-50876295\n";
-					LOGGER.error("用户关注！");
-					// userService.getOrSubscibeUserByOpenId();
+                // 事件类型
+                if (ConstantWeChat.EVENT_TYPE_SUBSCRIBE.equals(requestMap.getEvent())) {// 订阅
+                    respContent = "欢迎来到我家大楼\n"
+                            + "【我的房子】物业费缴纳、账单查询\n"
+                            + "【到家服务】一键预约，随叫随到\n"
+                            + "【限时特卖】每日限时劲爆商品抢鲜\n"
+                            + "【客服】如有问题咨询021-50876295\n";
+                    LOGGER.error("用户关注！");
+                    // userService.getOrSubscibeUserByOpenId();
 
-					User userAccount = userService.getByOpenId(requestMap.getFromUserName());
-					if(userAccount == null) {
-						User u = userService.getByOpenId(requestMap.getFromUserName());
-						couponService.addCoupon4Subscribe(u);
-					}
-					break;
-				case ConstantWeChat.EVENT_TYPE_UNSUBSCRIBE:// 取消关注,用户接受不到我们发送的消息了，可以在这里记录用户取消关注的日志信息
-					LOGGER.error("用户取消关注！");
-					break;
-				case ConstantWeChat.EVENT_TYPE_CLICK:
-					LOGGER.error("用户点击按钮：" + requestMap.getEventKey());
-					break;
-				case ConstantWeChat.EVENT_TYPE_LOCATION:
-					LOGGER.error("用户定位：" + requestMap.getLatitude() + ","
-							+ requestMap.getLongitude());
-					break;
-				case ConstantWeChat.EVENT_TYPE_VIEW:
-					LOGGER.error("用户点击跳转：" + requestMap.getEventKey());
-					break;
-				case ConstantWeChat.EVENT_TYPE_SCAN:
-					LOGGER.error("用户扫码："
-							+ JacksonJsonUtil.beanToJson(requestMap
-									.getScanCodeInfo()));
-					com.yumu.hexie.integration.wechat.entity.customer.TextMessage tm = (com.yumu.hexie.integration.wechat.entity.customer.TextMessage) CustomService
-							.bulidCustomerBaseMessage(
-									"oMRpmtwU9wJ6nfngPYjg_PX66RTg",
-									ConstantWeChat.RESP_MESSAGE_TYPE_TEXT);
-					tm.setText(new Text("有用户扫码："
-							+ JacksonJsonUtil.beanToJson(requestMap
-									.getScanCodeInfo())));
-					CustomService.sendCustomerMessage(tm,systemConfigService.queryWXAToken());
-					LOGGER.error("用户扫码：发送完毕");
-					break;
-				}
+                    User userAccount = userService.getByOpenId(requestMap.getFromUserName());
+                    if (userAccount == null) {
+                        User u = userService.getByOpenId(requestMap.getFromUserName());
+                        couponService.addCoupon4Subscribe(u);
+                    }
+                } else if (ConstantWeChat.EVENT_TYPE_UNSUBSCRIBE.equals(requestMap.getEvent())) {// 取消关注,用户接受不到我们发送的消息了，可以在这里记录用户取消关注的日志信息
+                    LOGGER.error("用户取消关注！");
+                } else if (ConstantWeChat.EVENT_TYPE_CLICK.equals(requestMap.getEvent())) {
+                    LOGGER.error("用户点击按钮：" + requestMap.getEventKey());
+                } else if (ConstantWeChat.EVENT_TYPE_LOCATION.equals(requestMap.getEvent())) {
+                    LOGGER.error("用户定位：" + requestMap.getLatitude() + ","
+                            + requestMap.getLongitude());
+                } else if (ConstantWeChat.EVENT_TYPE_VIEW.equals(requestMap.getEvent())) {
+                    LOGGER.error("用户点击跳转：" + requestMap.getEventKey());
+                } else if (ConstantWeChat.EVENT_TYPE_SCAN.equals(requestMap.getEvent())) {
+                    LOGGER.error("用户扫码："
+                            + JacksonJsonUtil.beanToJson(requestMap
+                            .getScanCodeInfo()));
+                    com.yumu.hexie.integration.wechat.entity.customer.TextMessage tm = (com.yumu.hexie.integration.wechat.entity.customer.TextMessage) CustomService
+                            .bulidCustomerBaseMessage(
+                                    "oMRpmtwU9wJ6nfngPYjg_PX66RTg",
+                                    ConstantWeChat.RESP_MESSAGE_TYPE_TEXT);
+                    tm.setText(new Text("有用户扫码："
+                            + JacksonJsonUtil.beanToJson(requestMap
+                            .getScanCodeInfo())));
+                    CustomService.sendCustomerMessage(tm, systemConfigService.queryWXAToken());
+                    LOGGER.error("用户扫码：发送完毕");
+                }
 
-				if (respMessage == null) {
-					textMessage.setContent(respContent);
-					respMessage = MessageService.bulidSendMessage(textMessage,
-							ConstantWeChat.RESP_MESSAGE_TYPE_TEXT);
-				}
-
-				break;
-			default:
-				;
-			}
+                if (respMessage == null) {
+                    textMessage.setContent(respContent);
+                    respMessage = MessageService.bulidSendMessage(textMessage,
+                            ConstantWeChat.RESP_MESSAGE_TYPE_TEXT);
+                }
+            }
 
 		} catch (Exception e) {
 			e.printStackTrace();
