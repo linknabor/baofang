@@ -28,10 +28,6 @@ public class MultipleRepository {
     private RedisTemplate<String, SystemConfig> baofangRedisTemplate;
     
     @Inject
-    @Named("chunhuiRedisTemplate")
-    private RedisTemplate<String, SystemConfig> chunhuiRedisTemplate;
-    
-    @Inject
     @Named("liangyouRedisTemplate")
     private RedisTemplate<String, SystemConfig> liangyouRedisTemplate;
     
@@ -43,10 +39,6 @@ public class MultipleRepository {
     @Named("xingshequRedisTemplate")
     private RedisTemplate<String, SystemConfig> xingshequRedisTemplate;
     
-    @Inject
-    @Named("zhongxinRedisTemplate")
-    private RedisTemplate<String, SystemConfig> zhongxinRedisTemplate;
-   
     public void setSystemConfig(String key,SystemConfig value) {
 
         SCHEDULE_LOG.warn("update cache:" + key + "["+value+"]");
@@ -63,12 +55,6 @@ public class MultipleRepository {
         c = baofangRedisTemplate.opsForValue().get(sysKey);
         if(c != null) {
             SCHEDULE_LOG.warn("get baofangRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
-        }
-        
-        chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-        c = chunhuiRedisTemplate.opsForValue().get(sysKey);
-        if(c != null) {
-            SCHEDULE_LOG.warn("get chunhuiRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
         liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
@@ -89,12 +75,6 @@ public class MultipleRepository {
             SCHEDULE_LOG.warn("get xingshequRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
         }
         
-        zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-        c = zhongxinRedisTemplate.opsForValue().get(sysKey);
-        if (c != null) {
-        	SCHEDULE_LOG.warn("get zhongxinRedis cache:"+c.getSysKey() + "["+c.getSysValue()+"]");
-		}
-        
         SCHEDULE_LOG.warn("END update cache:" + key + "["+value+"]");
     }
     
@@ -111,36 +91,18 @@ public class MultipleRepository {
         	//合协的这里不做设置
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//在宝房的redis中也存上
-			chunhuiRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			weifaRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-		}else if (RefreshTokenService.SYS_NAME_DHZJ1.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//宝房也存上
-			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);	//dhzj开头的都存到良友的redis中，只是前缀不同
-		}else if (RefreshTokenService.SYS_NAME_DHZJ2.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_DHZJ3.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-		}else if (RefreshTokenService.SYS_NAME_DHZJ4.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_YOUYI.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-		}else if (RefreshTokenService.SYS_NAME_GUANGMING.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-			liangyouRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
-			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
-			zhongxinRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 		}else if (RefreshTokenService.SYS_NAME_XINGSHEQU.equals(sysName)) {
 			baofangRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
 			xingshequRedisTemplate.opsForValue().set(sysKey, value, 120, TimeUnit.MINUTES);
@@ -164,26 +126,16 @@ public class MultipleRepository {
     		systemconfig = mainRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_BAOFANG.equals(sysName)) {
 			systemconfig = baofangRedisTemplate.opsForValue().get(sysKey);
-		}else if (RefreshTokenService.SYS_NAME_CHUNHUI.equals(sysName)) {
-			systemconfig = chunhuiRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_WEIFA.equals(sysName)) {
 			systemconfig = weifaRedisTemplate.opsForValue().get(sysKey);
-		}else if (RefreshTokenService.SYS_NAME_DHZJ1.equals(sysName)) {
-			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
-		}else if (RefreshTokenService.SYS_NAME_DHZJ2.equals(sysName)) {
-			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_DHZJ3.equals(sysName)) {
-			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
-		}else if (RefreshTokenService.SYS_NAME_DHZJ4.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_YOUYI.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_LIANGYOU.equals(sysName)) {
 			systemconfig = liangyouRedisTemplate.opsForValue().get(sysKey);
-		}else if (RefreshTokenService.SYS_NAME_ZHONGXIN.equals(sysName)) {
-			systemconfig = zhongxinRedisTemplate.opsForValue().get(sysKey);
 		}else if (RefreshTokenService.SYS_NAME_XINGSHEQU.equals(sysName)) {
 			systemconfig = xingshequRedisTemplate.opsForValue().get(sysKey);
 		}
