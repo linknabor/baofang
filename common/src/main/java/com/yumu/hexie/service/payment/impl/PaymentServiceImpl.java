@@ -12,15 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
 import com.yumu.hexie.integration.wechat.entity.common.CloseOrderResp;
 import com.yumu.hexie.integration.wechat.entity.common.JsSign;
 import com.yumu.hexie.integration.wechat.entity.common.PaymentOrderResult;
 import com.yumu.hexie.integration.wechat.entity.common.PrePaymentOrder;
 import com.yumu.hexie.integration.wechat.entity.common.WxRefundOrder;
-import com.yumu.hexie.integration.wuye.WuyeUtil;
-import com.yumu.hexie.integration.wuye.resp.BaseResult;
-import com.yumu.hexie.integration.wuye.vo.WechatPayInfo;
 import com.yumu.hexie.model.localservice.basemodel.BaseO2OService;
 import com.yumu.hexie.model.market.ServiceOrder;
 import com.yumu.hexie.model.payment.PaymentConstant;
@@ -118,38 +114,17 @@ public class PaymentServiceImpl implements PaymentService {
         validatePayRequest(pay);
         log.warn("[Payment-req]["+pay.getPaymentNo()+"]["+pay.getOrderId()+"]["+pay.getOrderType()+"]");
         //支付然后没继续的情景=----校验所需时间较长，是否需要如此操作
-        try {
-        	
-            if(checkPaySuccess(pay.getPaymentNo())){
-                throw new BizValidateException(pay.getId(),"订单已支付成功，勿重复提交！").setError();
-            }
-            paymentOrderRepository.save(pay);
-            log.warn("获取预支付id前——————————前：");
-        	WechatPayInfo payinfo = WuyeUtil.getMemberPrePayInfo(pay.getPaymentNo(), pay.getPrice(), pay.getOpenId(),ConstantWeChat.NOTIFYURL).getData();
-        	log.warn("获取预支付id后——————————后：");
-        	JsSign sign = new JsSign();
-        	sign.setAppId(payinfo.getAppid());
-        	sign.setNonceStr(payinfo.getNoncestr());
-        	sign.setPkgStr(payinfo.getPackageValue());
-        	sign.setSignature(payinfo.getPaysign());
-        	sign.setTimestamp(payinfo.getTimestamp());
-        	sign.setSignType(payinfo.getSigntype());
-        	return sign;
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//      PrePaymentOrder preWechatOrder = wechatCoreService.createOrder(pay);
-//      pay.setPrepayId(preWechatOrder.getPrepay_id());
-//      paymentOrderRepository.save(pay);
-//      log.warn("[Payment-req]Saved["+pay.getPaymentNo()+"]["+pay.getOrderId()+"]["+pay.getOrderType()+"]");
-//      //3. 从微信获取签名
-//      JsSign sign = wechatCoreService.getPrepareSign(preWechatOrder.getPrepay_id());
-//      log.warn("[Payment-req]sign["+sign.getSignature()+"]");
-        return null;
+        if(checkPaySuccess(pay.getPaymentNo())){
+            throw new BizValidateException(pay.getId(),"订单已支付成功，勿重复提交！").setError();
+        }
+        PrePaymentOrder preWechatOrder = wechatCoreService.createOrder(pay);
+        pay.setPrepayId(preWechatOrder.getPrepay_id());
+        paymentOrderRepository.save(pay);
+        log.warn("[Payment-req]Saved["+pay.getPaymentNo()+"]["+pay.getOrderId()+"]["+pay.getOrderType()+"]");
+        //3. 从微信获取签名
+        JsSign sign = wechatCoreService.getPrepareSign(preWechatOrder.getPrepay_id());
+        log.warn("[Payment-req]sign["+sign.getSignature()+"]");
+        return sign;
     }
     
     private void validatePayRequest(PaymentOrder pay) {
@@ -164,12 +139,10 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
-    private boolean checkPaySuccess(String paymentNo)throws Exception{
+    private boolean checkPaySuccess(String paymentNo){
         log.warn("[Payment-check]begin["+paymentNo+"]");
-        
-        BaseResult baseResult = WuyeUtil.queryOrderInfo(paymentNo);
-        log.warn("baseResult:"+baseResult.getResult());
-        return baseResult.getResult().equals("SUCCESS");//表示交易成功
+        PaymentOrderResult poResult = wechatCoreService.queryOrder(paymentNo);
+        return poResult.isSuccess()&&poResult.isPaySuccess();
     }
     /** 
      * @param payment
@@ -182,27 +155,24 @@ public class PaymentServiceImpl implements PaymentService {
         if(payment.getStatus() != PaymentConstant.PAYMENT_STATUS_INIT){
             return payment;
         }
-        try {
-			BaseResult baseResult = WuyeUtil.queryOrderInfo(payment.getPaymentNo());
-//	        PaymentOrderResult poResult = wechatCoreService.queryOrder(payment.getPaymentNo());
-//	        if(poResult==null)
-//	        {
-//	        	return payment;
-//	        }
-	        if("USERPAYING".equals(baseResult.getResult())) {//1. 支付中
-	            log.warn("[Payment-refreshStatus]isPaying["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
-	            return payment;
-	        } else if("FAIL".equals(baseResult.getResult())) {//2. 失败
-	            log.warn("[Payment-refreshStatus]isPayFail["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
-	            payment.fail();
-	        } else if ("SUCCESS".equals(baseResult.getResult())) {//5. 成功
-	            log.warn("[Payment-refreshStatus]isPaySuccess["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
-	            payment.paySuccess("532858859");//没有此id
-	        }
-        } catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        PaymentOrderResult poResult = wechatCoreService.queryOrder(payment.getPaymentNo());
+        
+        if(poResult.isPaying()) {//1. 支付中
+            log.warn("[Payment-refreshStatus]isPaying["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
+            return payment;
+        } else if(poResult.isPayFail()) {//2. 失败
+            log.warn("[Payment-refreshStatus]isPayFail["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
+            payment.fail();
+        } else if(poResult.isClose()) {//3. 关闭
+            log.warn("[Payment-refreshStatus]isClose["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
+            payment.cancel();
+        } else if(poResult.isRefunding()) {//4. 退款中
+            log.warn("[Payment-refreshStatus]isRefunding["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
+            payment.refunding();
+        } else if (poResult.isPaySuccess()) {//5. 成功
+            log.warn("[Payment-refreshStatus]isPaySuccess["+payment.getOrderType()+"]["+payment.getOrderId()+"]");
+            payment.paySuccess(poResult.getTransaction_id());
+        }
         return paymentOrderRepository.save(payment);
     }
 
